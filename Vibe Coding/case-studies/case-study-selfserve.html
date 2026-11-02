@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sample Case Study: A Self-Serve Flow — Raymond Wang</title>
+  <meta name="description" content="An example case-study structure: a (fictional) self-serve billing flow and how it would be evaluated." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="Primary">
+      <a class="brand" href="../home.html"><span class="brand-mark">RW</span> Raymond Wang</a>
+      <ul class="nav-links">
+        <li><a href="../home.html#about">About</a></li>
+        <li><a href="../home.html#work">Work</a></li>
+        <li><a href="../home.html#insights">Insights</a></li>
+        <li><a href="../home.html#experience">Experience</a></li>
+        <li><a href="../home.html#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+        <a class="btn btn-ghost btn-sm" href="../resume.pdf" download>Résumé</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap" style="padding-block: clamp(2.5rem, 6vw, 4.5rem);">
+    <p class="eyebrow"><a href="case-studies-list.html">Case Studies</a> / Template</p>
+    <h1>Sample case study: a self-serve flow</h1>
+    <p class="lead" style="max-width: 62ch;">This is an illustrative example showing the structure I'll use for real case studies — not an account of actual work. A real write-up with JPMorgan Chase details will replace this once it's ready.</p>
+    <p class="read-time"><span data-read-time></span></p>
+
+    <dl class="quick-facts">
+      <div><dt>Status</dt><dd>Example / template</dd></div>
+      <div><dt>Role</dt><dd>Product Manager</dd></div>
+      <div><dt>Timeline</dt><dd>TBD</dd></div>
+      <div><dt>Team</dt><dd>TBD</dd></div>
+    </dl>
+
+    <figure style="margin: 2.5rem 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);">
+      <img src="../assets/img/case-study-selfserve.jpg" alt="Case study cover" data-lightbox onerror="this.replaceWith(Object.assign(document.createElement('div'),{textContent:'Add assets/img/case-study-selfserve.jpg',style:'padding:3rem;text-align:center;color:var(--text-mute)'}))" />
+    </figure>
+
+    <section class="cs-section" data-open="true">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="true" aria-controls="cs2-context">
+          <span>Context</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-context">
+        <p><!-- EDIT ME: Describe the product and business context. --></p>
+      </div>
+    </section>
+
+    <section class="cs-section" data-open="false">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="cs2-problem">
+          <span>The problem</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-problem">
+        <p><!-- EDIT ME: e.g. "Every plan change required a support ticket — 400/month — creating a 3-day backlog and leaking upgrade revenue." --></p>
+      </div>
+    </section>
+
+    <section class="cs-section" data-open="false">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="cs2-role">
+          <span>My role</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-role">
+        <p><!-- EDIT ME: Your ownership and collaborators. --></p>
+      </div>
+    </section>
+
+    <section class="cs-section" data-open="false">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="cs2-discovery">
+          <span>Discovery &amp; the key insight</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-discovery">
+        <p><!-- EDIT ME: how you found the root cause, not just the symptom. --></p>
+        <blockquote class="card" style="border-left: 4px solid var(--accent);">
+          <p style="margin:0;"><strong>Insight:</strong> <!-- EDIT ME --></p>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="cs-section" data-open="false">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="cs2-strategy">
+          <span>Strategy &amp; tradeoffs</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-strategy">
+        <p><!-- EDIT ME: build vs. buy, phasing, what you cut. --></p>
+      </div>
+    </section>
+
+    <section class="cs-section" data-open="false">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="cs2-execution">
+          <span>Execution</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-execution">
+        <p><!-- EDIT ME: rollout plan, pricing edge cases, migration of existing customers. --></p>
+      </div>
+    </section>
+
+    <section class="cs-section" data-open="false">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="cs2-outcome">
+          <span>Outcome</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-outcome">
+        <div class="metric-strip" style="grid-template-columns: repeat(3, 1fr); margin-top:.4rem;">
+          <div class="metric"><div class="num" data-count="80" data-prefix="−" data-suffix="%">−80%</div><div class="label">Billing tickets</div></div>
+          <div class="metric"><div class="num" data-count="18" data-prefix="+" data-suffix="%">+18%</div><div class="label">Upgrade conversion</div></div>
+          <div class="metric"><div class="num" data-count="2" data-suffix=" days">2 days</div><div class="label">Saved per week</div></div>
+        </div>
+        <p class="muted" style="margin-top:1rem;"><!-- EDIT ME: measurement notes. --></p>
+      </div>
+    </section>
+
+    <section class="cs-section" data-open="false">
+      <h2 class="cs-head">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="cs2-reflection">
+          <span>What I'd do differently</span><span class="cs-icon" aria-hidden="true">+</span>
+        </button>
+      </h2>
+      <div class="cs-panel" id="cs2-reflection">
+        <p><!-- EDIT ME --></p>
+      </div>
+    </section>
+
+    <hr />
+    <div class="btn-row">
+      <a class="btn btn-primary" href="case-studies-list.html">← All case studies</a>
+      <a class="btn btn-ghost" href="case-study-activation.html">Previous case study →</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="muted">© <span data-year>2026</span> Raymond Wang. Built with plain HTML, CSS &amp; JS.</p>
+      <p class="muted"><a href="../home.html">← Back to home</a></p>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
