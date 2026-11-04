@@ -4,8 +4,9 @@
    The <head> script sets html.intro-on (show the intro) or
    html.intro-done (returning visit / deep link). Without JS
    neither is set and the intro is a static first section.
-   Boot steps are CSS classes on #intro (.is-booting, .graph-on,
-   .name-on, .is-ready); then it opens the site by itself after a
+   The <head> script sets html.intro-boot before first paint (boot
+   content hidden); boot steps are then CSS classes on #intro
+   (.graph-on, .name-on, .is-ready); then it opens the site by itself after a
    short countdown (paused while the visitor hovers or focuses the
    intro's buttons). The exit animates only transform/opacity with
    the Web Animations API (runs on the compositor, so it stays
@@ -40,11 +41,11 @@
   function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
   function endBoot() {
     timers.forEach(clearTimeout);
-    intro.classList.remove("is-booting");
+    root.classList.remove("intro-boot");
     if (bar) bar.style.removeProperty("transform");
   }
-  if (!reduceMotion) {
-    intro.classList.add("is-booting");
+  if (root.classList.contains("intro-boot")) {
+    root.classList.add("intro-running");   // tells the <head> failsafe the boot is in hand
     var step = 260, t = 250 + lines.length * step;
     lines.forEach(function (li, i) {
       at(250 + i * step, function () {
@@ -88,8 +89,9 @@
   }
   intro.addEventListener("focusin", function () { focusInside = true; holdCountdown(); });
   intro.addEventListener("focusout", function () { focusInside = false; resumeCountdown(); });
-  // Reduced motion: nothing animates in, so the countdown starts right away (and runs longer).
-  if (reduceMotion) startCountdown();
+  // No boot to watch (reduced motion, or the <head> failsafe already revealed everything):
+  // start the countdown right away.
+  if (!root.classList.contains("intro-running")) startCountdown();
 
   function finish() {
     if (done) return;

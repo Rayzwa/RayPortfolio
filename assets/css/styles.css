@@ -172,9 +172,10 @@ section[tabindex="-1"]:focus { outline: none; }
 .btn-row-center { justify-content: center; }
 
 /* ---------- Intro: product boot sequence ----------
-   intro.js adds .is-booting, then .graph-on → .name-on → .is-ready,
-   then .is-counting while it counts down to opening the site.
-   Without .is-booting (no JS, reduced motion) everything shows. */
+   The <head> script puts html.intro-boot on before first paint, so the
+   boot content starts hidden; intro.js then adds .graph-on → .name-on →
+   .is-ready to #intro, and .is-counting while it counts down to opening
+   the site. Without intro-boot (no JS, reduced motion) everything shows. */
 .skip-link {
   position: fixed; left: 1rem; top: -100px; z-index: 400; padding: .6rem 1rem; border-radius: var(--pill);
   background: var(--accent); color: var(--accent-contrast); font-weight: 600;
@@ -262,14 +263,14 @@ section[tabindex="-1"]:focus { outline: none; }
 .intro-hint { font-family: var(--mono); font-size: .75rem; color: var(--text-mute); margin: 0; animation: nudge 1.8s ease-in-out infinite; }
 
 /* Hidden states while booting */
-.is-booting .boot-log li:not(.is-on) { clip-path: inset(0 100% 0 0); }
-.is-booting .boot-bar span { transform: scaleX(0); }
-.is-booting:not(.graph-on) .graph .node { opacity: 0; transform: scale(.15); }
-.is-booting:not(.graph-on) .graph .link { stroke-dashoffset: 1; }
-.is-booting:not(.name-on) .boot-pulse { visibility: hidden; }
-.is-booting:not(.name-on) .boot-photo { opacity: 0; scale: .8; }
-.is-booting:not(.name-on) .boot-name, .is-booting:not(.name-on) .boot-line { opacity: 0; transform: translateY(8px); }
-.is-booting:not(.is-ready) .boot-actions, .is-booting:not(.is-ready) .intro-hint { opacity: 0; transform: translateY(8px); }
+.intro-boot .boot-log li:not(.is-on) { clip-path: inset(0 100% 0 0); }
+.intro-boot .boot-bar span { transform: scaleX(0); }
+.intro-boot .intro:not(.graph-on) .graph .node { opacity: 0; transform: scale(.15); }
+.intro-boot .intro:not(.graph-on) .graph .link { stroke-dashoffset: 1; }
+.intro-boot .intro:not(.name-on) .boot-pulse { visibility: hidden; }
+.intro-boot .intro:not(.name-on) .boot-photo { opacity: 0; scale: .8; }
+.intro-boot .intro:not(.name-on) .boot-name, .intro-boot .intro:not(.name-on) .boot-line { opacity: 0; transform: translateY(8px); }
+.intro-boot .intro:not(.is-ready) .boot-actions, .intro-boot .intro:not(.is-ready) .intro-hint { opacity: 0; transform: translateY(8px); }
 
 /* Exit fallbacks (no GSAP / phones / reduced motion) */
 .intro.is-fading { opacity: 0; transition: opacity var(--dur-fast) linear; }
