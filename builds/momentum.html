@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Momentum: keeping commitments from getting lost — Raymond Wang</title>
+  <title>Momentum — Raymond Wang</title>
   <meta name="description" content="An AI commitment-tracking prototype I led as product owner at a JPMorgan Chase internal hackathon." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>" />
-  <script>(function(){var t;try{t=localStorage.getItem("pm-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||((window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light"))})();</script>
+  <meta name="theme-color" content="#07090f" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307090f'/><text x='50' y='64' font-size='42' font-family='monospace' font-weight='bold' fill='%2322d3ee' text-anchor='middle'>RW</text></svg>" />
+  <script>(function(){var t;try{t=localStorage.getItem("pm-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="../assets/css/styles.css" />
 </head>
 <body>
@@ -14,14 +18,15 @@
     <nav class="nav wrap" aria-label="Primary">
       <a class="brand" href="../home.html"><span class="brand-mark">RW</span> Raymond Wang</a>
       <ul class="nav-links" id="nav-links">
+        <li><a href="../home.html#builds">Builds</a></li>
         <li><a href="../home.html#about">About</a></li>
-        <li><a href="../home.html#work">Work</a></li>
-        <li><a href="../home.html#skills">Skills</a></li>
-        <li><a href="../home.html#experience">Experience</a></li>
+        <li><a href="../home.html#stack">Stack</a></li>
+        <li><a href="../home.html#path">Path</a></li>
         <li><a href="../home.html#contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="false"><span data-theme-icon>🌙</span></button>
+        <button class="icon-btn" data-cmdk type="button" aria-label="Jump to a section"><span aria-hidden="true">⌕</span><kbd data-kbd>⌘K</kbd></button>
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="true"><span aria-hidden="true">◐</span></button>
         <button class="icon-btn nav-toggle" data-nav-toggle type="button" aria-label="Menu" aria-controls="nav-links" aria-expanded="false">☰</button>
         <a class="btn btn-ghost btn-sm" href="../Raymond_Wang_Resume.pdf" download>Résumé</a>
       </div>
@@ -29,19 +34,32 @@
   </header>
 
   <main class="wrap page-main">
-    <p class="eyebrow"><a href="case-studies-list.html">Case Studies</a> / Momentum</p>
-    <h1>Momentum: keeping commitments from getting lost</h1>
-    <p class="lead lead-narrow">An AI commitment-tracking prototype I led as product owner at a JPMorgan Chase internal hackathon.</p>
-    <p class="read-time"><span data-read-time></span></p>
+    <p class="crumb"><a href="../home.html#builds">builds</a> / momentum</p>
 
-    <dl class="quick-facts">
-      <div><dt>Event</dt><dd>JPMorgan Chase internal hackathon</dd></div>
-      <div><dt>Date</dt><dd>June 2026</dd></div>
-      <div><dt>My role</dt><dd>Product owner</dd></div>
-      <div><dt>Team</dt><dd>10, cross-functional</dd></div>
-    </dl>
+    <header class="build-hero">
+      <div class="build-art" aria-hidden="true">
+        <svg class="art" viewBox="0 0 200 200">
+          <circle class="ring" cx="100" cy="100" r="40" />
+          <circle class="ring" cx="100" cy="100" r="64" />
+          <circle class="ring" cx="100" cy="100" r="88" />
+          <g class="orbit"><circle cx="140" cy="100" r="5" /></g>
+          <g class="orbit o2"><circle cx="100" cy="36" r="4.5" /></g>
+          <g class="orbit o3"><circle cx="12" cy="100" r="4" /></g>
+          <circle class="core" cx="100" cy="100" r="12" />
+        </svg>
+      </div>
+      <div>
+        <p class="tag">JPMorgan Chase internal hackathon · Jun 2026</p>
+        <h1>Momentum</h1>
+        <p class="lead">An AI prototype that keeps work commitments from getting lost.</p>
+        <ul class="facts">
+          <li>Product owner</li><li>Team of 10</li><li>Demoed with mock data</li>
+        </ul>
+        <p class="read-time"><span data-read-time></span></p>
+      </div>
+    </header>
 
-    <nav class="decision-map" aria-label="Case study at a glance">
+    <nav class="decision-map" aria-label="Build at a glance">
       <a class="dm-node" href="#momentum-problem"><span class="dm-step">Problem</span><span class="dm-text">Commitments get lost amid meetings and competing priorities.</span></a>
       <span class="dm-arrow" aria-hidden="true">→</span>
       <a class="dm-node" href="#momentum-approach"><span class="dm-step">Approach</span><span class="dm-text">Frame the user problem, scope the concept, build the story to a demo.</span></a>
@@ -49,9 +67,9 @@
       <a class="dm-node" href="#momentum-outcome"><span class="dm-step">Outcome</span><span class="dm-text">A prototyped AI tool, demoed with mock data.</span></a>
     </nav>
 
-    <section class="cs-section" data-open="true">
+    <section class="cs-section">
       <h2 class="cs-head">
-        <button class="cs-trigger" type="button" aria-expanded="true" aria-controls="momentum-context">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="momentum-context">
           <span>Context</span><span class="cs-icon" aria-hidden="true">+</span>
         </button>
       </h2>
@@ -60,7 +78,7 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
         <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="momentum-problem">
           <span>The problem</span><span class="cs-icon" aria-hidden="true">+</span>
@@ -71,7 +89,7 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
         <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="momentum-role">
           <span>My role</span><span class="cs-icon" aria-hidden="true">+</span>
@@ -82,7 +100,7 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
         <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="momentum-approach">
           <span>Approach</span><span class="cs-icon" aria-hidden="true">+</span>
@@ -98,9 +116,9 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
-        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="momentum-outcome">
+        <button class="cs-trigger" type="button" aria-expanded="true" aria-controls="momentum-outcome">
           <span>Outcome</span><span class="cs-icon" aria-hidden="true">+</span>
         </button>
       </h2>
@@ -112,17 +130,15 @@
 
     <!-- EDIT ME: add a "What I'd do differently" section here (copy a cs-section block above, id "momentum-reflection"). -->
 
-    <hr />
-    <div class="btn-row">
-      <a class="btn btn-primary" href="case-studies-list.html">← All case studies</a>
-      <a class="btn btn-ghost" href="case-study-growinged.html">Next case study →</a>
-    </div>
+    <nav class="pager" aria-label="More builds">
+      <a class="btn btn-ghost" href="../home.html#builds">← All builds</a>
+      <a class="btn btn-primary" href="growinged.html">Next: GrowingED →</a>
+    </nav>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <p class="muted">© <span data-year>2026</span> Raymond Wang · <a href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a></p>
-      <p class="muted kbd-hint">Press <kbd data-kbd>⌘K</kbd> to jump anywhere</p>
       <p class="muted"><a href="../home.html">← Back to home</a></p>
     </div>
   </footer>

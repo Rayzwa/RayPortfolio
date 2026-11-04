@@ -4,35 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Raymond Wang — Product Analyst</title>
-  <meta name="description" content="Raymond Wang is a Product Analyst at JPMorgan Chase who turns banker needs into AI-enabled tools — from discovery and prototyping to delivery and production support." />
+  <meta name="description" content="Raymond Wang is a Product Analyst at JPMorgan Chase who turns banker needs into AI tools — from discovery and prototyping to delivery and production support." />
   <meta name="author" content="Raymond Wang" />
+  <meta name="theme-color" content="#07090f" />
   <!-- Open Graph / social preview -->
   <meta property="og:title" content="Raymond Wang — Product Analyst" />
-  <meta property="og:description" content="I turn banker needs into AI-enabled tools at JPMorgan Chase — discovery, prototyping, delivery, and production support." />
+  <meta property="og:description" content="I turn banker needs into AI tools people use — Product Analyst at JPMorgan Chase." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/img/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307090f'/><text x='50' y='64' font-size='42' font-family='monospace' font-weight='bold' fill='%2322d3ee' text-anchor='middle'>RW</text></svg>" />
   <!-- Theme + intro state, set before first paint (no flash). -->
-  <script>(function(){var d=document.documentElement,t,s;try{t=localStorage.getItem("pm-theme")}catch(e){}d.setAttribute("data-theme",t||((window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light"));try{s=sessionStorage.getItem("pm-intro-seen")}catch(e){}d.classList.add(s||location.hash?"intro-done":"intro-on")})();</script>
+  <script>(function(){var d=document.documentElement,t,s;try{t=localStorage.getItem("pm-theme")}catch(e){}d.setAttribute("data-theme",t==="light"?"light":"dark");try{s=sessionStorage.getItem("pm-intro-seen")}catch(e){}d.classList.add(s||location.hash?"intro-done":"intro-on")})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-  <a class="skip-link" href="#about" data-intro-skip>Skip intro</a>
+  <a class="skip-link" href="#builds" data-intro-skip>Skip intro</a>
 
-  <!-- ============ HEADER / NAV ============ -->
+  <!-- ============ HEADER / NAV (copied on every page — see README) ============ -->
   <header class="site-header">
     <nav class="nav wrap" aria-label="Primary">
       <a class="brand" href="#top"><span class="brand-mark">RW</span> Raymond Wang</a>
       <ul class="nav-links" id="nav-links">
+        <li><a href="#builds">Builds</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Experience</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#path">Path</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="false"><span data-theme-icon>🌙</span></button>
+        <button class="icon-btn" data-cmdk type="button" aria-label="Jump to a section"><span aria-hidden="true">⌕</span><kbd data-kbd>⌘K</kbd></button>
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="true"><span aria-hidden="true">◐</span></button>
         <button class="icon-btn nav-toggle" data-nav-toggle type="button" aria-label="Menu" aria-controls="nav-links" aria-expanded="false">☰</button>
         <a class="btn btn-ghost btn-sm" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
       </div>
@@ -42,20 +47,19 @@
   <main id="top">
     <!-- ============ INTRO ("Unfold") — see assets/js/intro.js ============ -->
     <section class="intro" id="intro" aria-label="Introduction">
-      <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="intro-card" data-intro-card>
         <div class="intro-photo" data-intro-photo>
           <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
         </div>
-        <div class="intro-body" data-intro-body>
-          <p class="eyebrow">Hello, I'm</p>
-          <h1 class="intro-name">Raymond Wang</h1>
-          <p class="intro-line">Product Analyst building AI tools for lending teams at JPMorgan Chase.</p>
+        <div data-intro-body>
+          <p class="intro-status mono" aria-hidden="true"><span class="dot"></span>profile.load() — ok</p>
+          <h1 class="intro-name" data-decode>Raymond Wang</h1>
+          <p class="intro-line" data-type>Product Analyst building AI tools for lending teams at JPMorgan Chase.</p>
           <ul class="intro-facts">
-            <li class="chip">New York, NY</li><li class="chip">CRE Lending</li><li class="chip">Rutgers '24</li>
+            <li>New York, NY</li><li>CRE Lending</li><li>Rutgers '24</li>
           </ul>
           <div class="btn-row">
-            <a class="btn btn-primary" href="#about" data-intro-explore>Explore →</a>
+            <a class="btn btn-primary" href="#builds" data-intro-explore>Explore →</a>
             <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
             <a class="btn btn-ghost" href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a>
             <a class="btn btn-ghost" href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">Email</a>
@@ -67,220 +71,184 @@
     <span class="visually-hidden" role="status" aria-live="polite" data-intro-status></span>
 
     <!-- ============ HERO ============ -->
-    <section class="hero wrap hero-top">
+    <section class="hero wrap">
       <div class="hero-grid">
         <div data-reveal>
-          <span class="hero-status"><span class="dot"></span> Product Analyst · CRE Lending at JPMorgan Chase &amp; Co.</span>
-          <h2 class="h1" tabindex="-1">I turn banker needs into <span class="grad">AI-enabled tools</span> people actually use.</h2>
-          <p class="lead">I work across the whole product lifecycle — discovery and requirements, prototyping, delivery, and production support — partnering with lending stakeholders, Design, and Technology to get useful tools into bankers' hands.</p>
+          <span class="hero-status"><span class="dot"></span>Product Analyst · JPMorgan Chase</span>
+          <h2 class="h1" tabindex="-1">I turn banker needs into <span class="grad">AI tools</span> people use.</h2>
           <div class="btn-row">
-            <a class="btn btn-primary" href="#work">View case studies</a>
-            <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Download résumé</a>
-            <a class="btn btn-ghost" href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn btn-primary" href="#builds">See builds</a>
+            <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
           </div>
-          <dl class="quick-facts">
-            <div><dt>Based in</dt><dd>New York, NY</dd></div>
-            <div><dt>Focus</dt><dd>AI tools · CRE Lending · Discovery</dd></div>
-            <div><dt>Education</dt><dd>Rutgers, B.S. BAIT '24</dd></div>
-          </dl>
         </div>
         <div class="hero-portrait" data-reveal>
           <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
         </div>
       </div>
+      <ul class="stats" data-reveal>
+        <li class="stat"><span class="num" data-count="10">10</span><span class="stat-label">teammates led</span></li>
+        <li class="stat"><span class="num" data-count="2">2</span><span class="stat-label">lending teams</span></li>
+        <li class="stat"><span class="num" data-count="1">1</span><span class="stat-label">hackathon win</span></li>
+      </ul>
     </section>
 
-    <!-- ============ ABOUT / HOW I WORK ============ -->
-    <section id="about" class="section-soft">
+    <!-- ============ HIGHLIGHTS (ticker; the second list is a visual copy for the loop) ============ -->
+    <section class="ticker" aria-labelledby="highlights-title">
+      <h2 class="visually-hidden" id="highlights-title">Highlights</h2>
+      <div class="ticker-track">
+        <ul class="ticker-list">
+          <li>AI tools for CRE bankers</li>
+          <li>Product in daily use · C&amp;SI Lending</li>
+          <li>New Syndicated Lending workstream</li>
+          <li>Product owner · team of 10</li>
+          <li>Risk review enhancement · 2024</li>
+          <li>OwlHack winner · Best Use of Auth0</li>
+        </ul>
+        <ul class="ticker-list" aria-hidden="true">
+          <li>AI tools for CRE bankers</li>
+          <li>Product in daily use · C&amp;SI Lending</li>
+          <li>New Syndicated Lending workstream</li>
+          <li>Product owner · team of 10</li>
+          <li>Risk review enhancement · 2024</li>
+          <li>OwlHack winner · Best Use of Auth0</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ BUILDS (cards link to builds/*.html) ============ -->
+    <section id="builds">
       <div class="wrap">
-        <div class="grid grid-2 grid-start">
-          <div data-reveal>
-            <p class="eyebrow">About</p>
-            <h2>How I work</h2>
-            <p>I've always been drawn to solutioning — when something is broken or inefficient, I want to understand why and build the fix, not just describe it. That instinct is what pulled me into product: it's the role where curiosity about a problem turns into something real that people use.</p>
-            <p class="muted">I'm a Product Analyst in JPMorgan Chase's Innovation Development Program. I started in C&amp;SI Lending, where I co-built a product that became part of the team's workflow, and now work in CRE Lending on AI tools for bankers. Before that, I spent a summer in the Corporate Analyst Development Program supporting risk and controls reviews.</p>
-            <div class="btn-row mt-1">
-              <a class="btn btn-ghost" href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a>
-              <a class="btn btn-ghost" href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">Email me</a>
+        <h2 class="visually-hidden">Builds</h2>
+        <div class="builds">
+          <a class="build card-hover" href="builds/momentum.html" data-reveal>
+            <div class="build-art" aria-hidden="true">
+              <svg class="art" viewBox="0 0 200 200">
+                <circle class="ring" cx="100" cy="100" r="40" />
+                <circle class="ring" cx="100" cy="100" r="64" />
+                <circle class="ring" cx="100" cy="100" r="88" />
+                <g class="orbit"><circle cx="140" cy="100" r="5" /></g>
+                <g class="orbit o2"><circle cx="100" cy="36" r="4.5" /></g>
+                <g class="orbit o3"><circle cx="12" cy="100" r="4" /></g>
+                <circle class="core" cx="100" cy="100" r="12" />
+              </svg>
             </div>
-          </div>
-          <div class="grid grid-loose" data-reveal>
-            <div class="principle"><span class="idx">01</span><div><h3>Team first, always</h3><p class="muted m-0">I care about everyone I work with — I listen for everyone's input and bring it together rather than pushing my own view.</p></div></div>
-            <div class="principle"><span class="idx">02</span><div><h3>Lead by trust, not title</h3><p class="muted m-0">I don't need to be "the leader" in the room — I earn trust by showing up, following through, and making people's jobs easier.</p></div></div>
-            <div class="principle"><span class="idx">03</span><div><h3>Stay curious</h3><p class="muted m-0">The question I ask most is "why does it work this way?" — it's gotten me further than any shortcut.</p></div></div>
-            <div class="principle"><span class="idx">04</span><div><h3>Build to learn</h3><p class="muted m-0">If I don't understand something, I try to build a small version of it myself.</p></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ HIGHLIGHTS ============ -->
-    <section id="impact">
-      <div class="wrap">
-        <div class="section-head" data-reveal>
-          <p class="eyebrow">Highlights</p>
-          <h2>What I've worked on</h2>
-          <p>A quick look at the work behind the résumé — from lending products at JPMorgan Chase to hackathon builds.</p>
-        </div>
-        <div class="grid grid-3 grid-loose" data-reveal>
-          <div class="principle"><span class="idx">01</span><div><h3>AI tools for CRE bankers</h3><p class="muted m-0">Drove discovery and rapid prototyping of AI tools using Copilot and LLM agents, iterating each version through stakeholder demos.</p></div></div>
-          <div class="principle"><span class="idx">02</span><div><h3>A product in daily use</h3><p class="muted m-0">Co-built a product with four fellow analysts and drove its integration into the C&amp;SI Lending team's workflow.</p></div></div>
-          <div class="principle"><span class="idx">03</span><div><h3>A new lending workstream</h3><p class="muted m-0">Partnering with senior executives and Strategy on discovery and problem definition for a new Syndicated Lending workstream.</p></div></div>
-          <div class="principle"><span class="idx">04</span><div><h3>Led a team of 10</h3><p class="muted m-0">Product owner for Momentum, an AI commitment-tracking prototype, at an internal JPMorgan Chase hackathon.</p></div></div>
-          <div class="principle"><span class="idx">05</span><div><h3>Risk review enhancement</h3><p class="muted m-0">Delivered an enhancement to a risk review product platform and demoed it to the Operations team (2024).</p></div></div>
-          <div class="principle"><span class="idx">06</span><div><h3>Hackathon winner</h3><p class="muted m-0">GrowingED won Best Use of Auth0 at OwlHack — a mentor-matching platform shipped within the hackathon.</p></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ WORK / CASE STUDIES ============ -->
-    <section id="work" class="section-soft">
-      <div class="wrap">
-        <div class="section-head" data-reveal>
-          <p class="eyebrow">Selected work</p>
-          <h2>Case studies</h2>
-          <p>Two projects I can share publicly — the problem, my role, the approach, and the outcome.</p>
-        </div>
-        <div class="grid grid-2 work-grid">
-          <a class="card card-hover work-card card-link" href="case-studies/case-study-momentum.html" data-reveal>
-            <div class="meta"><span class="chip chip-accent">Hackathon · 2026</span><span class="chip">Product owner</span></div>
-            <h3>Momentum: keeping commitments from getting lost</h3>
-            <p class="muted">Leading a cross-functional team of 10 to define and prototype an AI commitment-tracking tool.</p>
-            <span class="arrow-link">Read the case study</span>
+            <div class="build-body">
+              <p class="tag">Hackathon · 2026 · Product owner</p>
+              <h3>Momentum</h3>
+              <p>An AI prototype that keeps work commitments from getting lost.</p>
+            </div>
+            <span class="go" aria-hidden="true">↗</span>
           </a>
-          <a class="card card-hover work-card card-link" href="case-studies/case-study-growinged.html" data-reveal>
-            <div class="meta"><span class="chip chip-accent">Winner · OwlHack 2023</span><span class="chip">Best Use of Auth0</span></div>
-            <h3>GrowingED: matching mentees with mentors</h3>
-            <p class="muted">Defining the vision and scoping an MVP for a mentorship platform — shipped within the hackathon.</p>
-            <span class="arrow-link">Read the case study</span>
+          <a class="build card-hover" href="builds/growinged.html" data-reveal>
+            <div class="build-art" aria-hidden="true">
+              <svg class="art" viewBox="0 0 200 200">
+                <path class="branch" pathLength="1" d="M100 190 V70" />
+                <path class="branch" pathLength="1" d="M100 150 L58 108 L40 78" />
+                <path class="branch" pathLength="1" d="M100 128 L142 88 L160 58" />
+                <path class="branch" pathLength="1" d="M58 108 L76 72" />
+                <path class="branch" pathLength="1" d="M142 88 L124 52" />
+                <path class="branch" pathLength="1" d="M100 70 L84 38" />
+                <path class="branch" pathLength="1" d="M100 70 L118 34" />
+                <circle class="leaf" cx="40" cy="78" r="5" />
+                <circle class="leaf" cx="76" cy="72" r="4" />
+                <circle class="leaf" cx="160" cy="58" r="5" />
+                <circle class="leaf" cx="124" cy="52" r="4" />
+                <circle class="leaf" cx="84" cy="38" r="4.5" />
+                <circle class="leaf" cx="118" cy="34" r="5" />
+              </svg>
+            </div>
+            <div class="build-body">
+              <p class="tag">OwlHack · 2023 · Winner</p>
+              <h3>GrowingED</h3>
+              <p>A mentor-matching platform — won Best Use of Auth0.</p>
+            </div>
+            <span class="go" aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- ============ SKILLS ============ -->
-    <section id="skills">
+    <!-- ============ HOW I WORK (sentence shows on hover/focus on desktop) ============ -->
+    <section id="about">
       <div class="wrap">
-        <div class="section-head" data-reveal>
-          <p class="eyebrow">Skills &amp; tools</p>
-          <h2>What I bring to a team</h2>
-          <p>What I use day to day across product work, data, and AI tooling.</p>
-        </div>
-        <div class="grid grid-3">
-          <div class="skill-group" data-reveal>
-            <h3>Product</h3>
-            <div class="skill-tags">
-              <span class="chip">Product discovery</span><span class="chip">Requirements gathering</span><span class="chip">User stories</span><span class="chip">Backlog grooming</span><span class="chip">Feature prioritization</span><span class="chip">MVP scoping</span><span class="chip">Prototyping</span><span class="chip">Testing</span><span class="chip">Production support</span>
-            </div>
-          </div>
-          <div class="skill-group" data-reveal>
-            <h3>Collaboration</h3>
-            <div class="skill-tags">
-              <span class="chip">Stakeholder management</span><span class="chip">Cross-functional collaboration</span><span class="chip">User research</span><span class="chip">Agile</span>
-            </div>
-          </div>
-          <div class="skill-group" data-reveal>
-            <h3>AI &amp; product tools</h3>
-            <div class="skill-tags">
-              <span class="chip">Microsoft Copilot</span><span class="chip">LLM agents</span><span class="chip">Jira</span><span class="chip">Figma</span>
-            </div>
-          </div>
-          <div class="skill-group" data-reveal>
-            <h3>Data &amp; code</h3>
-            <div class="skill-tags">
-              <span class="chip">SQL</span><span class="chip">Python</span><span class="chip">Java</span><span class="chip">JavaScript</span><span class="chip">Excel</span>
-            </div>
-          </div>
-          <div class="skill-group" data-reveal>
-            <h3>Domains</h3>
-            <div class="skill-tags">
-              <span class="chip">CRE lending</span><span class="chip">Corporate lending</span><span class="chip">Risk &amp; controls</span><span class="chip">AI safeguards</span>
-            </div>
-          </div>
-          <div class="skill-group" data-reveal>
-            <h3>Languages &amp; certifications</h3>
-            <div class="skill-tags">
-              <span class="chip">Mandarin (proficient)</span><span class="chip">Fuzhounese (conversational)</span><span class="chip">Bloomberg Market Concepts</span>
-            </div>
-          </div>
-        </div>
+        <h2 class="visually-hidden">How I work</h2>
+        <ul class="principles">
+          <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">01</span><h3>Team first</h3><p>I listen for everyone's input and bring it together.</p></li>
+          <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">02</span><h3>Trust over title</h3><p>I earn trust by showing up and following through.</p></li>
+          <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">03</span><h3>Stay curious</h3><p>The question I ask most: why does it work this way?</p></li>
+          <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">04</span><h3>Build to learn</h3><p>If I don't understand something, I build a small version of it.</p></li>
+        </ul>
       </div>
     </section>
 
-    <!-- ============ TESTIMONIALS ============ -->
-    <section id="testimonials" class="section-soft">
+    <!-- ============ STACK (colour = group; see the legend) ============ -->
+    <section id="stack">
       <div class="wrap">
-        <div class="section-head" data-reveal>
-          <p class="eyebrow">Kind words</p>
-          <h2>What it's like to work with me</h2>
-          <p>A couple of things colleagues have said — names kept private at their request.</p>
-        </div>
-        <div class="grid grid-2">
-          <figure class="card m-0" data-reveal>
-            <blockquote class="quote m-0">One quality that stands out is his curiosity and willingness to learn.</blockquote>
-            <figcaption class="quote-by"><span class="avatar">—</span><div><div class="who">Colleague</div><div class="where">JPMorgan Chase</div></div></figcaption>
-          </figure>
-          <figure class="card m-0" data-reveal>
-            <blockquote class="quote m-0">He has developed a voice and learns quickly.</blockquote>
-            <figcaption class="quote-by"><span class="avatar">—</span><div><div class="who">Colleague</div><div class="where">JPMorgan Chase</div></div></figcaption>
-          </figure>
-        </div>
+        <h2 class="visually-hidden">Stack</h2>
+        <ul class="legend" aria-hidden="true">
+          <li class="g-product">Product</li><li class="g-ai">AI &amp; tools</li><li class="g-data">Data</li><li class="g-domain">Domain</li>
+        </ul>
+        <ul class="stack" data-reveal data-stagger>
+          <li class="g-product">Product discovery</li>
+          <li class="g-product">Requirements</li>
+          <li class="g-product">User stories</li>
+          <li class="g-product">Prioritization</li>
+          <li class="g-product">MVP scoping</li>
+          <li class="g-product">Prototyping</li>
+          <li class="g-product">Stakeholder management</li>
+          <li class="g-product">Agile</li>
+          <li class="g-ai">Microsoft Copilot</li>
+          <li class="g-ai">LLM agents</li>
+          <li class="g-ai">Jira</li>
+          <li class="g-ai">Figma</li>
+          <li class="g-data">SQL</li>
+          <li class="g-data">Python</li>
+          <li class="g-data">JavaScript</li>
+          <li class="g-domain">CRE lending</li>
+          <li class="g-domain">Risk &amp; controls</li>
+          <li class="g-domain">AI safeguards</li>
+        </ul>
       </div>
     </section>
 
-    <!-- ============ EXPERIENCE ============ -->
-    <section id="experience">
+    <!-- ============ PATH (career line) ============ -->
+    <section id="path">
       <div class="wrap">
-        <div class="grid grid-2 grid-start">
-          <div data-reveal>
-            <p class="eyebrow">Experience</p>
-            <h2>Where I've worked</h2>
-            <p class="muted">From the Corporate Analyst Development Program to the Innovation Development Program at JPMorgan Chase &amp; Co. — with customer-facing and operations roles before that.</p>
-            <div class="btn-row"><a class="btn btn-primary" href="Raymond_Wang_Resume.pdf" download>Download résumé (PDF)</a></div>
-          </div>
-          <div class="timeline" data-reveal>
-            <div class="timeline-item">
-              <div class="when">Aug 2025 — Present</div>
-              <div class="role">Product Analyst, Innovation Development Program</div>
-              <div class="org">JPMorgan Chase &amp; Co. · New York, NY</div>
-              <p class="muted"><strong>CRE Lending</strong> (Dec 2025 – Present) — AI tools for bankers, a new Syndicated Lending workstream, and production support.</p>
-              <p class="muted"><strong>C&amp;SI Lending</strong> (Aug – Dec 2025) — product incubator; co-built a product integrated into the team's workflow.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="when">Jun — Aug 2024</div>
-              <div class="role">Summer Analyst, Corporate Analyst Development Program</div>
-              <div class="org">JPMorgan Chase &amp; Co. · Newark, DE</div>
-              <p class="muted">Supported risk and controls reviews in Asset &amp; Wealth Management; delivered an enhancement to the risk review product platform.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="when">Dec 2024</div>
-              <div class="role">B.S. Business Analytics &amp; Information Technology</div>
-              <div class="org">Rutgers Business School · New Brunswick, NJ</div>
-              <p class="muted">GPA 3.78 · Dean's List, all semesters · Road to Supply Chain Leadership Program.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="when">2019 — 2024</div>
-              <div class="role">Earlier roles</div>
-              <div class="org">Positive Impact · CVS Health · New China Chinese Restaurant</div>
-              <p class="muted">Marketing campaign ambassador, management intern, and assistant store manager — customer feedback, operations, and process improvement.</p>
-            </div>
-          </div>
-        </div>
+        <h2 class="visually-hidden">Path</h2>
+        <ol class="path" data-reveal>
+          <li class="path-node"><span class="when">Jun 2024</span><span class="what">Summer Analyst</span><span class="where">JPMorgan Chase</span></li>
+          <li class="path-node"><span class="when">Dec 2024</span><span class="what">B.S. Business Analytics &amp; IT</span><span class="where">Rutgers · GPA 3.78</span></li>
+          <li class="path-node"><span class="when">Aug 2025</span><span class="what">Product Analyst · C&amp;SI Lending</span><span class="where">Innovation Development Program</span></li>
+          <li class="path-node is-now"><span class="when">Dec 2025 → now</span><span class="what">Product Analyst · CRE Lending</span><span class="where">Innovation Development Program</span></li>
+        </ol>
+        <p class="path-more"><a href="Raymond_Wang_Resume.pdf" download>Full résumé ↓</a></p>
+      </div>
+    </section>
+
+    <!-- ============ QUOTE (rotates with JS; all listed without) ============ -->
+    <section aria-labelledby="quotes-title">
+      <div class="wrap">
+        <h2 class="visually-hidden" id="quotes-title">What colleagues say</h2>
+        <figure class="rotator" data-rotator>
+          <ul class="rotator-list">
+            <li><blockquote>One quality that stands out is his curiosity and willingness to learn.</blockquote></li>
+            <li><blockquote>He has developed a voice and learns quickly.</blockquote></li>
+          </ul>
+          <figcaption>— Colleagues, JPMorgan Chase</figcaption>
+        </figure>
       </div>
     </section>
 
     <!-- ============ CONTACT ============ -->
-    <section id="contact" class="section-soft">
-      <div class="wrap">
-        <div class="contact-card" data-reveal>
-          <p class="eyebrow">Contact</p>
-          <h2>Let's talk</h2>
-          <p class="lead">Always happy to connect, swap ideas, or talk about products. The fastest way to reach me is email.</p>
-          <div class="btn-row btn-row-center">
-            <a class="btn btn-primary" href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">raymondw0120@gmail.com</a>
-            <a class="btn btn-ghost" href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a>
-            <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
-          </div>
+    <section id="contact">
+      <div class="wrap contact">
+        <h2 class="visually-hidden">Contact</h2>
+        <p class="contact-kicker">&gt; open a channel_</p>
+        <a class="contact-email" href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com" data-decode>raymondw0120@gmail.com</a>
+        <p class="muted">Happy to talk products, AI, or lending tech. Click to copy.</p>
+        <div class="btn-row btn-row-center">
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
         </div>
       </div>
     </section>
@@ -290,7 +258,6 @@
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <p class="muted">© <span data-year>2026</span> Raymond Wang · <a href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a></p>
-      <p class="muted kbd-hint">Press <kbd data-kbd>⌘K</kbd> to jump anywhere</p>
       <p class="muted"><a href="#top">Back to top ↑</a></p>
     </div>
   </footer>

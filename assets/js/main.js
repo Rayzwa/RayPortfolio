@@ -1,43 +1,35 @@
 /* ============================================================
-   PM Portfolio — interactions
-   Vanilla JS, no dependencies. Theme toggle, mobile nav,
-   scroll reveal, scrollspy, footer year.
+   Raymond Wang portfolio — shared interactions
+   Vanilla JS, no dependencies. Each block no-ops when its
+   markup is missing, and shows the final state under reduced
+   motion or when a browser feature is unavailable.
    ============================================================ */
 (function () {
   "use strict";
   var root = document.documentElement;
   var body = document.body;
+  function mq(q) { return !!(window.matchMedia && window.matchMedia(q).matches); }
+  var reduceMotion = mq("(prefers-reduced-motion: reduce)");
+  var finePointer = mq("(hover: hover) and (pointer: fine)");
 
   /* ---------- Theme ----------
-     The inline <head> script sets the initial theme (no flash).
-     Here we only sync the UI, follow OS changes until the visitor
-     picks a theme, and save on manual toggle. */
+     The inline <head> script sets the theme before first paint
+     (dark unless the visitor chose light). Here we sync the toggle
+     and save manual choices. */
   var THEME_KEY = "pm-theme";
-  var darkQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
-
-  function savedTheme() {
-    try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
-  }
-  function applyTheme(theme) {
-    root.setAttribute("data-theme", theme);
-    document.querySelectorAll("[data-theme-icon]").forEach(function (el) {
-      el.textContent = theme === "dark" ? "☀️" : "🌙";
-    });
+  function syncThemeToggle() {
+    var dark = root.getAttribute("data-theme") !== "light";
     document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
-      btn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+      btn.setAttribute("aria-pressed", dark ? "true" : "false");
     });
   }
   function toggleTheme() {
-    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    applyTheme(next);
+    var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next);
+    syncThemeToggle();
     try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
   }
-  applyTheme(savedTheme() || (darkQuery && darkQuery.matches ? "dark" : "light"));
-  if (darkQuery) {
-    var onSchemeChange = function (e) { if (!savedTheme()) applyTheme(e.matches ? "dark" : "light"); };
-    if (darkQuery.addEventListener) darkQuery.addEventListener("change", onSchemeChange);
-    else if (darkQuery.addListener) darkQuery.addListener(onSchemeChange);
-  }
+  syncThemeToggle();
 
   /* ---------- Mobile nav ---------- */
   function setNav(open) {
@@ -54,40 +46,46 @@
 
   /* ---------- Image fallbacks ----------
      <img data-fallback="monogram"> → swapped for a monogram tile.
-     <img data-fallback="hide">     → its <figure> is removed.
      Also handles images that failed before this script ran. */
   function imageFallback(img) {
-    var mode = img.getAttribute("data-fallback");
-    if (mode === "monogram") {
-      var tile = document.createElement("div");
-      tile.className = "monogram";
-      tile.setAttribute("role", "img");
-      tile.setAttribute("aria-label", img.alt || "");
-      tile.textContent = img.getAttribute("data-monogram") || "RW";
-      img.replaceWith(tile);
-    } else if (mode === "hide") {
-      (img.closest("figure") || img).remove();
-    }
+    var tile = document.createElement("div");
+    tile.className = "monogram";
+    tile.setAttribute("role", "img");
+    tile.setAttribute("aria-label", img.alt || "");
+    tile.textContent = "RW";
+    img.replaceWith(tile);
   }
-  document.querySelectorAll("img[data-fallback]").forEach(function (img) {
+  document.querySelectorAll('img[data-fallback="monogram"]').forEach(function (img) {
     if (img.complete && img.naturalWidth === 0) imageFallback(img);
     else img.addEventListener("error", function () { imageFallback(img); });
   });
 
-  /* ---------- Scroll reveal ---------- */
-  var reveals = document.querySelectorAll("[data-reveal]");
-  if ("IntersectionObserver" in window && reveals.length) {
-    var ro = new IntersectionObserver(function (entries) {
+  /* ---------- Run once when an element scrolls into view ----------
+     Without IntersectionObserver, runs immediately. */
+  function onVisible(els, fn, options) {
+    if (!els.length) return;
+    if (!("IntersectionObserver" in window)) { Array.prototype.forEach.call(els, fn); return; }
+    var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) { entry.target.classList.add("is-visible"); ro.unobserve(entry.target); }
+        if (entry.isIntersecting) { io.unobserve(entry.target); fn(entry.target); }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-    reveals.forEach(function (el) { el.classList.add("reveal"); ro.observe(el); });
+    }, options);
+    Array.prototype.forEach.call(els, function (el) { io.observe(el); });
   }
 
+  /* ---------- Scroll reveal (+ per-child stagger index) ---------- */
+  var reveals = document.querySelectorAll("[data-reveal]");
+  if ("IntersectionObserver" in window) {
+    reveals.forEach(function (el) { el.classList.add("reveal"); });
+    onVisible(reveals, function (el) { el.classList.add("is-visible"); }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  }
+  document.querySelectorAll("[data-stagger]").forEach(function (list) {
+    Array.prototype.forEach.call(list.children, function (el, i) { el.style.setProperty("--i", i); });
+  });
+
   /* ---------- Scrollspy (active nav link) ---------- */
-  var sections = Array.prototype.slice.call(document.querySelectorAll("section[id]"));
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  var sections = document.querySelectorAll("section[id]");
+  var navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
   if ("IntersectionObserver" in window && sections.length && navLinks.length) {
     var so = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -98,12 +96,6 @@
     }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
     sections.forEach(function (s) { so.observe(s); });
   }
-
-  /* ============================================================
-     Tier 1 interactivity. Each block is self-contained and
-     safely no-ops when its markup is absent from the page.
-     ============================================================ */
-  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Scroll progress bar + back to top ---------- */
   var bar = null;
@@ -126,10 +118,9 @@
   var scrollQueued = false;
   function updateScrollUI() {
     scrollQueued = false;
-    var doc = document.documentElement;
-    var top = window.pageYOffset || doc.scrollTop || 0;
+    var top = window.pageYOffset || root.scrollTop || 0;
     if (bar) {
-      var max = doc.scrollHeight - doc.clientHeight;
+      var max = root.scrollHeight - root.clientHeight;
       bar.style.transform = "scaleX(" + (max > 0 ? top / max : 0) + ")";
     }
     toTop.classList.toggle("is-visible", top > 600);
@@ -143,54 +134,164 @@
   window.addEventListener("resize", queueScrollUI);
   updateScrollUI();
 
-  /* ---------- Animated metric counters ---------- */
-  var counters = document.querySelectorAll("[data-count]");
-  function finalText(el) {
-    var t = parseFloat(el.getAttribute("data-count"));
-    var d = parseInt(el.getAttribute("data-decimals") || "0", 10);
-    if (isNaN(t)) return el.textContent;
-    return (el.getAttribute("data-prefix") || "") + t.toFixed(d) + (el.getAttribute("data-suffix") || "");
-  }
-  function runCounter(el) {
-    var target = parseFloat(el.getAttribute("data-count"));
-    if (isNaN(target) || reduceMotion) { el.textContent = finalText(el); return; }
-    var decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
-    var prefix = el.getAttribute("data-prefix") || "";
-    var suffix = el.getAttribute("data-suffix") || "";
-    var duration = 1100, start = null;
-    function frame(ts) {
-      if (start === null) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = prefix + (target * eased).toFixed(decimals) + suffix;
-      if (p < 1) requestAnimationFrame(frame);
-      else el.textContent = prefix + target.toFixed(decimals) + suffix;
-    }
-    requestAnimationFrame(frame);
-  }
-  if (counters.length) {
-    if ("IntersectionObserver" in window) {
-      var co = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) { runCounter(entry.target); co.unobserve(entry.target); }
-        });
-      }, { threshold: 0.4 });
-      counters.forEach(function (el) { co.observe(el); });
-    } else {
-      counters.forEach(function (el) { el.textContent = finalText(el); });
-    }
+  /* ---------- Pointer glow + card spotlight/tilt (fine pointers only) ---------- */
+  if (finePointer && !reduceMotion) {
+    var glowX = 0, glowY = 0, glowQueued = false;
+    window.addEventListener("pointermove", function (e) {
+      glowX = e.clientX; glowY = e.clientY;
+      if (glowQueued) return;
+      glowQueued = true;
+      requestAnimationFrame(function () {
+        glowQueued = false;
+        root.style.setProperty("--gx", glowX + "px");
+        root.style.setProperty("--gy", glowY + "px");
+      });
+    }, { passive: true });
+
+    document.querySelectorAll(".card-hover").forEach(function (card) {
+      card.addEventListener("pointermove", function (e) {
+        var r = card.getBoundingClientRect();
+        var x = e.clientX - r.left, y = e.clientY - r.top;
+        card.style.setProperty("--mx", x + "px");
+        card.style.setProperty("--my", y + "px");
+        card.style.setProperty("--ry", ((x / r.width - 0.5) * 6).toFixed(2) + "deg");
+        card.style.setProperty("--rx", ((0.5 - y / r.height) * 6).toFixed(2) + "deg");
+      });
+      card.addEventListener("pointerleave", function () {
+        ["--mx", "--my", "--rx", "--ry"].forEach(function (p) { card.style.removeProperty(p); });
+      });
+    });
   }
 
-  /* ---------- Accordion (case-study sections) ---------- */
+  /* ---------- Animated counters ----------
+     The real value is the element's text; data-count animates to it. */
+  function runCounter(el) {
+    var target = parseFloat(el.getAttribute("data-count"));
+    if (isNaN(target) || reduceMotion) return;
+    var duration = 1100, start = null, finished = false;
+    function done() { finished = true; el.textContent = target; }
+    function frame(ts) {
+      if (finished) return;
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(frame); else done();
+    }
+    requestAnimationFrame(frame);
+    // If frames stall (background tab), still land on the real value.
+    setTimeout(done, duration + 400);
+  }
+  // Hero counters sit behind the intro card, so wait until it has unfolded.
+  function afterIntro(fn) {
+    return function (el) {
+      if (!root.classList.contains("intro-on")) fn(el);
+      else document.addEventListener("intro:done", function () { fn(el); }, { once: true });
+    };
+  }
+  onVisible(document.querySelectorAll("[data-count]"), afterIntro(runCounter), { threshold: 0.4 });
+
+  /* ---------- Decode: scramble text into its real value ----------
+     The real text is always in the HTML (no-JS, screen readers);
+     during the effect it's exposed via aria-label. */
+  var GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+<>/";
+  function decode(el) {
+    if (el._final === undefined) el._final = el.textContent;
+    var text = el._final;
+    if (reduceMotion) return;
+    var run = el._run = (el._run || 0) + 1;
+    var duration = Math.min(900, 300 + text.length * 20), start = null, finished = false;
+    el.setAttribute("aria-label", text);
+    function done() {
+      if (finished || el._run !== run) return;
+      finished = true;
+      el.textContent = text;
+      el.removeAttribute("aria-label");
+    }
+    function frame(ts) {
+      if (finished || el._run !== run) return;
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var n = Math.floor(p * text.length), out = text.slice(0, n);
+      for (var i = n; i < text.length; i++) {
+        out += /\s/.test(text[i]) ? text[i] : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      }
+      el.textContent = out;
+      if (p < 1) requestAnimationFrame(frame); else done();
+    }
+    requestAnimationFrame(frame);
+    setTimeout(done, duration + 400);
+  }
+  onVisible(document.querySelectorAll("[data-decode]"), decode, { threshold: 0.5 });
+
+  /* ---------- Type-on with caret ---------- */
+  function typeOn(el) {
+    if (reduceMotion) return;
+    var text = el.textContent, i = 0;
+    el.style.minHeight = el.offsetHeight + "px";   // no layout jump while it fills
+    el.textContent = "";
+    el.classList.add("is-typing");
+    var timer = setInterval(function () {
+      i++;
+      el.textContent = text.slice(0, i);
+      if (i >= text.length) {
+        clearInterval(timer);
+        el.classList.remove("is-typing");
+        el.classList.add("is-typed");
+      }
+    }, 22);
+  }
+  onVisible(document.querySelectorAll("[data-type]"), typeOn, { threshold: 0.5 });
+
+  /* ---------- Quote rotator ----------
+     Without JS every quote is listed. With JS one shows at a time,
+     with dots to pick; auto-advances unless reduced motion, and
+     pauses while hovered or focused. */
+  document.querySelectorAll("[data-rotator]").forEach(function (rot) {
+    var items = rot.querySelectorAll(".rotator-list > li");
+    if (items.length < 2) return;
+    var current = 0, timer = null;
+    var dots = document.createElement("div");
+    dots.className = "rotator-dots";
+    items.forEach(function (li, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "rotator-dot";
+      b.setAttribute("aria-label", "Show quote " + (i + 1) + " of " + items.length);
+      b.addEventListener("click", function () { show(i); });
+      dots.appendChild(b);
+    });
+    rot.appendChild(dots);
+    rot.classList.add("is-rotating");
+    function show(i) {
+      current = i;
+      items.forEach(function (li, j) { li.classList.toggle("is-active", j === i); });
+      Array.prototype.forEach.call(dots.children, function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
+    }
+    function next() {
+      show((current + 1) % items.length);
+      var q = items[current].querySelector("blockquote");
+      if (q) decode(q);
+    }
+    function play() { if (!timer) timer = setInterval(next, 7000); }
+    function pause() { clearInterval(timer); timer = null; }
+    show(0);
+    if (reduceMotion) return;
+    play();
+    rot.addEventListener("mouseenter", pause);
+    rot.addEventListener("mouseleave", play);
+    rot.addEventListener("focusin", pause);
+    rot.addEventListener("focusout", play);
+  });
+
+  /* ---------- Accordion (build pages) ---------- */
   document.querySelectorAll(".cs-section").forEach(function (section) {
     var trigger = section.querySelector(".cs-trigger");
     if (!trigger) return;
-    var open = trigger.getAttribute("aria-expanded") !== "false";
-    section.setAttribute("data-open", open ? "true" : "false");
+    section.setAttribute("data-open", trigger.getAttribute("aria-expanded") === "true" ? "true" : "false");
     trigger.addEventListener("click", function () {
-      var isOpen = section.getAttribute("data-open") === "true";
-      section.setAttribute("data-open", isOpen ? "false" : "true");
-      trigger.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      var open = section.getAttribute("data-open") !== "true";
+      section.setAttribute("data-open", open ? "true" : "false");
+      trigger.setAttribute("aria-expanded", open ? "true" : "false");
     });
   });
   // Links to a panel id (e.g. from the decision map) open that section.
@@ -204,32 +305,6 @@
   }
   window.addEventListener("hashchange", openFromHash);
   openFromHash();
-
-  /* ---------- Timeline draws itself ---------- */
-  var timelines = document.querySelectorAll(".timeline");
-  if ("IntersectionObserver" in window && timelines.length && !reduceMotion) {
-    var to = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) { entry.target.classList.add("is-drawn"); to.unobserve(entry.target); }
-      });
-    }, { threshold: 0.3 });
-    timelines.forEach(function (el) { el.classList.add("is-drawable"); to.observe(el); });
-  }
-
-  /* ---------- Card spotlight (fine pointers only) ---------- */
-  if (!reduceMotion && window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    document.querySelectorAll(".card-hover").forEach(function (card) {
-      card.addEventListener("pointermove", function (e) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty("--mx", (e.clientX - r.left) + "px");
-        card.style.setProperty("--my", (e.clientY - r.top) + "px");
-      });
-      card.addEventListener("pointerleave", function () {
-        card.style.removeProperty("--mx");
-        card.style.removeProperty("--my");
-      });
-    });
-  }
 
   /* ---------- Toast + copy ---------- */
   var toast = document.createElement("div");
@@ -254,10 +329,7 @@
       body.removeChild(ta);
     });
   }
-  function handleCopy(el, e) {
-    // On a mailto: link, copy AND let the mail app open; elsewhere just copy.
-    if (!/^mailto:/i.test(el.getAttribute("href") || "")) e.preventDefault();
-    var text = el.getAttribute("data-copy");
+  function copyEmail(text) {
     copyText(text).then(
       function () { showToast("Copied " + text + " ✓"); },
       function () { showToast("Copy failed — " + text); }
@@ -269,88 +341,40 @@
     var t = e.target;
     if (t.closest("[data-theme-toggle]")) { e.preventDefault(); toggleTheme(); return; }
     if (t.closest("[data-nav-toggle]")) { e.preventDefault(); setNav(!body.classList.contains("nav-open")); return; }
+    if (t.closest("[data-cmdk]")) { e.preventDefault(); openPalette(); return; }
     if (t.closest(".nav-links a")) setNav(false);
+    // Copy links are mailto: links, so the mail app still opens too.
     var copyEl = t.closest("[data-copy]");
-    if (copyEl) handleCopy(copyEl, e);
+    if (copyEl) copyEmail(copyEl.getAttribute("data-copy"));
   });
-
-  /* ---------- Lightbox ---------- */
-  var lbImages = document.querySelectorAll("img[data-lightbox]");
-  var lb = null, lbClose = null, lbOpener = null, closeLb = null;
-  if (lbImages.length) {
-    lb = document.createElement("div");
-    lb.className = "lightbox";
-    lb.setAttribute("role", "dialog");
-    lb.setAttribute("aria-modal", "true");
-    lb.setAttribute("aria-label", "Image preview");
-    lb.innerHTML = '<button class="lightbox-close" type="button" aria-label="Close image preview">✕</button>';
-    var lbImg = document.createElement("img");
-    lbImg.alt = "";
-    lb.insertBefore(lbImg, lb.firstChild);
-    body.appendChild(lb);
-    lbClose = lb.querySelector(".lightbox-close");
-    var openLb = function (img) {
-      lbOpener = img;
-      lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt || "";
-      lb.classList.add("is-open");
-      lbClose.focus();
-    };
-    closeLb = function () {
-      lb.classList.remove("is-open");
-      lbImg.removeAttribute("src");
-      if (lbOpener && document.contains(lbOpener)) lbOpener.focus();
-    };
-    lbImages.forEach(function (img) {
-      img.tabIndex = 0;
-      img.setAttribute("role", "button");
-      img.addEventListener("click", function () { openLb(img); });
-      img.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLb(img); }
-      });
-    });
-    lb.addEventListener("click", function (e) {
-      if (e.target === lb || e.target.closest(".lightbox-close")) closeLb();
-    });
-  }
-
-  /* ---------- Keyboard: Esc + lightbox focus trap ---------- */
   document.addEventListener("keydown", function (e) {
-    var lbOpen = lb && lb.classList.contains("is-open");
-    if (e.key === "Escape") {
-      if (lbOpen) closeLb();
-      else setNav(false);
-    } else if (e.key === "Tab" && lbOpen) {
-      e.preventDefault();
-      lbClose.focus();
-    }
+    if (e.key === "Escape") setNav(false);
   });
 
   /* ---------- Command palette (⌘K / Ctrl+K) ----------
-     Commands come from the page itself (nav links, résumé link,
-     footer email/LinkedIn), so new pages need no extra setup. */
+     Commands come from the page (nav links, résumé link, footer
+     email/LinkedIn) plus the build pages listed below. */
   var isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
   if (!isMac) document.querySelectorAll("[data-kbd]").forEach(function (el) { el.textContent = "Ctrl K"; });
 
   var brandLink = document.querySelector(".brand");
-  var base = brandLink ? (brandLink.getAttribute("href") || "").replace(/(home\.html.*|#top)$/, "") : "";
+  var base = brandLink ? (brandLink.getAttribute("href") || "").replace(/(home\.html|#top)$/, "") : "";
   var commands = [];
   document.querySelectorAll(".nav-links a").forEach(function (a) {
     commands.push({ label: a.textContent.trim(), hint: "Section", href: a.getAttribute("href") });
   });
-  commands.push({ label: "Home", hint: "Page", href: base + "home.html" });
-  commands.push({ label: "All case studies", hint: "Page", href: base + "case-studies/case-studies-list.html" });
+  commands.push({ label: "Momentum", hint: "Build", href: base + "builds/momentum.html" });
+  commands.push({ label: "GrowingED", hint: "Build", href: base + "builds/growinged.html" });
   var resumeLink = document.querySelector(".nav-actions a[download]");
   if (resumeLink) commands.push({ label: "Download résumé", hint: "PDF", href: resumeLink.getAttribute("href"), download: true });
   var footerEmail = document.querySelector(".site-footer [data-copy]");
   if (footerEmail) {
     var email = footerEmail.getAttribute("data-copy");
-    commands.push({ label: "Copy email address", hint: email, run: function () {
-      copyText(email).then(function () { showToast("Copied " + email + " ✓"); }, function () { showToast("Copy failed — " + email); });
-    } });
+    commands.push({ label: "Copy email address", hint: email, run: function () { copyEmail(email); } });
   }
   var footerLinkedIn = document.querySelector('.site-footer a[href*="linkedin.com"]');
   if (footerLinkedIn) commands.push({ label: "Open LinkedIn", hint: "New tab", href: footerLinkedIn.getAttribute("href"), newTab: true });
-  commands.push({ label: "Toggle dark mode", hint: "Theme", run: toggleTheme });
+  commands.push({ label: "Toggle light / dark", hint: "Theme", run: toggleTheme });
 
   var cmdk = null, cmdkInput, cmdkList, cmdkMatches = [], cmdkIndex = 0;
   function buildPalette() {
@@ -358,10 +382,10 @@
     cmdk.className = "cmdk";
     cmdk.setAttribute("aria-label", "Jump to");
     cmdk.innerHTML =
-      '<input class="cmdk-input" type="text" placeholder="Jump to…" aria-label="Search pages and actions" ' +
+      '<input class="cmdk-input" type="text" placeholder="> jump to…" aria-label="Search sections and actions" ' +
       'role="combobox" aria-expanded="true" aria-controls="cmdk-list" aria-autocomplete="list" autocomplete="off" />' +
       '<ul class="cmdk-list" id="cmdk-list" role="listbox"></ul>' +
-      '<p class="cmdk-foot">↑↓ to move · Enter to open · Esc to close</p>';
+      '<p class="cmdk-foot">↑↓ move · Enter open · Esc close</p>';
     body.appendChild(cmdk);
     cmdkInput = cmdk.querySelector(".cmdk-input");
     cmdkList = cmdk.querySelector(".cmdk-list");
@@ -444,15 +468,11 @@
     }
   });
 
-  /* ---------- Estimated read time ---------- */
+  /* ---------- Estimated read time (build pages) ---------- */
   var rtEls = document.querySelectorAll("[data-read-time]");
   if (rtEls.length) {
-    var panels = document.querySelectorAll(".cs-panel");
-    var text = panels.length
-      ? Array.prototype.map.call(panels, function (p) { return p.textContent; }).join(" ")
-      : (document.querySelector("main") || body).textContent;
-    var words = text.trim().split(/\s+/).filter(Boolean).length;
-    var mins = Math.max(1, Math.round(words / 200));
+    var text = Array.prototype.map.call(document.querySelectorAll(".cs-panel"), function (p) { return p.textContent; }).join(" ");
+    var mins = Math.max(1, Math.round(text.trim().split(/\s+/).filter(Boolean).length / 200));
     rtEls.forEach(function (el) { el.textContent = "≈ " + mins + " min read"; });
   }
 })();

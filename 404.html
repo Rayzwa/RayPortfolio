@@ -5,48 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Page not found — Raymond Wang</title>
   <meta name="description" content="This page doesn't exist." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>" />
-  <script>(function(){var t;try{t=localStorage.getItem("pm-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||((window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light"))})();</script>
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <meta name="theme-color" content="#07090f" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307090f'/><text x='50' y='64' font-size='42' font-family='monospace' font-weight='bold' fill='%2322d3ee' text-anchor='middle'>RW</text></svg>" />
+  <script>(function(){var t;try{t=localStorage.getItem("pm-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
 <body>
+  <!-- Vercel serves this page for any missing URL, at any depth, so every link here is root-absolute (/…). -->
   <header class="site-header">
     <nav class="nav wrap" aria-label="Primary">
-      <a class="brand" href="home.html"><span class="brand-mark">RW</span> Raymond Wang</a>
+      <a class="brand" href="/home.html"><span class="brand-mark">RW</span> Raymond Wang</a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="home.html#about">About</a></li>
-        <li><a href="home.html#work">Work</a></li>
-        <li><a href="home.html#skills">Skills</a></li>
-        <li><a href="home.html#experience">Experience</a></li>
-        <li><a href="home.html#contact">Contact</a></li>
+        <li><a href="/home.html#builds">Builds</a></li>
+        <li><a href="/home.html#about">About</a></li>
+        <li><a href="/home.html#stack">Stack</a></li>
+        <li><a href="/home.html#path">Path</a></li>
+        <li><a href="/home.html#contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="false"><span data-theme-icon>🌙</span></button>
+        <button class="icon-btn" data-cmdk type="button" aria-label="Jump to a section"><span aria-hidden="true">⌕</span><kbd data-kbd>⌘K</kbd></button>
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="true"><span aria-hidden="true">◐</span></button>
         <button class="icon-btn nav-toggle" data-nav-toggle type="button" aria-label="Menu" aria-controls="nav-links" aria-expanded="false">☰</button>
-        <a class="btn btn-ghost btn-sm" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
+        <a class="btn btn-ghost btn-sm" href="/Raymond_Wang_Resume.pdf" download>Résumé</a>
       </div>
     </nav>
   </header>
 
-  <main class="wrap page-main">
-    <div class="contact-card">
-      <p class="eyebrow">404</p>
-      <h1>This page doesn't exist.</h1>
-      <p class="lead">The link may be old or mistyped. Here are a couple of places to start instead.</p>
-      <div class="btn-row btn-row-center">
-        <a class="btn btn-primary" href="home.html">Go home</a>
-        <a class="btn btn-ghost" href="case-studies/case-studies-list.html">See case studies</a>
-      </div>
+  <main class="wrap lost">
+    <p class="glitch" data-text="404">404</p>
+    <h1>Signal lost.</h1>
+    <p class="lead">This page doesn't exist — the link may be old or mistyped.</p>
+    <div class="btn-row btn-row-center">
+      <a class="btn btn-primary" href="/home.html">Go home</a>
+      <a class="btn btn-ghost" href="/home.html#builds">See builds</a>
     </div>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <p class="muted">© <span data-year>2026</span> Raymond Wang · <a href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a></p>
-      <p class="muted kbd-hint">Press <kbd data-kbd>⌘K</kbd> to jump anywhere</p>
-      <p class="muted"><a href="home.html">← Back to home</a></p>
+      <p class="muted"><a href="/home.html">← Back to home</a></p>
     </div>
   </footer>
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

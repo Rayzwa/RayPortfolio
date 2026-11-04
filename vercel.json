@@ -1,5 +1,9 @@
 {
   "redirects": [
-    { "source": "/", "destination": "/home.html", "permanent": false }
+    { "source": "/", "destination": "/home.html", "permanent": false },
+    { "source": "/builds", "destination": "/home.html#builds", "permanent": false },
+    { "source": "/builds/", "destination": "/home.html#builds", "permanent": false },
+    { "source": "/case-studies/:path*", "destination": "/home.html#builds", "permanent": true },
+    { "source": "/insights/:path*", "destination": "/home.html", "permanent": true }
   ]
 }

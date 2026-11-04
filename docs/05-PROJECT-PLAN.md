@@ -4,7 +4,7 @@
 > **Status:** Draft v1 · 2026-11-02 · Owner: Raymond Wang
 > **Related:** [PRD](01-PRD.md) · [Positioning](02-POSITIONING.md) · [Design](03-DESIGN.md) · [Tech](04-TECH.md)
 
-> **Status 2026-11-04:** at the owner's request, the phases were built in one pass instead of gated. Done: Phase 0 code, résumé-aligned content, the Unfold intro, P1 delight (timeline, card glow, decision maps, page transitions), 404 page, docs merge, headshot, link-preview image, ⌘K menu. **Still needs you:** named testimonials, case-study reflections (`EDIT ME`), a domain (for the preview-image URL), deploy.
+> **Status 2026-11-04:** at the owner's request, the phases were built in one pass instead of gated. Done: Phase 0 code, résumé-aligned content, the Unfold intro, P1 delight (timeline, card glow, decision maps, page transitions), 404 page, docs merge, headshot, link-preview image, ⌘K menu. Deployed to GitHub (RayPortfolio) for Vercel. **Redesign 2026-11-04:** dark console theme, one-minute home page, Builds pages, motion system (decode, type-on, ticker, tilt, career line, quote rotator), dead-code purge. **Still needs you:** named testimonials, build reflections (`EDIT ME`), the live domain (for the preview-image URL).
 
 ---
 
@@ -122,3 +122,6 @@ For each feature: build → check the motion rule → check reduced motion → r
 | 2026-11-04 | First case studies: Momentum + GrowingED | Publicly shareable at résumé level of detail |
 | 2026-11-04 | Insights hidden until a teardown exists | No "coming soon" sections |
 | 2026-11-04 | Phases built in one pass | Owner request |
+| 2026-11-04 | Redesign: dark "console" look, visual over wordy, no visible section headings | Owner feedback: too wordy, not "AI" enough |
+| 2026-11-04 | "Case studies" → **Builds**; list page and Insights removed | Home shows every build; no empty sections |
+| 2026-11-04 | Testimonials → one rotating quote | Fewer words; keeps the existing quotes |

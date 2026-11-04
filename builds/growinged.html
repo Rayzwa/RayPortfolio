@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GrowingED: matching mentees with mentors — Raymond Wang</title>
-  <meta name="description" content="An educational platform built at OwlHack (Temple University) that won Best Use of Auth0." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>" />
-  <script>(function(){var t;try{t=localStorage.getItem("pm-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t||((window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light"))})();</script>
+  <title>GrowingED — Raymond Wang</title>
+  <meta name="description" content="A mentor-matching platform built at OwlHack (Temple University) that won Best Use of Auth0." />
+  <meta name="theme-color" content="#07090f" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307090f'/><text x='50' y='64' font-size='42' font-family='monospace' font-weight='bold' fill='%2322d3ee' text-anchor='middle'>RW</text></svg>" />
+  <script>(function(){var t;try{t=localStorage.getItem("pm-theme")}catch(e){}document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="../assets/css/styles.css" />
 </head>
 <body>
@@ -14,14 +18,15 @@
     <nav class="nav wrap" aria-label="Primary">
       <a class="brand" href="../home.html"><span class="brand-mark">RW</span> Raymond Wang</a>
       <ul class="nav-links" id="nav-links">
+        <li><a href="../home.html#builds">Builds</a></li>
         <li><a href="../home.html#about">About</a></li>
-        <li><a href="../home.html#work">Work</a></li>
-        <li><a href="../home.html#skills">Skills</a></li>
-        <li><a href="../home.html#experience">Experience</a></li>
+        <li><a href="../home.html#stack">Stack</a></li>
+        <li><a href="../home.html#path">Path</a></li>
         <li><a href="../home.html#contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="false"><span data-theme-icon>🌙</span></button>
+        <button class="icon-btn" data-cmdk type="button" aria-label="Jump to a section"><span aria-hidden="true">⌕</span><kbd data-kbd>⌘K</kbd></button>
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="true"><span aria-hidden="true">◐</span></button>
         <button class="icon-btn nav-toggle" data-nav-toggle type="button" aria-label="Menu" aria-controls="nav-links" aria-expanded="false">☰</button>
         <a class="btn btn-ghost btn-sm" href="../Raymond_Wang_Resume.pdf" download>Résumé</a>
       </div>
@@ -29,19 +34,38 @@
   </header>
 
   <main class="wrap page-main">
-    <p class="eyebrow"><a href="case-studies-list.html">Case Studies</a> / GrowingED</p>
-    <h1>GrowingED: matching mentees with mentors</h1>
-    <p class="lead lead-narrow">An educational platform built at OwlHack (Temple University) that won Best Use of Auth0.</p>
-    <p class="read-time"><span data-read-time></span></p>
+    <p class="crumb"><a href="../home.html#builds">builds</a> / growinged</p>
 
-    <dl class="quick-facts">
-      <div><dt>Event</dt><dd>OwlHack, Temple University</dd></div>
-      <div><dt>Date</dt><dd>September 2023</dd></div>
-      <div><dt>My role</dt><dd>Product vision &amp; MVP scope</dd></div>
-      <div><dt>Result</dt><dd>Winner, Best Use of Auth0</dd></div>
-    </dl>
+    <header class="build-hero">
+      <div class="build-art" aria-hidden="true">
+        <svg class="art" viewBox="0 0 200 200">
+          <path class="branch" pathLength="1" d="M100 190 V70" />
+          <path class="branch" pathLength="1" d="M100 150 L58 108 L40 78" />
+          <path class="branch" pathLength="1" d="M100 128 L142 88 L160 58" />
+          <path class="branch" pathLength="1" d="M58 108 L76 72" />
+          <path class="branch" pathLength="1" d="M142 88 L124 52" />
+          <path class="branch" pathLength="1" d="M100 70 L84 38" />
+          <path class="branch" pathLength="1" d="M100 70 L118 34" />
+          <circle class="leaf" cx="40" cy="78" r="5" />
+          <circle class="leaf" cx="76" cy="72" r="4" />
+          <circle class="leaf" cx="160" cy="58" r="5" />
+          <circle class="leaf" cx="124" cy="52" r="4" />
+          <circle class="leaf" cx="84" cy="38" r="4.5" />
+          <circle class="leaf" cx="118" cy="34" r="5" />
+        </svg>
+      </div>
+      <div>
+        <p class="tag">OwlHack, Temple University · Sep 2023</p>
+        <h1>GrowingED</h1>
+        <p class="lead">A platform that matches mentees with mentors in an inclusive learning environment.</p>
+        <ul class="facts">
+          <li>Vision &amp; MVP scope</li><li>Shipped in the hackathon</li><li>Best Use of Auth0</li>
+        </ul>
+        <p class="read-time"><span data-read-time></span></p>
+      </div>
+    </header>
 
-    <nav class="decision-map" aria-label="Case study at a glance">
+    <nav class="decision-map" aria-label="Build at a glance">
       <a class="dm-node" href="#growinged-problem"><span class="dm-step">Problem</span><span class="dm-text">Mentees need mentors in an inclusive learning environment.</span></a>
       <span class="dm-arrow" aria-hidden="true">→</span>
       <a class="dm-node" href="#growinged-approach"><span class="dm-step">Approach</span><span class="dm-text">Define the vision, scope an MVP that fits the timeline, ship it.</span></a>
@@ -49,9 +73,9 @@
       <a class="dm-node" href="#growinged-outcome"><span class="dm-step">Outcome</span><span class="dm-text">A working website — and Best Use of Auth0.</span></a>
     </nav>
 
-    <section class="cs-section" data-open="true">
+    <section class="cs-section">
       <h2 class="cs-head">
-        <button class="cs-trigger" type="button" aria-expanded="true" aria-controls="growinged-context">
+        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="growinged-context">
           <span>Context</span><span class="cs-icon" aria-hidden="true">+</span>
         </button>
       </h2>
@@ -60,7 +84,7 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
         <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="growinged-problem">
           <span>The problem</span><span class="cs-icon" aria-hidden="true">+</span>
@@ -71,7 +95,7 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
         <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="growinged-role">
           <span>My role</span><span class="cs-icon" aria-hidden="true">+</span>
@@ -82,7 +106,7 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
         <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="growinged-approach">
           <span>Approach</span><span class="cs-icon" aria-hidden="true">+</span>
@@ -97,9 +121,9 @@
       </div>
     </section>
 
-    <section class="cs-section" data-open="false">
+    <section class="cs-section">
       <h2 class="cs-head">
-        <button class="cs-trigger" type="button" aria-expanded="false" aria-controls="growinged-outcome">
+        <button class="cs-trigger" type="button" aria-expanded="true" aria-controls="growinged-outcome">
           <span>Outcome</span><span class="cs-icon" aria-hidden="true">+</span>
         </button>
       </h2>
@@ -110,17 +134,15 @@
 
     <!-- EDIT ME: add a "What I'd do differently" section here (copy a cs-section block above, id "growinged-reflection"). -->
 
-    <hr />
-    <div class="btn-row">
-      <a class="btn btn-primary" href="case-studies-list.html">← All case studies</a>
-      <a class="btn btn-ghost" href="case-study-momentum.html">← Previous case study</a>
-    </div>
+    <nav class="pager" aria-label="More builds">
+      <a class="btn btn-ghost" href="momentum.html">← Previous: Momentum</a>
+      <a class="btn btn-primary" href="../home.html#builds">All builds →</a>
+    </nav>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <p class="muted">© <span data-year>2026</span> Raymond Wang · <a href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a></p>
-      <p class="muted kbd-hint">Press <kbd data-kbd>⌘K</kbd> to jump anywhere</p>
       <p class="muted"><a href="../home.html">← Back to home</a></p>
     </div>
   </footer>

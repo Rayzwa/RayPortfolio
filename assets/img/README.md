@@ -1,12 +1,11 @@
 # Image assets
 
 Drop your images in this folder. The site references these filenames
-(placeholders are shown if a file is missing):
+(the headshot falls back to an "RW" tile if it's missing):
 
 | Filename            | Used for                                  | Recommended           |
 | ------------------- | ----------------------------------------- | --------------------- |
 | `headshot.jpg`      | Intro card + hero portrait (RW tile until added) | 600×600, square, <300KB |
-| `case-study-<topic>.jpg`     | Optional case-study cover (add `<figure class="cs-cover"><img … data-lightbox data-fallback="hide"></figure>`) | 1600×900, 16:9 |
 | `og-image.png`      | Social share preview (Open Graph) — included | 1200×630              |
 
 ## Tips

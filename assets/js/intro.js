@@ -40,6 +40,7 @@
     window.scrollTo(0, 0);
     if (heroHeading) heroHeading.focus({ preventScroll: true });
     if (status) status.textContent = "Showing the full site.";
+    document.dispatchEvent(new Event("intro:done"));   // main.js starts the hero counters
   }
 
   // CSS-only exit: reduced motion, small screens, or GSAP unavailable.
