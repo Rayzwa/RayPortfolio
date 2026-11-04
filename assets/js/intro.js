@@ -1,10 +1,12 @@
 /* ============================================================
-   PM Portfolio — "Unfold" intro (home page only)
-   State machine: card → unfolding → site.
-   The <head> script sets html.intro-on (show the card) or
+   Raymond Wang portfolio — boot-sequence intro (home page only)
+   State machine: boot → ready → unfolding → site.
+   The <head> script sets html.intro-on (show the intro) or
    html.intro-done (returning visit / deep link). Without JS
-   neither is set and the intro is just the first section.
-   Uses GSAP + Flip when available; otherwise CSS fallbacks.
+   neither is set and the intro is a static first section.
+   Boot steps are CSS classes on #intro (.is-booting, .graph-on,
+   .name-on, .is-ready); the exit uses GSAP + Flip when
+   available, otherwise CSS fallbacks.
    ============================================================ */
 (function () {
   "use strict";
@@ -26,6 +28,34 @@
     behind.forEach(function (el) { if (on) el.setAttribute("inert", ""); else el.removeAttribute("inert"); });
   }
   setInert(true);
+
+  /* ---------- Boot sequence (~3 s; skipped under reduced motion) ---------- */
+  var lines = intro.querySelectorAll(".boot-log li");
+  var bar = intro.querySelector(".boot-bar span");
+  var name = intro.querySelector(".boot-name");
+  var timers = [];
+  function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+  function endBoot() {
+    timers.forEach(clearTimeout);
+    intro.classList.remove("is-booting");
+    if (bar) bar.style.removeProperty("transform");
+  }
+  if (!reduceMotion) {
+    intro.classList.add("is-booting");
+    var step = 260, t = 250 + lines.length * step;
+    lines.forEach(function (li, i) {
+      at(250 + i * step, function () {
+        li.classList.add("is-on");
+        if (bar) bar.style.transform = "scaleX(" + (i + 1) / lines.length + ")";
+      });
+    });
+    at(t, function () { intro.classList.add("graph-on"); });
+    at(t + 600, function () {
+      intro.classList.add("name-on");
+      if (name) name.dispatchEvent(new CustomEvent("rw:decode", { bubbles: true }));   // main.js decodes it
+    });
+    at(t + 1200, function () { intro.classList.add("is-ready"); endBoot(); });
+  }
 
   function finish() {
     if (done) return;
@@ -52,43 +82,39 @@
 
   function gsapLeave(gsap, Flip) {
     gsap.registerPlugin(Flip);
-    var card = intro.querySelector("[data-intro-card]");
     var photo = intro.querySelector("[data-intro-photo]");
-    var body = intro.querySelector("[data-intro-body]");
-    var hint = intro.querySelector(".intro-hint");
+    var fade = intro.querySelectorAll("[data-intro-body], .graph, .intro-hint, .boot-skip");
     var target = document.querySelector(".hero-portrait");
     var tl = gsap.timeline({ onComplete: finish });
     // Safety net: if animation frames stall (throttled tab, odd browser), never leave the visitor stuck.
     setTimeout(finish, 2000);
 
-    tl.to([body, hint], { opacity: 0, y: -8, duration: 0.2, ease: "power1.out" }, 0);
+    tl.to(fade, { opacity: 0, y: -8, duration: 0.25, ease: "power1.out" }, 0);
 
-    // Lift the photo out of the card and fly it onto the hero portrait.
-    var cardState = Flip.getState(card);
+    // Lift the photo out of the graph and fly it onto the hero portrait.
     if (photo && target) {
       var photoState = Flip.getState(photo);
       var r = target.getBoundingClientRect();
       intro.appendChild(photo);
       photo.classList.add("is-flying");
+      photo.style.position = "absolute";
       photo.style.left = r.left + "px";
       photo.style.top = r.top + "px";
       photo.style.width = r.width + "px";
       photo.style.height = r.height + "px";
-      tl.add(Flip.from(photoState, { duration: 0.75, ease: "power3.inOut" }), 0.1);
+      tl.add(Flip.from(photoState, { duration: 0.8, ease: "power3.inOut" }), 0.1);
     }
-    // Grow the card to fill the screen.
-    card.classList.add("is-full");
-    tl.add(Flip.from(cardState, { duration: 0.6, ease: "power3.inOut" }), 0.1);
 
-    // Reveal the site underneath, then fade the layer away.
-    tl.call(function () { root.classList.add("intro-reveal"); }, null, 0.6);
-    tl.to(intro, { opacity: 0, duration: 0.3, ease: "power1.out" }, 0.7);
+    // Lights on: reveal the site underneath, then fade the dark layer away.
+    tl.call(function () { root.classList.add("intro-reveal"); }, null, 0.5);
+    tl.to(intro, { opacity: 0, duration: 0.35, ease: "power1.out" }, 0.65);
   }
 
   function unfold(instant) {
     if (started) return;
     started = true;
     removeTriggers();
+    endBoot();
     if (instant) return finish();
     if (reduceMotion) return cssLeave("is-fading", 150);
     if (small) return cssLeave("is-sliding", 500);
@@ -96,9 +122,9 @@
     gsapLeave(window.gsap, window.Flip);
   }
 
-  /* ---------- Triggers (each fires once) ---------- */
+  /* ---------- Triggers (each fires once; any of them also skips the boot) ---------- */
   var explore = intro.querySelector("[data-intro-explore]");
-  var skip = document.querySelector("[data-intro-skip]");
+  var skips = document.querySelectorAll("[data-intro-skip]");
   var touchY = null;
 
   function onExplore(e) { e.preventDefault(); unfold(false); }
@@ -115,7 +141,7 @@
   }
 
   if (explore) explore.addEventListener("click", onExplore);
-  if (skip) skip.addEventListener("click", onSkip);
+  skips.forEach(function (el) { el.addEventListener("click", onSkip); });
   window.addEventListener("wheel", onWheel, { passive: true });
   window.addEventListener("touchstart", onTouchStart, { passive: true });
   window.addEventListener("touchmove", onTouchMove, { passive: true });
@@ -123,7 +149,7 @@
 
   function removeTriggers() {
     if (explore) explore.removeEventListener("click", onExplore);
-    if (skip) skip.removeEventListener("click", onSkip);
+    skips.forEach(function (el) { el.removeEventListener("click", onSkip); });
     window.removeEventListener("wheel", onWheel);
     window.removeEventListener("touchstart", onTouchStart);
     window.removeEventListener("touchmove", onTouchMove);

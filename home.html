@@ -4,18 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Raymond Wang — Product Analyst</title>
-  <meta name="description" content="Raymond Wang is a Product Analyst at JPMorgan Chase who turns banker needs into AI tools — from discovery and prototyping to delivery and production support." />
+  <meta name="description" content="Raymond Wang is a Product Analyst at JPMorgan Chase who turns stakeholder needs into AI tools — from discovery and prototyping to delivery and production support." />
   <meta name="author" content="Raymond Wang" />
-  <meta name="theme-color" content="#07090f" />
-  <!-- Open Graph / social preview -->
+  <meta name="theme-color" content="#f7f8fb" />
+  <!-- Open Graph / social preview (absolute URLs: LinkedIn ignores relative ones) -->
   <meta property="og:title" content="Raymond Wang — Product Analyst" />
-  <meta property="og:description" content="I turn banker needs into AI tools people use — Product Analyst at JPMorgan Chase." />
+  <meta property="og:description" content="I turn stakeholder needs into AI tools people use — Product Analyst at JPMorgan Chase." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/img/og-image.png" />
+  <meta property="og:url" content="https://rayportf.vercel.app/" />
+  <meta property="og:image" content="https://rayportf.vercel.app/assets/img/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307090f'/><text x='50' y='64' font-size='42' font-family='monospace' font-weight='bold' fill='%2322d3ee' text-anchor='middle'>RW</text></svg>" />
   <!-- Theme + intro state, set before first paint (no flash). -->
-  <script>(function(){var d=document.documentElement,t,s;try{t=localStorage.getItem("pm-theme")}catch(e){}d.setAttribute("data-theme",t==="light"?"light":"dark");try{s=sessionStorage.getItem("pm-intro-seen")}catch(e){}d.classList.add(s||location.hash?"intro-done":"intro-on")})();</script>
+  <script>(function(){var d=document.documentElement,t,s;try{t=localStorage.getItem("pm-theme")}catch(e){}d.setAttribute("data-theme",t==="dark"?"dark":"light");try{s=sessionStorage.getItem("pm-intro-seen")}catch(e){}d.classList.add(s||location.hash?"intro-done":"intro-on")})();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
@@ -37,7 +38,7 @@
       </ul>
       <div class="nav-actions">
         <button class="icon-btn" data-cmdk type="button" aria-label="Jump to a section"><span aria-hidden="true">⌕</span><kbd data-kbd>⌘K</kbd></button>
-        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="true"><span aria-hidden="true">◐</span></button>
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Dark mode" aria-pressed="false"><span aria-hidden="true">◐</span></button>
         <button class="icon-btn nav-toggle" data-nav-toggle type="button" aria-label="Menu" aria-controls="nav-links" aria-expanded="false">☰</button>
         <a class="btn btn-ghost btn-sm" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
       </div>
@@ -45,37 +46,89 @@
   </header>
 
   <main id="top">
-    <!-- ============ INTRO ("Unfold") — see assets/js/intro.js ============ -->
+    <!-- ============ INTRO (boot sequence) — see assets/js/intro.js ============ -->
     <section class="intro" id="intro" aria-label="Introduction">
-      <div class="intro-card" data-intro-card>
-        <div class="intro-photo" data-intro-photo>
-          <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
+      <div class="boot">
+        <div class="boot-graph">
+          <svg class="graph" viewBox="0 0 400 400" aria-hidden="true">
+            <g data-stagger>
+              <path class="link" pathLength="1" d="M200 200 L370 200" />
+              <path class="link" pathLength="1" d="M200 200 L330 125" />
+              <path class="link" pathLength="1" d="M200 200 L285 53" />
+              <path class="link" pathLength="1" d="M200 200 L200 50" />
+              <path class="link" pathLength="1" d="M200 200 L115 53" />
+              <path class="link" pathLength="1" d="M200 200 L70 125" />
+              <path class="link" pathLength="1" d="M200 200 L30 200" />
+              <path class="link" pathLength="1" d="M200 200 L70 275" />
+              <path class="link" pathLength="1" d="M200 200 L115 347" />
+              <path class="link" pathLength="1" d="M200 200 L200 350" />
+              <path class="link" pathLength="1" d="M200 200 L285 347" />
+              <path class="link" pathLength="1" d="M200 200 L330 275" />
+              <path class="link" pathLength="1" d="M370 200 L330 125" />
+              <path class="link" pathLength="1" d="M330 125 L285 53" />
+              <path class="link" pathLength="1" d="M285 53 L200 50" />
+              <path class="link" pathLength="1" d="M200 50 L115 53" />
+              <path class="link" pathLength="1" d="M115 53 L70 125" />
+              <path class="link" pathLength="1" d="M70 125 L30 200" />
+              <path class="link" pathLength="1" d="M30 200 L70 275" />
+              <path class="link" pathLength="1" d="M70 275 L115 347" />
+              <path class="link" pathLength="1" d="M115 347 L200 350" />
+              <path class="link" pathLength="1" d="M200 350 L285 347" />
+              <path class="link" pathLength="1" d="M285 347 L330 275" />
+              <path class="link" pathLength="1" d="M330 275 L370 200" />
+            </g>
+            <circle class="pulse" cx="200" cy="200" r="78" />
+            <g data-stagger>
+              <g class="node"><circle cx="370" cy="200" r="3.5" /></g>
+              <g class="node"><circle cx="330" cy="125" r="5" /><text x="330" y="111">LLM agents</text></g>
+              <g class="node"><circle cx="285" cy="53" r="3.5" /></g>
+              <g class="node"><circle cx="200" cy="50" r="5" /><text x="200" y="36">CRE Lending</text></g>
+              <g class="node"><circle cx="115" cy="53" r="3.5" /></g>
+              <g class="node"><circle cx="70" cy="125" r="5" /><text x="70" y="111">Rutgers '24</text></g>
+              <g class="node"><circle cx="30" cy="200" r="3.5" /></g>
+              <g class="node"><circle cx="70" cy="275" r="5" /><text x="70" y="299">team of 10</text></g>
+              <g class="node"><circle cx="115" cy="347" r="3.5" /></g>
+              <g class="node"><circle cx="200" cy="350" r="5" /><text x="200" y="374">50 stakeholders</text></g>
+              <g class="node"><circle cx="285" cy="347" r="3.5" /></g>
+              <g class="node"><circle cx="330" cy="275" r="5" /><text x="330" y="299">Copilot</text></g>
+            </g>
+          </svg>
+          <div class="boot-photo" data-intro-photo>
+            <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
+          </div>
         </div>
-        <div data-intro-body>
-          <p class="intro-status mono" aria-hidden="true"><span class="dot"></span>profile.load() — ok</p>
-          <h1 class="intro-name" data-decode>Raymond Wang</h1>
-          <p class="intro-line" data-type>Product Analyst building AI tools for lending teams at JPMorgan Chase.</p>
-          <ul class="intro-facts">
-            <li>New York, NY</li><li>CRE Lending</li><li>Rutgers '24</li>
+        <div class="boot-panel" data-intro-body>
+          <p class="boot-cmd" aria-hidden="true">&gt; init raymond.wang</p>
+          <ul class="boot-log">
+            <li><span class="k">role</span><span class="v">Product Analyst</span></li>
+            <li><span class="k">org</span><span class="v">JPMorgan Chase · CRE Lending</span></li>
+            <li><span class="k">stakeholders</span><span class="v">50 met</span></li>
+            <li><span class="k">led</span><span class="v">cross-functional team of 10</span></li>
+            <li><span class="k">edu</span><span class="v">Rutgers B.S. '24</span></li>
+            <li><span class="k">status</span><span class="v">● shipping AI tools</span></li>
           </ul>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="#builds" data-intro-explore>Explore →</a>
+          <div class="boot-bar" aria-hidden="true"><span></span></div>
+          <h1 class="boot-name">Raymond Wang</h1>
+          <p class="boot-line">Product Analyst turning stakeholder needs into AI tools.</p>
+          <div class="btn-row boot-actions">
+            <a class="btn btn-primary" href="#builds" data-intro-explore>Enter →</a>
             <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
             <a class="btn btn-ghost" href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a>
             <a class="btn btn-ghost" href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">Email</a>
           </div>
         </div>
       </div>
-      <p class="intro-hint" aria-hidden="true">scroll or press Enter ↓</p>
+      <button class="boot-skip" type="button" data-intro-skip>Skip ⏭</button>
+      <p class="intro-hint" aria-hidden="true">press Enter or scroll ↓</p>
     </section>
     <span class="visually-hidden" role="status" aria-live="polite" data-intro-status></span>
 
-    <!-- ============ HERO ============ -->
+    <!-- ============ HERO (stat cards flip to show details) ============ -->
     <section class="hero wrap">
       <div class="hero-grid">
         <div data-reveal>
           <span class="hero-status"><span class="dot"></span>Product Analyst · JPMorgan Chase</span>
-          <h2 class="h1" tabindex="-1">I turn banker needs into <span class="grad">AI tools</span> people use.</h2>
+          <h2 class="h1" tabindex="-1">I turn <span class="grad">stakeholder needs</span> into AI tools people use.</h2>
           <div class="btn-row">
             <a class="btn btn-primary" href="#builds">See builds</a>
             <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
@@ -86,9 +139,24 @@
         </div>
       </div>
       <ul class="stats" data-reveal>
-        <li class="stat"><span class="num" data-count="10">10</span><span class="stat-label">teammates led</span></li>
-        <li class="stat"><span class="num" data-count="2">2</span><span class="stat-label">lending teams</span></li>
-        <li class="stat"><span class="num" data-count="1">1</span><span class="stat-label">hackathon win</span></li>
+        <li class="flip" tabindex="0">
+          <div class="flip-inner">
+            <div class="flip-face flip-front"><span class="num" data-count="50">50</span><span class="stat-label">banking stakeholders met</span><span class="flip-hint" aria-hidden="true">↻</span></div>
+            <div class="flip-face flip-back"><p>Met 50 banking stakeholders to understand their needs and shape what we build.</p></div>
+          </div>
+        </li>
+        <li class="flip" tabindex="0">
+          <div class="flip-inner">
+            <div class="flip-face flip-front"><span class="num" data-count="10">10</span><span class="stat-label">cross-functional team · product owner</span><span class="flip-hint" aria-hidden="true">↻</span></div>
+            <div class="flip-face flip-back"><p>Product owner for Momentum, leading a cross-functional team of 10 from problem framing to demo.</p></div>
+          </div>
+        </li>
+        <li class="flip" tabindex="0">
+          <div class="flip-inner">
+            <div class="flip-face flip-front"><span class="num" data-count="2">2</span><span class="stat-label">lending teams</span><span class="flip-hint" aria-hidden="true">↻</span></div>
+            <div class="flip-face flip-back"><p>C&amp;SI Lending (Aug–Dec 2025) → CRE Lending (Dec 2025 → now), Innovation Development Program.</p></div>
+          </div>
+        </li>
       </ul>
     </section>
 
@@ -98,39 +166,43 @@
       <div class="ticker-track">
         <ul class="ticker-list">
           <li>AI tools for CRE bankers</li>
+          <li>50 banking stakeholders</li>
           <li>Product in daily use · C&amp;SI Lending</li>
           <li>New Syndicated Lending workstream</li>
           <li>Product owner · team of 10</li>
-          <li>Risk review enhancement · 2024</li>
           <li>OwlHack winner · Best Use of Auth0</li>
         </ul>
         <ul class="ticker-list" aria-hidden="true">
           <li>AI tools for CRE bankers</li>
+          <li>50 banking stakeholders</li>
           <li>Product in daily use · C&amp;SI Lending</li>
           <li>New Syndicated Lending workstream</li>
           <li>Product owner · team of 10</li>
-          <li>Risk review enhancement · 2024</li>
           <li>OwlHack winner · Best Use of Auth0</li>
         </ul>
       </div>
     </section>
 
-    <!-- ============ BUILDS (cards link to builds/*.html) ============ -->
+    <!-- ============ BUILDS (animated mini-prototypes are illustrations with mock data) ============ -->
     <section id="builds">
       <div class="wrap">
         <h2 class="visually-hidden">Builds</h2>
         <div class="builds">
           <a class="build card-hover" href="builds/momentum.html" data-reveal>
             <div class="build-art" aria-hidden="true">
-              <svg class="art" viewBox="0 0 200 200">
-                <circle class="ring" cx="100" cy="100" r="40" />
-                <circle class="ring" cx="100" cy="100" r="64" />
-                <circle class="ring" cx="100" cy="100" r="88" />
-                <g class="orbit"><circle cx="140" cy="100" r="5" /></g>
-                <g class="orbit o2"><circle cx="100" cy="36" r="4.5" /></g>
-                <g class="orbit o3"><circle cx="12" cy="100" r="4" /></g>
-                <circle class="core" cx="100" cy="100" r="12" />
-              </svg>
+              <div class="proto" data-live>
+                <div class="proto-win">
+                  <div class="proto-bar"><i></i><i></i><i></i><span>momentum · mock data</span></div>
+                  <div class="proto-body">
+                    <p class="pm-note">“…I’ll <mark>send the follow-up notes by Friday</mark>, and we’ll <mark>share the draft with Strategy</mark> next week…”</p>
+                    <ul class="pm-list">
+                      <li>Send follow-up notes<span>Fri</span></li>
+                      <li>Share draft with Strategy<span>Next wk</span></li>
+                      <li>Book the review<span>Tue</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="build-body">
               <p class="tag">Hackathon · 2026 · Product owner</p>
@@ -141,21 +213,23 @@
           </a>
           <a class="build card-hover" href="builds/growinged.html" data-reveal>
             <div class="build-art" aria-hidden="true">
-              <svg class="art" viewBox="0 0 200 200">
-                <path class="branch" pathLength="1" d="M100 190 V70" />
-                <path class="branch" pathLength="1" d="M100 150 L58 108 L40 78" />
-                <path class="branch" pathLength="1" d="M100 128 L142 88 L160 58" />
-                <path class="branch" pathLength="1" d="M58 108 L76 72" />
-                <path class="branch" pathLength="1" d="M142 88 L124 52" />
-                <path class="branch" pathLength="1" d="M100 70 L84 38" />
-                <path class="branch" pathLength="1" d="M100 70 L118 34" />
-                <circle class="leaf" cx="40" cy="78" r="5" />
-                <circle class="leaf" cx="76" cy="72" r="4" />
-                <circle class="leaf" cx="160" cy="58" r="5" />
-                <circle class="leaf" cx="124" cy="52" r="4" />
-                <circle class="leaf" cx="84" cy="38" r="4.5" />
-                <circle class="leaf" cx="118" cy="34" r="5" />
-              </svg>
+              <div class="proto" data-live>
+                <div class="proto-win">
+                  <div class="proto-bar"><i></i><i></i><i></i><span>growinged · matching · mock data</span></div>
+                  <div class="proto-body">
+                    <div class="ge">
+                      <ul class="ge-col"><li>Mentee · UX</li><li>Mentee · Python</li><li>Mentee · Finance</li></ul>
+                      <svg class="ge-links" viewBox="0 0 56 90" preserveAspectRatio="none">
+                        <path pathLength="1" d="M0 15 C28 15 28 45 56 45" />
+                        <path pathLength="1" d="M0 45 C28 45 28 15 56 15" />
+                        <path pathLength="1" d="M0 75 L56 75" />
+                      </svg>
+                      <ul class="ge-col"><li>Mentor · Python</li><li>Mentor · UX</li><li>Mentor · Finance</li></ul>
+                    </div>
+                    <p class="ge-match">✓ 3 / 3 matched</p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="build-body">
               <p class="tag">OwlHack · 2023 · Winner</p>
@@ -164,11 +238,45 @@
             </div>
             <span class="go" aria-hidden="true">↗</span>
           </a>
+          <div class="build build-wide" data-reveal>
+            <div class="build-art" aria-hidden="true">
+              <div class="proto" data-live>
+                <div class="proto-win">
+                  <div class="proto-bar"><i></i><i></i><i></i><span>copilot · illustration</span></div>
+                  <div class="proto-body">
+                    <p class="ai-msg ai-user">What changed since the last review?</p>
+                    <div class="ai-typing"><i></i><i></i><i></i></div>
+                    <div class="ai-msg ai-bot"><span class="sk"></span><span class="sk"></span><span class="sk sk-short"></span><span class="ai-review">✓ banker reviewed</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="build-body">
+              <p class="tag">Now · JPMorgan Chase · Internal</p>
+              <h3>AI tools for CRE bankers</h3>
+              <p>Discovery and rapid prototyping with Copilot and LLM agents, iterated through stakeholder demos. Details on request.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ HOW I WORK (sentence shows on hover/focus on desktop) ============ -->
+    <!-- ============ LOOP (how I build; detail shows on hover/focus on desktop) ============ -->
+    <section id="loop" aria-labelledby="loop-title">
+      <div class="wrap">
+        <h2 class="visually-hidden" id="loop-title">How I build</h2>
+        <ol class="loop" data-reveal>
+          <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">01</span><span class="loop-name">Discover</span><span class="loop-tip">Discovery &amp; requirements with stakeholders</span></li>
+          <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">02</span><span class="loop-name">Define</span><span class="loop-tip">User stories &amp; prioritization</span></li>
+          <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">03</span><span class="loop-name">Prototype</span><span class="loop-tip">Rapid prototypes &amp; demos</span></li>
+          <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">04</span><span class="loop-name">Deliver</span><span class="loop-tip">With Design &amp; Technology</span></li>
+          <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">05</span><span class="loop-name">Support</span><span class="loop-tip">Production support &amp; iteration</span></li>
+        </ol>
+        <p class="loop-note">↺ and again, every iteration</p>
+      </div>
+    </section>
+
+    <!-- ============ HOW I WORK (sentence shows on hover/focus on desktop and lingers) ============ -->
     <section id="about">
       <div class="wrap">
         <h2 class="visually-hidden">How I work</h2>
@@ -177,6 +285,8 @@
           <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">02</span><h3>Trust over title</h3><p>I earn trust by showing up and following through.</p></li>
           <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">03</span><h3>Stay curious</h3><p>The question I ask most: why does it work this way?</p></li>
           <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">04</span><h3>Build to learn</h3><p>If I don't understand something, I build a small version of it.</p></li>
+          <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">05</span><h3>Own it end to end</h3><p>From discovery to production support, I see the work through.</p></li>
+          <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">06</span><h3>Show, don't tell</h3><p>A working prototype beats a slide deck.</p></li>
         </ul>
       </div>
     </section>
@@ -225,16 +335,18 @@
       </div>
     </section>
 
-    <!-- ============ QUOTE (rotates with JS; all listed without) ============ -->
+    <!-- ============ QUOTE (rotates with JS; all listed in full without). q-short shows first, q-more on "Read more" ============ -->
     <section aria-labelledby="quotes-title">
       <div class="wrap">
         <h2 class="visually-hidden" id="quotes-title">What colleagues say</h2>
         <figure class="rotator" data-rotator>
           <ul class="rotator-list">
-            <li><blockquote>One quality that stands out is his curiosity and willingness to learn.</blockquote></li>
-            <li><blockquote>He has developed a voice and learns quickly.</blockquote></li>
+            <li><blockquote><span class="q-short">One quality that stands out is his curiosity and willingness to learn.</span><span class="q-more" id="quote-1-more"> He owned key areas of CRE Discovery.</span></blockquote><button class="q-toggle" type="button" aria-expanded="false" aria-controls="quote-1-more" hidden>Read more</button></li>
+            <li><blockquote><span class="q-short">Raymond led our team with a strong project vision</span><span class="q-more" id="quote-2-more">, driving results by keeping the team focused and shielding us from distractions so we could deliver effectively.</span></blockquote><button class="q-toggle" type="button" aria-expanded="false" aria-controls="quote-2-more" hidden>Read more</button></li>
+            <li><blockquote><span class="q-short">He has developed a voice and learns quickly</span><span class="q-more" id="quote-3-more">, consistently shows a willingness to learn new things.</span></blockquote><button class="q-toggle" type="button" aria-expanded="false" aria-controls="quote-3-more" hidden>Read more</button></li>
+            <li><blockquote><span class="q-short">Raymond impressed me with his initiative and willingness to seek feedback on the product and its use cases.</span></blockquote></li>
           </ul>
-          <figcaption>— Colleagues, JPMorgan Chase</figcaption>
+          <figcaption>— Colleagues &amp; teammates</figcaption>
         </figure>
       </div>
     </section>

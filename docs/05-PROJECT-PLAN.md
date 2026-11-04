@@ -4,7 +4,7 @@
 > **Status:** Draft v1 · 2026-11-02 · Owner: Raymond Wang
 > **Related:** [PRD](01-PRD.md) · [Positioning](02-POSITIONING.md) · [Design](03-DESIGN.md) · [Tech](04-TECH.md)
 
-> **Status 2026-11-04:** at the owner's request, the phases were built in one pass instead of gated. Done: Phase 0 code, résumé-aligned content, the Unfold intro, P1 delight (timeline, card glow, decision maps, page transitions), 404 page, docs merge, headshot, link-preview image, ⌘K menu. Deployed to GitHub (RayPortfolio) for Vercel. **Redesign 2026-11-04:** dark console theme, one-minute home page, Builds pages, motion system (decode, type-on, ticker, tilt, career line, quote rotator), dead-code purge. **Still needs you:** named testimonials, build reflections (`EDIT ME`), the live domain (for the preview-image URL).
+> **Status 2026-11-04:** at the owner's request, the phases were built in one pass instead of gated. Done: Phase 0 code, résumé-aligned content, the Unfold intro, P1 delight (timeline, card glow, decision maps, page transitions), 404 page, docs merge, headshot, link-preview image, ⌘K menu. Deployed to GitHub (RayPortfolio) for Vercel. **Redesign 2026-11-04:** dark console theme, one-minute home page, Builds pages, motion system (decode, type-on, ticker, tilt, career line, quote rotator), dead-code purge. **Still needs you:** build reflections (`EDIT ME`); delete the duplicate Vercel projects (`rayport`, `rayportfolio`).
 
 ---
 
@@ -125,3 +125,7 @@ For each feature: build → check the motion rule → check reduced motion → r
 | 2026-11-04 | Redesign: dark "console" look, visual over wordy, no visible section headings | Owner feedback: too wordy, not "AI" enough |
 | 2026-11-04 | "Case studies" → **Builds**; list page and Insights removed | Home shows every build; no empty sections |
 | 2026-11-04 | Testimonials → one rotating quote | Fewer words; keeps the existing quotes |
+| 2026-11-04 | Intro card → **product boot sequence** (always dark), site **light by default** | Owner: more immersive opening that shows details first |
+| 2026-11-04 | Headline "stakeholder needs"; flip stat cards (50 stakeholders · team of 10 · 2 lending teams) | Owner-provided facts |
+| 2026-11-04 | Principles 05–06 (lifecycle), linger on hover; nav "warp" transitions; 4 quotes with Read more; animated mini-prototypes + Loop strip | Owner: eye-catching, reads as a PM at a glance |
+| 2026-11-04 | Live domain: rayportf.vercel.app (absolute og:image/og:url) | Owner confirmed |

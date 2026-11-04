@@ -1,6 +1,6 @@
 # Raymond Wang — Portfolio
 
-A fast, dark "console"-style portfolio built with plain HTML, CSS and vanilla JavaScript. No build step. The only external code is GSAP (from a CDN, home page only, for the intro animation) and two Google Fonts. The site still works if either fails to load.
+A fast, light-by-default portfolio with a dark "console" boot sequence, built with plain HTML, CSS and vanilla JavaScript. No build step. The only external code is GSAP (from a CDN, home page only, for the intro animation) and two Google Fonts. The site still works if either fails to load.
 
 Planning docs (PRD, positioning, design, tech, project plan) live in [`docs/`](docs/).
 
@@ -12,13 +12,13 @@ python3 -m http.server 8000
 # open http://localhost:8000/home.html
 ```
 
-The intro card shows **once per browser tab**. To see it again, open the page in a new tab or a private window. Links that go straight to a section (e.g. `home.html#builds`) skip it.
+The boot sequence shows **once per browser tab**. To see it again, open the page in a new tab or a private window. Links that go straight to a section (e.g. `home.html#builds`) skip it.
 
 ## Files
 
 ```
-home.html                 Main page: intro card → hero + stats → highlights ticker → builds →
-                          how I work → stack → path → quote → contact
+home.html                 Main page: boot sequence → hero + flip stats → highlights ticker → builds →
+                          loop → how I work → stack → path → quotes → contact
 index.html                Redirect stub → home.html (also carries link-preview tags for the bare URL)
 404.html                  "Signal lost" page. Uses root-absolute links (/…) because Vercel serves it at any depth
 builds/momentum.html      Momentum (JPMC hackathon, 2026)
@@ -38,14 +38,15 @@ Use **Cmd+F** on the comment name in `home.html`. There are no line numbers to g
 
 | What | Search for |
 |---|---|
-| Intro card (name, one-liner, 3 facts) | `INTRO` |
-| Headline + 3 stat tiles | `HERO` |
+| Boot sequence (log lines, name, one-liner; graph labels are in the `<svg class="graph">`) | `INTRO` |
+| Headline + 3 flip cards (number/label on the front, detail on the back) | `HERO` |
 | Ticker phrases (edit **both** lists, which must match) | `HIGHLIGHTS` |
-| Build tiles | `BUILDS` |
-| The 4 principles | `HOW I WORK` |
+| Build tiles and their mini-prototypes (illustrations, mock data) | `BUILDS` |
+| Lifecycle steps | `LOOP` |
+| The 6 principles | `HOW I WORK` |
 | Skills (`g-product` / `g-ai` / `g-data` / `g-domain` sets the colour) | `STACK` |
 | Career line (put `is-now` on the current role) | `PATH` |
-| Quotes (add another `<li>`; a dot appears automatically) | `QUOTE` |
+| Quotes: `q-short` shows first, optional `q-more` behind "Read more" (give it an `id` and point the button's `aria-controls` at it). Add an `<li>` and a dot appears automatically | `QUOTE` |
 | Email / LinkedIn | `mailto:` / `linkedin` on every page |
 | Unfinished spots | `EDIT ME` (build pages) |
 
@@ -59,7 +60,7 @@ Keep it short. The home page is meant to be a one-minute scroll, and the detail 
 ## Adding a build
 
 1. Copy `builds/momentum.html` to `builds/<name>.html`.
-2. Update the title, tag, fact chips, the 3 decision-map nodes and the sections. Each panel `id` must be `<name>-<section>`, and each decision-map link points at one of those ids.
+2. Update the title, tag, fact chips, the mini-prototype, the 3 decision-map nodes and the sections. Each panel `id` must be `<name>-<section>`, and each decision-map link points at one of those ids.
 3. Add a tile to the `BUILDS` section of `home.html`, and fix the prev/next buttons at the bottom of each build page.
 4. Add the page to the ⌘K menu: the two `"Build"` lines near "Command palette" in `assets/js/main.js`.
 5. Only include facts you can share publicly (see `docs/02-POSITIONING.md` §7).
@@ -76,22 +77,25 @@ grep -c 'data-nav-toggle' *.html builds/*.html
 
 | Effect | How to use |
 |---|---|
-| Unfold intro | Automatic on `home.html`. Click Explore, press Enter or scroll. Skip link for keyboard users; quick fade with reduced motion; slide-up on phones |
+| Boot sequence | Automatic on `home.html`: log lines type in, the graph links up, the name decodes, then Enter/scroll flies the photo into the hero. Skip button + skip link; everything shows at once with reduced motion; slide-up on phones |
 | Decode text | `data-decode` on any short text: scrambles into the real text when it scrolls into view |
-| Type-on | `data-type`: types the text with a caret (used on the intro line) |
 | Counters | `data-count="10"` on a number, with the real value as its text |
 | Reveal / stagger | `data-reveal` fades an element in; add `data-stagger` to animate its children one by one |
 | Card glow + tilt | Class `card-hover` (mouse/trackpad only) |
-| Quote rotator | `data-rotator` on the quote figure |
+| Flip cards | `.flip` > `.flip-inner` > `.flip-front` + `.flip-back`: flips on hover/keyboard focus, tap on touch |
+| Linger | Principle and loop details stay ~1.5 s after the pointer leaves (`--linger` in styles.css) |
+| Mini-prototypes | `data-live` on a `.proto`: animates only while on screen |
+| Warp | Nav links, ⌘K sections and "See builds": scan-line sweep with the section name, then the section lights up as it arrives |
+| Quote rotator | `data-rotator`: arrows, dots, "Read more"; pauses while hovered, focused or expanded |
 | Ticker, career line, motifs | Pure CSS (`.ticker`, `.path`, `.art`) |
 | Accordions | `.cs-section` on build pages; `aria-expanded="true"` opens one by default. Links to a panel id open that section |
 | Copy email | `data-copy="you@example.com"` on a mailto link: copies it and still opens the mail app |
 | Jump menu | ⌘K (Ctrl K on Windows) or the ⌕ button |
-| Light/dark | Dark by default; the ◐ button switches and remembers the choice |
+| Light/dark | Light by default (the boot screen is always dark); the ◐ button switches and remembers the choice |
 
 **When something fails:**
 - Reduced-motion users get final states with no movement.
-- Without JavaScript, all content shows: the intro is the first section, and every quote is listed.
+- Without JavaScript, all content shows: the boot screen is a static first section, and every quote is listed in full.
 - A missing headshot becomes an "RW" tile.
 - If GSAP or the fonts fail to load, the site falls back to CSS animation and system fonts.
 
@@ -102,8 +106,8 @@ grep -rn "EDIT ME" --include="*.html" .           # remaining fill-in spots (hid
 grep -c 'data-nav-toggle' *.html builds/*.html    # header copies in sync
 ```
 
-Once the site has its final domain, change `og:image` in `home.html` and `index.html` to the full URL (e.g. `https://<domain>/assets/img/og-image.png`). LinkedIn ignores relative image paths.
+`og:image` and `og:url` in `home.html` and `index.html` point at **https://rayportf.vercel.app**. If you add a custom domain, update them (LinkedIn ignores relative image paths).
 
 ## Deploy
 
-The site is hosted on **Vercel** from the `RayPortfolio` GitHub repo. Every push to `main` goes live automatically.
+Live at **https://rayportf.vercel.app** (Vercel project `rayportf`, from the `RayPortfolio` GitHub repo). Every push to `main` goes live automatically.

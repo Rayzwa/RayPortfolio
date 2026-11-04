@@ -14,17 +14,17 @@
 
   /* ---------- Theme ----------
      The inline <head> script sets the theme before first paint
-     (dark unless the visitor chose light). Here we sync the toggle
+     (light unless the visitor chose dark). Here we sync the toggle
      and save manual choices. */
   var THEME_KEY = "pm-theme";
   function syncThemeToggle() {
-    var dark = root.getAttribute("data-theme") !== "light";
+    var dark = root.getAttribute("data-theme") === "dark";
     document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
       btn.setAttribute("aria-pressed", dark ? "true" : "false");
     });
   }
   function toggleTheme() {
-    var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
     syncThemeToggle();
     try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
@@ -223,64 +223,83 @@
   }
   onVisible(document.querySelectorAll("[data-decode]"), decode, { threshold: 0.5 });
 
-  /* ---------- Type-on with caret ---------- */
-  function typeOn(el) {
-    if (reduceMotion) return;
-    var text = el.textContent, i = 0;
-    el.style.minHeight = el.offsetHeight + "px";   // no layout jump while it fills
-    el.textContent = "";
-    el.classList.add("is-typing");
-    var timer = setInterval(function () {
-      i++;
-      el.textContent = text.slice(0, i);
-      if (i >= text.length) {
-        clearInterval(timer);
-        el.classList.remove("is-typing");
-        el.classList.add("is-typed");
-      }
-    }, 22);
+  // Other scripts can ask for a decode (intro.js does, for the name).
+  document.addEventListener("rw:decode", function (e) { decode(e.target); });
+
+  /* ---------- Mini prototypes animate only while on screen ---------- */
+  var live = document.querySelectorAll("[data-live]");
+  if (live.length && !reduceMotion && "IntersectionObserver" in window) {
+    var lo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { entry.target.classList.toggle("is-live", entry.isIntersecting); });
+    }, { threshold: 0.3 });
+    live.forEach(function (el) { lo.observe(el); });
   }
-  onVisible(document.querySelectorAll("[data-type]"), typeOn, { threshold: 0.5 });
 
   /* ---------- Quote rotator ----------
-     Without JS every quote is listed. With JS one shows at a time,
-     with dots to pick; auto-advances unless reduced motion, and
-     pauses while hovered or focused. */
+     Without JS every quote is listed in full. With JS one shows at a
+     time (short part first, "Read more" for the rest), with arrows and
+     dots; auto-advances unless reduced motion, and pauses while hovered,
+     focused or expanded. */
   document.querySelectorAll("[data-rotator]").forEach(function (rot) {
     var items = rot.querySelectorAll(".rotator-list > li");
     if (items.length < 2) return;
-    var current = 0, timer = null;
-    var dots = document.createElement("div");
-    dots.className = "rotator-dots";
-    items.forEach(function (li, i) {
+    var current = 0, timer = null, hovered = false, focused = false;
+    function button(cls, label, text, onClick) {
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "rotator-dot";
-      b.setAttribute("aria-label", "Show quote " + (i + 1) + " of " + items.length);
-      b.addEventListener("click", function () { show(i); });
-      dots.appendChild(b);
-    });
-    rot.appendChild(dots);
-    rot.classList.add("is-rotating");
-    function show(i) {
-      current = i;
-      items.forEach(function (li, j) { li.classList.toggle("is-active", j === i); });
-      Array.prototype.forEach.call(dots.children, function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
+      b.className = cls;
+      b.setAttribute("aria-label", label);
+      b.textContent = text;
+      b.addEventListener("click", onClick);
+      return b;
     }
-    function next() {
-      show((current + 1) % items.length);
-      var q = items[current].querySelector("blockquote");
+    var controls = document.createElement("div");
+    controls.className = "rotator-controls";
+    controls.appendChild(button("rotator-arrow", "Previous quote", "‹", function () { go(current - 1); }));
+    var dots = [];
+    items.forEach(function (li, i) {
+      dots.push(controls.appendChild(button("rotator-dot", "Show quote " + (i + 1) + " of " + items.length, "", function () { go(i); })));
+    });
+    controls.appendChild(button("rotator-arrow", "Next quote", "›", function () { go(current + 1); }));
+    rot.appendChild(controls);
+    rot.classList.add("is-rotating");
+
+    function setExpanded(li, open) {
+      li.classList.toggle("is-expanded", open);
+      var b = li.querySelector(".q-toggle");
+      if (!b) return;
+      b.setAttribute("aria-expanded", open ? "true" : "false");
+      b.textContent = open ? "Show less" : "Read more";
+    }
+    rot.querySelectorAll(".q-toggle").forEach(function (b) {
+      b.hidden = false;
+      b.addEventListener("click", function () {
+        var li = b.closest("li");
+        setExpanded(li, !li.classList.contains("is-expanded"));
+      });
+    });
+    function show(i, animate) {
+      current = (i + items.length) % items.length;
+      items.forEach(function (li, j) {
+        li.classList.toggle("is-active", j === current);
+        if (j !== current) setExpanded(li, false);
+      });
+      dots.forEach(function (b, j) { b.setAttribute("aria-current", j === current ? "true" : "false"); });
+      var q = animate && items[current].querySelector(".q-short");
       if (q) decode(q);
     }
-    function play() { if (!timer) timer = setInterval(next, 7000); }
+    function play() {
+      if (timer || reduceMotion || hovered || focused || rot.querySelector(".is-expanded")) return;
+      timer = setInterval(function () { show(current + 1, true); }, 7000);
+    }
     function pause() { clearInterval(timer); timer = null; }
-    show(0);
-    if (reduceMotion) return;
+    function go(i) { show(i, true); pause(); play(); }
+    show(0, false);
     play();
-    rot.addEventListener("mouseenter", pause);
-    rot.addEventListener("mouseleave", play);
-    rot.addEventListener("focusin", pause);
-    rot.addEventListener("focusout", play);
+    rot.addEventListener("mouseenter", function () { hovered = true; pause(); });
+    rot.addEventListener("mouseleave", function () { hovered = false; play(); });
+    rot.addEventListener("focusin", function () { focused = true; pause(); });
+    rot.addEventListener("focusout", function () { focused = false; play(); });
   });
 
   /* ---------- Accordion (build pages) ---------- */
@@ -342,7 +361,12 @@
     if (t.closest("[data-theme-toggle]")) { e.preventDefault(); toggleTheme(); return; }
     if (t.closest("[data-nav-toggle]")) { e.preventDefault(); setNav(!body.classList.contains("nav-open")); return; }
     if (t.closest("[data-cmdk]")) { e.preventDefault(); openPalette(); return; }
+    var jump = t.closest('a[href^="#"]');
+    if (jump && !e.defaultPrevented && warpTo(jump.getAttribute("href"))) { e.preventDefault(); setNav(false); return; }
     if (t.closest(".nav-links a")) setNav(false);
+    // Touch has no hover, so a tap flips the card (desktop flips on hover/focus in CSS).
+    var flip = t.closest(".flip");
+    if (flip && !finePointer) flip.classList.toggle("is-flipped");
     // Copy links are mailto: links, so the mail app still opens too.
     var copyEl = t.closest("[data-copy]");
     if (copyEl) copyEmail(copyEl.getAttribute("data-copy"));
@@ -350,6 +374,44 @@
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") setNav(false);
   });
+
+  /* ---------- Warp: immersive jump to a section ----------
+     Same-page links to a <section>/<main> play a scan-line sweep with
+     the destination name, glide there, then sweep the section as it
+     arrives. Other hash links (e.g. build-page panels) are left alone.
+     Reduced motion: an instant jump. */
+  var warp = null, warpTimer = null;
+  function focusSection(el) {
+    if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+    el.focus({ preventScroll: true });
+  }
+  function warpTo(hash) {
+    var target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+    if (!target || !target.matches("section, main") || root.classList.contains("intro-on")) return false;
+    if (history.pushState) history.pushState(null, "", hash);
+    if (reduceMotion) { target.scrollIntoView(); focusSection(target); return true; }
+    if (!warp) {
+      warp = document.createElement("div");
+      warp.className = "warp";
+      warp.setAttribute("aria-hidden", "true");
+      warp.innerHTML = '<span class="warp-label"></span>';
+      body.appendChild(warp);
+    }
+    warp.firstChild.textContent = "// " + target.id;
+    warp.classList.remove("is-on");
+    void warp.offsetWidth;   // restart the animation
+    warp.classList.add("is-on");
+    target.scrollIntoView({ behavior: "smooth" });
+    focusSection(target);
+    clearTimeout(warpTimer);
+    warpTimer = setTimeout(function () {
+      target.classList.remove("is-arriving");
+      void target.offsetWidth;
+      target.classList.add("is-arriving");
+      setTimeout(function () { target.classList.remove("is-arriving"); }, 1100);
+    }, 500);
+    return true;
+  }
 
   /* ---------- Command palette (⌘K / Ctrl+K) ----------
      Commands come from the page (nav links, résumé link, footer
@@ -439,6 +501,7 @@
     if (!c) return;
     cmdk.close();
     if (c.run) { c.run(); return; }
+    if (c.href.charAt(0) === "#" && warpTo(c.href)) return;
     if (c.download || c.newTab) {
       var a = document.createElement("a");
       a.href = c.href;

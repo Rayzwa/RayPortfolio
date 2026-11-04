@@ -7,6 +7,8 @@
 
 > **Update 2026-11-04 (redesign):** the site moved to a dark "console" look and a one-minute home page. Visible section headings were removed; case studies are now **Builds** (`builds/*.html`); highlights became a ticker; skills a colour-coded chip cloud; experience a 4-step career line; testimonials one rotating quote. Insights, the list page, the vertical timeline and the lightbox were removed. See the README for the current structure.
 
+> **Update 2026-11-04 (boot sequence):** the intro card became a dark product boot sequence (log lines → node graph → name decode → Enter), the site is light by default, stats are flip cards, principles go to 06 and linger after hover, nav links "warp" to sections, builds show animated mini-prototypes, and a Loop strip shows the product lifecycle.
+
 ---
 
 ## 1. Screens (wireframes)
