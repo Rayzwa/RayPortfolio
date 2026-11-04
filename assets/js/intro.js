@@ -5,8 +5,10 @@
    html.intro-done (returning visit / deep link). Without JS
    neither is set and the intro is a static first section.
    Boot steps are CSS classes on #intro (.is-booting, .graph-on,
-   .name-on, .is-ready); the exit uses GSAP + Flip when
-   available, otherwise CSS fallbacks.
+   .name-on, .is-ready); then it opens the site by itself after a
+   short countdown (paused while the visitor hovers or focuses the
+   intro's buttons). The exit uses GSAP + Flip when available,
+   otherwise CSS fallbacks.
    ============================================================ */
 (function () {
   "use strict";
@@ -54,8 +56,38 @@
       intro.classList.add("name-on");
       if (name) name.dispatchEvent(new CustomEvent("rw:decode", { bubbles: true }));   // main.js decodes it
     });
-    at(t + 1200, function () { intro.classList.add("is-ready"); endBoot(); });
+    at(t + 1200, function () { intro.classList.add("is-ready"); endBoot(); startCountdown(); });
   }
+
+  /* ---------- Auto-open countdown ---------- */
+  var AUTO_MS = reduceMotion ? 3500 : 1800;
+  var autoTimer = null, counting = false, hovering = false, focusInside = false;
+  intro.style.setProperty("--auto-ms", AUTO_MS + "ms");
+  function startCountdown() {
+    counting = true;
+    resumeCountdown();
+  }
+  function resumeCountdown() {
+    if (!counting || started || hovering || focusInside) return;
+    clearTimeout(autoTimer);
+    intro.classList.remove("is-counting");
+    void intro.offsetWidth;   // restart the countdown line
+    intro.classList.add("is-counting");
+    autoTimer = setTimeout(function () { unfold(false); }, AUTO_MS);
+  }
+  function holdCountdown() {
+    clearTimeout(autoTimer);
+    intro.classList.remove("is-counting");
+  }
+  var actions = intro.querySelector(".boot-actions");
+  if (actions) {
+    actions.addEventListener("pointerenter", function () { hovering = true; holdCountdown(); });
+    actions.addEventListener("pointerleave", function () { hovering = false; resumeCountdown(); });
+  }
+  intro.addEventListener("focusin", function () { focusInside = true; holdCountdown(); });
+  intro.addEventListener("focusout", function () { focusInside = false; resumeCountdown(); });
+  // Reduced motion: nothing animates in, so the countdown starts right away (and runs longer).
+  if (reduceMotion) startCountdown();
 
   function finish() {
     if (done) return;
@@ -105,7 +137,7 @@
       tl.add(Flip.from(photoState, { duration: 0.8, ease: "power3.inOut" }), 0.1);
     }
 
-    // Lights on: reveal the site underneath, then fade the dark layer away.
+    // Reveal the site underneath, then fade the intro layer away (same theme, so it reads as one surface).
     tl.call(function () { root.classList.add("intro-reveal"); }, null, 0.5);
     tl.to(intro, { opacity: 0, duration: 0.35, ease: "power1.out" }, 0.65);
   }
@@ -115,6 +147,7 @@
     started = true;
     removeTriggers();
     endBoot();
+    clearTimeout(autoTimer);
     if (instant) return finish();
     if (reduceMotion) return cssLeave("is-fading", 150);
     if (small) return cssLeave("is-sliding", 500);

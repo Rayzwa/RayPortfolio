@@ -1,6 +1,6 @@
 # Raymond Wang — Portfolio
 
-A fast, light-by-default portfolio with a dark "console" boot sequence, built with plain HTML, CSS and vanilla JavaScript. No build step. The only external code is GSAP (from a CDN, home page only, for the intro animation) and two Google Fonts. The site still works if either fails to load.
+A fast, light-by-default portfolio with a "console" boot sequence, built with plain HTML, CSS and vanilla JavaScript. No build step. The only external code is GSAP (from a CDN, home page only, for the intro animation) and two Google Fonts. The site still works if either fails to load.
 
 Planning docs (PRD, positioning, design, tech, project plan) live in [`docs/`](docs/).
 
@@ -76,7 +76,7 @@ grep -c 'data-nav-toggle' *.html builds/*.html
 
 | Effect | How to use |
 |---|---|
-| Boot sequence | Automatic on `home.html`: log lines type in, the graph links up, the name decodes, then Enter/scroll flies the photo into the hero. Skip button + skip link; everything shows at once with reduced motion; slide-up on phones |
+| Boot sequence | Automatic on `home.html`: log lines type in, the graph links up, the name decodes, then it opens the site by itself after a short countdown (shown as a line on Enter), flying the photo into the hero. Enter/scroll/Skip go straight in; hovering or tabbing to the intro buttons pauses the countdown. Uses the same theme as the site. Everything shows at once (and the countdown runs longer) with reduced motion; slide-up on phones |
 | Desktop panels | Automatic at ≥ 900×620: one full-screen panel at a time, switched by nav links, ⌘K, the dot rail, the "next" button, arrow/Page keys, one wheel/trackpad gesture or a swipe. Back/Forward and links like `home.html#builds` work. Smaller screens scroll normally |
 | Builds showcase | `data-showcase`: selectors become tabs (click, hover on desktop, arrow keys); a chip row on phones |
 | Decode text | `data-decode` on any short text: scrambles into the real text when it scrolls into view |
@@ -91,7 +91,7 @@ grep -c 'data-nav-toggle' *.html builds/*.html
 | Accordions | `.cs-section` on build pages; `aria-expanded="true"` opens one by default. Links to a panel id open that section |
 | Copy email | `data-copy="you@example.com"` on a mailto link: copies it and still opens the mail app |
 | Jump menu | ⌘K (Ctrl K on Windows) or the ⌕ button |
-| Light/dark | Light by default (the boot screen is always dark); the ◐ button switches and remembers the choice |
+| Light/dark | Light by default; the ◐ button switches and remembers the choice (the boot screen follows it) |
 
 **When something fails:**
 - Reduced-motion users get final states with no movement (panels swap instantly).
