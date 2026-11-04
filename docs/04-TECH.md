@@ -7,6 +7,9 @@
 
 > **Update 2026-11-04 (redesign):** the site moved to a dark "console" look and a one-minute home page. Visible section headings were removed; case studies are now **Builds** (`builds/*.html`); highlights became a ticker; skills a colour-coded chip cloud; experience a 4-step career line; testimonials one rotating quote. Insights, the list page, the vertical timeline and the lightbox were removed. See the README for the current structure.
 
+
+> **Update 2026-11-04 (performance):** GSAP has been removed. The intro exit now uses the browser's Web Animations API (transform/opacity only, compositor-run), so the site loads no JavaScript libraries. The CDN snippet below is historical.
+
 ---
 
 ## 1. Architecture

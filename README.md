@@ -1,6 +1,6 @@
 # Raymond Wang — Portfolio
 
-A fast, light-by-default portfolio with a "console" boot sequence, built with plain HTML, CSS and vanilla JavaScript. No build step. The only external code is GSAP (from a CDN, home page only, for the intro animation) and two Google Fonts. The site still works if either fails to load.
+A fast, light-by-default portfolio with a "console" boot sequence, built with plain HTML, CSS and vanilla JavaScript. No build step. No JavaScript libraries; the only external files are two Google Fonts, and the site still works if they fail to load.
 
 Planning docs (PRD, positioning, design, tech, project plan) live in [`docs/`](docs/).
 
@@ -95,10 +95,10 @@ grep -c 'data-nav-toggle' *.html builds/*.html
 
 **When something fails:**
 - Reduced-motion users get final states with no movement (panels swap instantly).
-- Animations use only transform/opacity, and anything off screen (hidden panels, inactive builds) doesn't run.
+- Animations use only transform/opacity (the intro exit runs on the compositor via the Web Animations API), and anything off screen (hidden panels, inactive builds) doesn't run. Mock-ups and the chip/career-line effects wait until a panel has finished sliding in.
 - Without JavaScript, all content shows: the boot screen is a static first section, and every quote is listed in full.
 - A missing headshot becomes an "RW" tile.
-- If GSAP or the fonts fail to load, the site falls back to CSS animation and system fonts.
+- If the fonts fail to load, system fonts are used. Browsers without the Web Animations API get a simple CSS fade out of the intro.
 
 ## Before you publish
 

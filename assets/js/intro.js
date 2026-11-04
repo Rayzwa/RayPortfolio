@@ -7,8 +7,9 @@
    Boot steps are CSS classes on #intro (.is-booting, .graph-on,
    .name-on, .is-ready); then it opens the site by itself after a
    short countdown (paused while the visitor hovers or focuses the
-   intro's buttons). The exit uses GSAP + Flip when available,
-   otherwise CSS fallbacks.
+   intro's buttons). The exit animates only transform/opacity with
+   the Web Animations API (runs on the compositor, so it stays
+   smooth), with CSS fallbacks.
    ============================================================ */
 (function () {
   "use strict";
@@ -65,6 +66,7 @@
   intro.style.setProperty("--auto-ms", AUTO_MS + "ms");
   function startCountdown() {
     counting = true;
+    intro.classList.add("is-primed");   // promote the exit layers now, while nothing is moving
     resumeCountdown();
   }
   function resumeCountdown() {
@@ -98,6 +100,9 @@
     intro.hidden = true;
     // Don't rely on the scroll-reveal observer for the hero: show it now.
     document.querySelectorAll(".hero [data-reveal]").forEach(function (el) { el.classList.add("is-visible"); });
+    // The flown photo sits exactly on the portrait; keep it there until the portrait has faded in.
+    var flown = document.querySelector(".boot-photo.is-flying");
+    if (flown) setTimeout(function () { flown.remove(); }, 700);
     try { sessionStorage.setItem(SEEN_KEY, "1"); } catch (e) {}
     window.scrollTo(0, 0);
     if (heroHeading) heroHeading.focus({ preventScroll: true });
@@ -105,41 +110,47 @@
     document.dispatchEvent(new Event("intro:done"));   // main.js starts the hero counters
   }
 
-  // CSS-only exit: reduced motion, small screens, or GSAP unavailable.
+  // CSS-only exit: reduced motion, small screens, or no Web Animations API.
   function cssLeave(className, ms) {
-    root.classList.add("intro-reveal");
     intro.classList.add(className);
     setTimeout(finish, ms + 50);
   }
 
-  function gsapLeave(gsap, Flip) {
-    gsap.registerPlugin(Flip);
+  // Every animation here is transform/opacity on its own layer, so the
+  // browser runs it off the main thread. No classes or layout change until
+  // finish(), after motion has stopped. The site is already painted under
+  // the intro, so the exit is one crossfade plus the photo flight.
+  function animateLeave() {
     var photo = intro.querySelector("[data-intro-photo]");
-    var fade = intro.querySelectorAll("[data-intro-body], .graph, .intro-hint, .boot-skip");
     var target = document.querySelector(".hero-portrait");
-    var tl = gsap.timeline({ onComplete: finish });
-    // Safety net: if animation frames stall (throttled tab, odd browser), never leave the visitor stuck.
+    var ease = "cubic-bezier(.65, 0, .35, 1)", flight = null;
+    // Safety net: if animations stall (throttled tab, odd browser), never leave the visitor stuck.
     setTimeout(finish, 2000);
+    intro.classList.add("is-primed");
 
-    tl.to(fade, { opacity: 0, y: -8, duration: 0.25, ease: "power1.out" }, 0);
+    intro.querySelectorAll("[data-intro-body], .graph, .boot-pulse, .intro-hint, .boot-skip").forEach(function (el) {
+      el.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-8px)" }],
+        { duration: 250, easing: "ease-out", fill: "forwards" });
+    });
 
-    // Lift the photo out of the graph and fly it onto the hero portrait.
+    // FLIP: put the photo where the hero portrait is, then animate a
+    // transform from where it was. Both are square, so one scale works.
     if (photo && target) {
-      var photoState = Flip.getState(photo);
-      var r = target.getBoundingClientRect();
-      intro.appendChild(photo);
+      var a = photo.getBoundingClientRect(), b = target.getBoundingClientRect();
       photo.classList.add("is-flying");
-      photo.style.position = "absolute";
-      photo.style.left = r.left + "px";
-      photo.style.top = r.top + "px";
-      photo.style.width = r.width + "px";
-      photo.style.height = r.height + "px";
-      tl.add(Flip.from(photoState, { duration: 0.8, ease: "power3.inOut" }), 0.1);
+      photo.style.left = b.left + "px";
+      photo.style.top = b.top + "px";
+      photo.style.width = b.width + "px";
+      photo.style.height = b.height + "px";
+      document.body.appendChild(photo);   // outside the intro, so it stays visible while the intro fades
+      flight = photo.animate([
+        { transform: "translate(" + (a.left - b.left) + "px," + (a.top - b.top) + "px) scale(" + a.width / b.width + ")" },
+        { transform: "none" }
+      ], { duration: 800, easing: ease });
     }
 
-    // Reveal the site underneath, then fade the intro layer away (same theme, so it reads as one surface).
-    tl.call(function () { root.classList.add("intro-reveal"); }, null, 0.5);
-    tl.to(intro, { opacity: 0, duration: 0.35, ease: "power1.out" }, 0.65);
+    var fadeOut = intro.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, delay: 600, easing: "ease-out", fill: "forwards" });
+    Promise.all([fadeOut.finished, flight && flight.finished]).then(finish, finish);
   }
 
   function unfold(instant) {
@@ -151,8 +162,8 @@
     if (instant) return finish();
     if (reduceMotion) return cssLeave("is-fading", 150);
     if (small) return cssLeave("is-sliding", 500);
-    if (!window.gsap || !window.Flip) return cssLeave("is-leaving", 300);
-    gsapLeave(window.gsap, window.Flip);
+    if (!Element.prototype.animate) return cssLeave("is-leaving", 300);
+    animateLeave();
   }
 
   /* ---------- Triggers (each fires once; any of them also skips the boot) ---------- */

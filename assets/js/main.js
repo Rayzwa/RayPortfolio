@@ -190,7 +190,7 @@
   function afterIntro(fn) {
     return function (el) {
       if (!root.classList.contains("intro-on")) fn(el);
-      else document.addEventListener("intro:done", function () { fn(el); }, { once: true });
+      else document.addEventListener("intro:done", function () { setTimeout(function () { fn(el); }, 150); }, { once: true });
     };
   }
   onVisible(document.querySelectorAll("[data-count]"), afterIntro(runCounter), { threshold: 0.4 });
@@ -339,10 +339,18 @@
     var tabs = Array.prototype.slice.call(sc.querySelectorAll(".show-tab"));
     var items = tabs.map(function (t) { return document.getElementById(t.getAttribute("href").slice(1)); });
     if (!list || !tabs.length || items.indexOf(null) !== -1) return;
-    var hoverTimer = null;
+    var hoverTimer = null, switchTimer = null, current = -1;
     list.setAttribute("role", "tablist");
     list.setAttribute("aria-label", "Builds");
     function select(i) {
+      if (i === current) return;
+      // Entrance animation only when the visitor changes builds (not on first show or panel re-entry).
+      if (current !== -1) {
+        sc.classList.add("is-switching");
+        clearTimeout(switchTimer);
+        switchTimer = setTimeout(function () { sc.classList.remove("is-switching"); }, 700);
+      }
+      current = i;
       tabs.forEach(function (t, j) {
         t.setAttribute("aria-selected", j === i ? "true" : "false");
         t.tabIndex = j === i ? 0 : -1;
@@ -397,13 +405,9 @@
     var link = document.querySelector('.nav-links a[href="#' + p.id + '"]');
     return link ? link.textContent.trim() : "Home";
   }
-  // Replays the panel's entrance effects (fade-ins, chip stagger, career line).
-  function replayReveals(panel) {
-    var items = panel.querySelectorAll(".reveal");
-    items.forEach(function (el) { el.classList.remove("is-visible"); });
-    void panel.offsetWidth;
-    items.forEach(function (el) { el.classList.add("is-visible"); });
-  }
+  // Signature entrance effects (chip stagger, career line) replay once the
+  // panel has landed, so they never compete with the slide itself.
+  var SIGNATURE = ".stack.reveal, .path.reveal";
   function syncPanelUI() {
     var i = panels.indexOf(currentPanel), last = i === panels.length - 1;
     Array.prototype.forEach.call(rail.children, function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
@@ -426,13 +430,15 @@
     next.classList.add("is-current");
     next.scrollTop = 0;
     if (animate) {
+      var signature = next.querySelectorAll(SIGNATURE);
+      signature.forEach(function (el) { el.classList.remove("is-visible"); });
       next.classList.add("is-entering", "is-moving");
-      void next.offsetWidth;   // commit the start state, then transition to rest
+      void next.offsetWidth;   // the only forced layout: commit the start state, then transition to rest
       next.classList.remove("is-entering");
-      replayReveals(next);
       leaveTimer = setTimeout(function () {
         from.classList.remove("is-leaving");
         next.classList.remove("is-moving");
+        signature.forEach(function (el) { el.classList.add("is-visible"); });
       }, 600);
     }
     currentPanel = next;

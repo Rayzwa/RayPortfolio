@@ -127,8 +127,7 @@ section[tabindex="-1"]:focus { outline: none; }
 /* ---------- Navigation ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  backdrop-filter: saturate(160%) blur(14px);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
   border-bottom: 1px solid var(--border);
 }
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 64px; }
@@ -196,10 +195,8 @@ section[tabindex="-1"]:focus { outline: none; }
 .intro-on body { overflow: hidden; }
 .intro-on .progress-bar, .intro-on .to-top { display: none; }
 .intro-done .intro { display: none; }
-.intro-on:not(.intro-reveal) .hero .reveal { opacity: 0; transform: translateY(18px); }
-/* The portrait only fades (no slide) so the flying intro photo lands exactly on it. */
-.intro-on:not(.intro-reveal) .hero .hero-portrait.reveal { transform: none; }
-.hero .hero-portrait.reveal { transition-delay: .12s; }
+/* The site is painted under the intro; only the portrait waits for the flying photo to land on it. */
+.intro-on .hero .hero-portrait { opacity: 0; }
 
 .boot {
   display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 470px); gap: clamp(1.5rem, 5vw, 4rem);
@@ -212,11 +209,14 @@ section[tabindex="-1"]:focus { outline: none; }
   stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset .9s var(--ease-out) calc(var(--i, 0) * 30ms);
 }
 .graph .node { transform-origin: 200px 200px; transition: transform .8s var(--ease-out) calc(var(--i, 0) * 45ms), opacity .5s ease calc(var(--i, 0) * 45ms); }
-.graph .node circle { fill: var(--accent); animation: twinkle 3s ease-in-out infinite; }
-.graph .node:nth-child(even) circle { fill: var(--accent-2); animation-delay: -1.5s; }
+.graph .node circle { fill: var(--accent); }
+.graph .node:nth-child(even) circle { fill: var(--accent-2); }
 .graph text { fill: var(--text-soft); font-family: var(--mono); font-size: 12px; text-anchor: middle; }
-.graph .pulse { fill: none; stroke: var(--accent); stroke-width: 1.5; transform-origin: 200px 200px; animation: ring 2.6s ease-out infinite; }
-@keyframes twinkle { 50% { opacity: .45; } }
+/* Pulse ring behind the photo: an HTML element, so its scale animation is composited. */
+.boot-pulse {
+  position: absolute; left: 50%; top: 50%; width: 39%; aspect-ratio: 1 / 1; translate: -50% -50%;
+  border: 1.5px solid var(--accent); border-radius: 50%; pointer-events: none; animation: ring 2.6s ease-out infinite;
+}
 @keyframes ring { from { transform: scale(.95); opacity: .8; } to { transform: scale(1.7); opacity: 0; } }
 .boot-photo {
   position: absolute; left: 50%; top: 50%; width: 36%; aspect-ratio: 1 / 1; translate: -50% -50%;
@@ -225,7 +225,13 @@ section[tabindex="-1"]:focus { outline: none; }
 }
 .boot-photo img { width: 100%; height: 100%; object-fit: cover; }
 .boot-photo .monogram { font-size: 2.6rem; }
-.boot-photo.is-flying { translate: none; z-index: 2; margin: 0; }
+.boot-photo.is-flying {
+  position: fixed; z-index: 160; translate: none; margin: 0; border-radius: var(--radius);
+  transform-origin: 0 0; pointer-events: none; will-change: transform;
+}
+/* Promoted while the countdown runs, so the exit doesn't have to build layers mid-animation. */
+.intro.is-primed, .is-primed .boot-panel, .is-primed .graph { will-change: opacity, transform; }
+.is-primed .boot-photo { will-change: transform; }
 
 .boot-panel { font-family: var(--mono); }
 .boot-cmd { color: var(--accent); font-size: .85rem; margin: 0 0 .8rem; }
@@ -260,7 +266,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .is-booting .boot-bar span { transform: scaleX(0); }
 .is-booting:not(.graph-on) .graph .node { opacity: 0; transform: scale(.15); }
 .is-booting:not(.graph-on) .graph .link { stroke-dashoffset: 1; }
-.is-booting:not(.name-on) .graph .pulse { visibility: hidden; }
+.is-booting:not(.name-on) .boot-pulse { visibility: hidden; }
 .is-booting:not(.name-on) .boot-photo { opacity: 0; scale: .8; }
 .is-booting:not(.name-on) .boot-name, .is-booting:not(.name-on) .boot-line { opacity: 0; transform: translateY(8px); }
 .is-booting:not(.is-ready) .boot-actions, .is-booting:not(.is-ready) .intro-hint { opacity: 0; transform: translateY(8px); }
@@ -289,6 +295,8 @@ section[tabindex="-1"]:focus { outline: none; }
 }
 .is-panels .panel.is-moving, .is-panels .panel.is-leaving { will-change: transform, opacity; }
 .is-panels .site-footer, .is-panels .to-top { display: none; }
+/* Mock-ups hold still until their panel has landed. */
+.is-panels .panel.is-moving .proto *, .is-panels .panel.is-moving .proto *::before { animation-play-state: paused; }
 .is-panels .hero-portrait { width: min(100%, 44vh); justify-self: end; }
 .panel-rail, .panel-next { display: none; }
 .is-panels .panel-rail {
@@ -374,11 +382,13 @@ section[tabindex="-1"]:focus { outline: none; }
 
 /* ---------- Ticker (highlights marquee) ---------- */
 .ticker {
-  margin-top: clamp(1.8rem, 5vh, 3rem); padding-block: 1rem; overflow: hidden; border-block: 1px solid var(--border);
+  position: relative; margin-top: clamp(1.8rem, 5vh, 3rem); padding-block: 1rem; overflow: hidden; border-block: 1px solid var(--border);
   background: color-mix(in srgb, var(--surface) 55%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
+/* Edge fades as plain overlays (cheaper than mask-image on an animating strip). */
+.ticker::before, .ticker::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 1; width: 8%; pointer-events: none; }
+.ticker::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.ticker::after { right: 0; background: linear-gradient(270deg, var(--bg), transparent); }
 .ticker-track { display: flex; width: max-content; animation: marquee 45s linear infinite; }
 .ticker:hover .ticker-track { animation-play-state: paused; }
 .ticker-list { display: flex; list-style: none; margin: 0; padding: 0; }
@@ -422,7 +432,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .showcase.is-tabbed .show-item:not(.is-active) { display: none; }
 .show-item {
   --c: var(--accent); overflow: hidden; background: var(--surface);
-  border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px); box-shadow: 0 30px 60px -40px var(--glow);
+  border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px);
 }
 .show-media {
   position: relative; display: grid; place-items: center; height: clamp(240px, 42vh, 350px); padding: 1.1rem 1.5rem; overflow: hidden;
@@ -432,13 +442,11 @@ section[tabindex="-1"]:focus { outline: none; }
     radial-gradient(90% 80% at 100% 100%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 60%),
     var(--bg-soft);
 }
-/* Fine grid that fades out toward the edges. */
+/* Fine grid behind the mock. */
 .show-media::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .6;
   background-image: linear-gradient(var(--grid-dot) 1px, transparent 1px), linear-gradient(90deg, var(--grid-dot) 1px, transparent 1px);
   background-size: 24px 24px;
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 25%, transparent 75%);
-  mask-image: radial-gradient(circle at 50% 50%, #000 25%, transparent 75%);
 }
 .show-media .proto { position: relative; width: min(100%, 420px); font-size: .76rem; }
 .show-info {
@@ -454,19 +462,19 @@ section[tabindex="-1"]:focus { outline: none; }
 .show-facts dt { padding-top: .12rem; font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-mute); }
 .show-facts dd { margin: 0; }
 .show-info .btn { grid-area: cta; justify-self: start; }
-/* Switching builds: the mock rises in, then the text staggers. */
-.showcase.is-tabbed .show-item.is-active .proto { animation: show-in .6s var(--ease-out) both; }
-.showcase.is-tabbed .show-item.is-active .show-head,
-.showcase.is-tabbed .show-item.is-active .show-facts,
-.showcase.is-tabbed .show-item.is-active .show-info .btn { animation: show-up .5s var(--ease-out) both; }
-.showcase.is-tabbed .show-item.is-active .show-facts { animation-delay: .08s; }
-.showcase.is-tabbed .show-item.is-active .show-info .btn { animation-delay: .16s; }
+/* Switching builds (main.js adds .is-switching only on a real tab change): the mock rises in, then the text staggers. */
+.showcase.is-switching .show-item.is-active .proto { animation: show-in .6s var(--ease-out) both; }
+.showcase.is-switching .show-item.is-active .show-head,
+.showcase.is-switching .show-item.is-active .show-facts,
+.showcase.is-switching .show-item.is-active .show-info .btn { animation: show-up .5s var(--ease-out) both; }
+.showcase.is-switching .show-item.is-active .show-facts { animation-delay: .08s; }
+.showcase.is-switching .show-item.is-active .show-info .btn { animation-delay: .16s; }
 @keyframes show-in { from { opacity: 0; transform: translateY(16px) scale(.97); } }
 @keyframes show-up { from { opacity: 0; transform: translateY(8px); } }
 
 /* ---------- Mini prototypes (illustrations; animate only while .is-live) ---------- */
 .proto { width: min(100%, 340px); font-family: var(--mono); font-size: .7rem; color: var(--text-soft); }
-.proto-win { border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-lg); overflow: hidden; }
+.proto-win { border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); box-shadow: 0 10px 24px -14px color-mix(in srgb, var(--text) 30%, transparent); overflow: hidden; }
 .proto-bar { display: flex; align-items: center; gap: .3rem; padding: .45rem .6rem; border-bottom: 1px solid var(--border); font-size: .62rem; color: var(--text-mute); }
 .proto-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); }
 .proto-bar span { margin-left: .4rem; }
@@ -516,7 +524,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .sk { height: 6px; border-radius: 3px; background: var(--border-strong); }
 .sk-short { width: 60%; }
 .ai-review { color: var(--ok); font-size: .62rem; }
-.ai-typing { display: flex; gap: 3px; width: max-content; max-height: 0; padding: 0 .6rem; opacity: 0; overflow: hidden; border-radius: 10px; background: var(--bg-soft); }
+.ai-typing { display: flex; gap: 3px; width: max-content; padding: .45rem .6rem; opacity: 0; border-radius: 10px; background: var(--bg-soft); }
 .ai-typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--text-mute); }
 .proto.is-live .ai-user { animation: ai-user 7s infinite both; }
 .proto.is-live .ai-typing { animation: ai-typing 7s infinite both; }
@@ -526,7 +534,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .proto.is-live .ai-bot { animation: ai-bot 7s infinite both; }
 .proto.is-live .ai-review { animation: ai-review 7s infinite both; }
 @keyframes ai-user { 0%, 4% { opacity: 0; transform: translateY(6px); } 10%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
-@keyframes ai-typing { 0%, 14% { max-height: 0; padding-block: 0; opacity: 0; } 18%, 36% { max-height: 30px; padding-block: .45rem; opacity: 1; } 40%, 100% { max-height: 0; padding-block: 0; opacity: 0; } }
+@keyframes ai-typing { 0%, 14% { opacity: 0; transform: translateY(4px); } 18%, 36% { opacity: 1; transform: none; } 40%, 100% { opacity: 0; } }
 @keyframes dots { 50% { opacity: .3; transform: translateY(-2px); } }
 @keyframes ai-bot { 0%, 38% { opacity: 0; transform: translateY(6px); } 44%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
 @keyframes ai-review { 0%, 58% { opacity: 0; } 64%, 94% { opacity: 1; } 100% { opacity: 0; } }
@@ -782,9 +790,9 @@ kbd { font-family: var(--mono); font-size: .75em; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .progress-bar, .loop::after { display: none; }
   .panel-next::after { animation: none; }
-  .intro-hint, .hero-portrait::after, .graph .node circle, .graph .pulse, .glitch::before, .glitch::after { animation: none; }
+  .intro-hint, .hero-portrait::after, .boot-pulse, .glitch::before, .glitch::after { animation: none; }
   .is-counting .boot-actions .btn-primary::after { animation: none; transform: scaleX(1); }
-  .ticker { -webkit-mask-image: none; mask-image: none; }
+  .ticker::before, .ticker::after { display: none; }
   .ticker-track { animation: none; width: auto; }
   .ticker-list { flex-wrap: wrap; justify-content: center; row-gap: .4rem; }
   .ticker-list[aria-hidden="true"] { display: none; }
@@ -832,7 +840,6 @@ kbd { font-family: var(--mono); font-size: .75em; }
   .boot { grid-template-columns: minmax(0, 300px) minmax(0, 420px); }
 }
 @media (max-width: 720px) {
-  .site-header { backdrop-filter: none; background: var(--bg); }
   .show-info { grid-template-columns: 1fr; grid-template-areas: "head" "facts" "cta"; }
   .show-media { height: auto; aspect-ratio: 4 / 3; padding: 1rem; }
   .nav-links {
