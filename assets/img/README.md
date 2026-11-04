@@ -5,10 +5,9 @@ Drop your images in this folder. The site references these filenames
 
 | Filename            | Used for                                  | Recommended           |
 | ------------------- | ----------------------------------------- | --------------------- |
-| `headshot.jpg`      | Hero portrait (optional)                  | 600×600, square, <300KB |
-| `case-study-activation.jpg`  | Case study card + detail hero   | 1600×900, 16:9        |
-| `case-study-selfserve.jpg`   | Case study card + detail hero   | 1600×900, 16:9        |
-| `og-image.png`      | Social share preview (Open Graph)         | 1200×630              |
+| `headshot.jpg`      | Intro card + hero portrait (RW tile until added) | 600×600, square, <300KB |
+| `case-study-<topic>.jpg`     | Optional case-study cover (add `<figure class="cs-cover"><img … data-lightbox data-fallback="hide"></figure>`) | 1600×900, 16:9 |
+| `og-image.png`      | Social share preview (Open Graph) — included | 1200×630              |
 
 ## Tips
 - Compress images (tinypng.com or ImageOptim) before committing.
@@ -17,5 +16,5 @@ Drop your images in this folder. The site references these filenames
 
 ## Referencing an image in HTML
 ```html
-<img src="../assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600">
+<img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600">
 ```
