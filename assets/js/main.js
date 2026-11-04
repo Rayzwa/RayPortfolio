@@ -154,18 +154,34 @@
     }, { passive: true });
 
     document.querySelectorAll(".card-hover").forEach(function (card) {
+      var px = 0, py = 0, queued = false;
       card.addEventListener("pointermove", function (e) {
-        var r = card.getBoundingClientRect();
-        var x = e.clientX - r.left, y = e.clientY - r.top;
-        card.style.setProperty("--mx", x + "px");
-        card.style.setProperty("--my", y + "px");
-        card.style.setProperty("--ry", ((x / r.width - 0.5) * 6).toFixed(2) + "deg");
-        card.style.setProperty("--rx", ((0.5 - y / r.height) * 6).toFixed(2) + "deg");
+        px = e.clientX; py = e.clientY;
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(function () {   // at most one style update per frame
+          queued = false;
+          var r = card.getBoundingClientRect();
+          var x = px - r.left, y = py - r.top;
+          card.style.setProperty("--mx", x + "px");
+          card.style.setProperty("--my", y + "px");
+          card.style.setProperty("--ry", ((x / r.width - 0.5) * 6).toFixed(2) + "deg");
+          card.style.setProperty("--rx", ((0.5 - y / r.height) * 6).toFixed(2) + "deg");
+        });
       });
       card.addEventListener("pointerleave", function () {
         ["--mx", "--my", "--rx", "--ry"].forEach(function (p) { card.style.removeProperty(p); });
       });
     });
+  }
+
+  // In desktop panel mode, content changes (counters, decode) wait until
+  // their panel has finished sliding in, so the slide never has to redraw.
+  function whenSettled(fn) {
+    return function (el) {
+      var moving = el.closest && el.closest(".panel.is-moving");
+      if (moving) setTimeout(function () { fn(el); }, 650); else fn(el);
+    };
   }
 
   /* ---------- Animated counters ----------
@@ -193,7 +209,7 @@
       else document.addEventListener("intro:done", function () { setTimeout(function () { fn(el); }, 150); }, { once: true });
     };
   }
-  onVisible(document.querySelectorAll("[data-count]"), afterIntro(runCounter), { threshold: 0.4 });
+  onVisible(document.querySelectorAll("[data-count]"), afterIntro(whenSettled(runCounter)), { threshold: 0.4 });
 
   /* ---------- Decode: scramble text into its real value ----------
      The real text is always in the HTML (no-JS, screen readers);
@@ -226,7 +242,7 @@
     requestAnimationFrame(frame);
     setTimeout(done, duration + 400);
   }
-  onVisible(document.querySelectorAll("[data-decode]"), decode, { threshold: 0.5 });
+  onVisible(document.querySelectorAll("[data-decode]"), whenSettled(decode), { threshold: 0.5 });
 
   // Other scripts can ask for a decode (intro.js does, for the name).
   document.addEventListener("rw:decode", function (e) { decode(e.target); });
@@ -488,6 +504,11 @@
       }
       panelsOn = true;
       root.classList.add("is-panels");
+      // The panel slide is the entrance, so plain fade-ins are settled up front
+      // (they're display:none until shown, so nothing animates now).
+      document.querySelectorAll(".panel .reveal").forEach(function (el) {
+        if (!el.matches(SIGNATURE)) el.classList.add("is-visible");
+      });
       if (!rail) buildPanelUI();
       showPanel(start || panels[0], { instant: true });
     } else {

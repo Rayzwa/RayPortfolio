@@ -284,17 +284,18 @@ section[tabindex="-1"]:focus { outline: none; }
 .is-panels .panel {
   position: fixed; top: 64px; left: 0; right: 0; bottom: 0; display: none; flex-direction: column;
   overflow-y: auto; overscroll-behavior: contain; padding-block: clamp(1.25rem, 4vh, 2.5rem) clamp(3rem, 8vh, 4.5rem);
+  will-change: transform, opacity;   /* its own GPU layer for as long as it's shown (hidden panels aren't rendered) */
 }
 .is-panels .panel > :first-child { margin-top: auto; }
 .is-panels .panel > :last-child { margin-bottom: auto; }
 .is-panels .panel.is-current, .is-panels .panel.is-leaving { display: flex; }
 .is-panels .panel.is-current { transition: opacity .55s var(--ease-out), transform .55s var(--ease-out); }
-.is-panels .panel.is-entering { opacity: 0; transform: translate3d(0, calc(var(--dir, 1) * 48px), 0) scale(.985); transition: none; }
+/* Slide + fade only: no scale, so nothing needs re-drawing crisp when it lands. */
+.is-panels .panel.is-entering { opacity: 0; transform: translate3d(0, calc(var(--dir, 1) * 48px), 0); transition: none; }
 .is-panels .panel.is-leaving {
-  opacity: 0; transform: translate3d(0, calc(var(--dir, 1) * -40px), 0) scale(.985); pointer-events: none;
+  opacity: 0; transform: translate3d(0, calc(var(--dir, 1) * -40px), 0); pointer-events: none;
   transition: opacity .4s ease, transform .45s var(--ease-out);
 }
-.is-panels .panel.is-moving, .is-panels .panel.is-leaving { will-change: transform, opacity; }
 .is-panels .site-footer, .is-panels .to-top { display: none; }
 /* Mock-ups hold still until their panel has landed. */
 .is-panels .panel.is-moving .proto *, .is-panels .panel.is-moving .proto *::before { animation-play-state: paused; }
@@ -306,7 +307,7 @@ section[tabindex="-1"]:focus { outline: none; }
 }
 .rail-dot {
   position: relative; width: 10px; height: 10px; padding: 0; cursor: pointer; border-radius: 6px;
-  border: 1px solid var(--border-strong); background: transparent; transition: height .3s var(--ease-out), background-color .3s, border-color .3s;
+  border: 1px solid var(--border-strong); background: transparent; transition: background-color .3s, border-color .3s, box-shadow .3s;
 }
 .rail-dot::before { content: ""; position: absolute; inset: -8px; }
 .rail-dot::after {
@@ -314,7 +315,7 @@ section[tabindex="-1"]:focus { outline: none; }
   font-family: var(--mono); font-size: .68rem; white-space: nowrap; color: var(--text-soft); opacity: 0; transition: opacity .2s;
 }
 .rail-dot:hover::after, .rail-dot:focus-visible::after { opacity: 1; }
-.rail-dot[aria-current="true"] { height: 24px; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--glow); }
+.rail-dot[aria-current="true"] { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft), 0 0 10px var(--glow); }
 .is-panels .panel-next {
   position: fixed; left: 50%; bottom: 1rem; z-index: 40; transform: translateX(-50%);
   display: inline-flex; align-items: center; gap: .4rem; padding: .4rem .9rem; cursor: pointer;
