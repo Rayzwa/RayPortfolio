@@ -230,7 +230,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .boot-panel { font-family: var(--mono); }
 .boot-cmd { color: var(--accent); font-size: .85rem; margin: 0 0 .8rem; }
 .boot-log { list-style: none; margin: 0 0 .9rem; padding: 0; display: grid; gap: .3rem; font-size: .8rem; }
-.boot-log li { display: flex; gap: .6rem; align-items: baseline; white-space: nowrap; transition: clip-path .5s steps(20); clip-path: inset(0); }
+.boot-log li { display: flex; gap: .6rem; align-items: baseline; white-space: nowrap; transition: clip-path .35s steps(16); clip-path: inset(0); }
 .boot-log li::after { content: "ok"; margin-left: auto; color: var(--ok); font-size: .68rem; }
 .boot-log .k { flex: 0 0 9.5em; color: var(--text-mute); }
 .boot-log .v { color: var(--text); overflow: hidden; text-overflow: ellipsis; }
@@ -246,7 +246,7 @@ section[tabindex="-1"]:focus { outline: none; }
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; opacity: .55;
   background: var(--accent-contrast); transform: scaleX(0); transform-origin: left;
 }
-.is-counting .boot-actions .btn-primary::after { animation: countdown var(--auto-ms, 2000ms) linear forwards; }
+.is-counting .boot-actions .btn-primary::after { animation: countdown var(--auto-ms, 3000ms) linear forwards; }
 @keyframes countdown { to { transform: scaleX(1); } }
 .boot-skip {
   position: absolute; top: 1rem; right: 1rem; padding: .4rem .9rem; border-radius: var(--pill); cursor: pointer;

@@ -31,7 +31,7 @@
   }
   setInert(true);
 
-  /* ---------- Boot sequence (~4 s; skipped under reduced motion) ---------- */
+  /* ---------- Boot sequence (~3 s; skipped under reduced motion) ---------- */
   var lines = intro.querySelectorAll(".boot-log li");
   var bar = intro.querySelector(".boot-bar span");
   var name = intro.querySelector(".boot-name");
@@ -44,23 +44,23 @@
   }
   if (!reduceMotion) {
     intro.classList.add("is-booting");
-    var step = 380, t = 300 + lines.length * step;
+    var step = 260, t = 250 + lines.length * step;
     lines.forEach(function (li, i) {
-      at(300 + i * step, function () {
+      at(250 + i * step, function () {
         li.classList.add("is-on");
         if (bar) bar.style.transform = "scaleX(" + (i + 1) / lines.length + ")";
       });
     });
     at(t, function () { intro.classList.add("graph-on"); });
-    at(t + 800, function () {
+    at(t + 600, function () {
       intro.classList.add("name-on");
       if (name) name.dispatchEvent(new CustomEvent("rw:decode", { bubbles: true }));   // main.js decodes it
     });
-    at(t + 1500, function () { intro.classList.add("is-ready"); endBoot(); startCountdown(); });
+    at(t + 1200, function () { intro.classList.add("is-ready"); endBoot(); startCountdown(); });
   }
 
   /* ---------- Auto-open countdown ---------- */
-  var AUTO_MS = reduceMotion ? 4000 : 2000;
+  var AUTO_MS = reduceMotion ? 4000 : 3000;
   var autoTimer = null, counting = false, hovering = false, focusInside = false;
   intro.style.setProperty("--auto-ms", AUTO_MS + "ms");
   function startCountdown() {
