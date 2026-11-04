@@ -118,6 +118,7 @@
   var scrollQueued = false;
   function updateScrollUI() {
     scrollQueued = false;
+    if (panelsOn) return;   // panel mode drives the bar itself (syncPanelUI)
     var top = window.pageYOffset || root.scrollTop || 0;
     if (bar) {
       var max = root.scrollHeight - root.clientHeight;
@@ -134,8 +135,13 @@
   window.addEventListener("resize", queueScrollUI);
   updateScrollUI();
 
-  /* ---------- Pointer glow + card spotlight/tilt (fine pointers only) ---------- */
+  /* ---------- Pointer glow + card spotlight/tilt (fine pointers only) ----------
+     The glow is one element moved with transform, so it never repaints the page. */
   if (finePointer && !reduceMotion) {
+    var glow = document.createElement("div");
+    glow.className = "cursor-glow";
+    glow.setAttribute("aria-hidden", "true");
+    body.appendChild(glow);
     var glowX = 0, glowY = 0, glowQueued = false;
     window.addEventListener("pointermove", function (e) {
       glowX = e.clientX; glowY = e.clientY;
@@ -143,8 +149,7 @@
       glowQueued = true;
       requestAnimationFrame(function () {
         glowQueued = false;
-        root.style.setProperty("--gx", glowX + "px");
-        root.style.setProperty("--gy", glowY + "px");
+        glow.style.transform = "translate3d(" + glowX + "px," + glowY + "px,0)";
       });
     }, { passive: true });
 
@@ -325,6 +330,227 @@
   window.addEventListener("hashchange", openFromHash);
   openFromHash();
 
+  /* ---------- Builds showcase ----------
+     Without JS every build is listed and the selectors are plain
+     anchors. With JS they become tabs: click (or hover on desktop)
+     shows one build; arrow keys move between tabs. */
+  document.querySelectorAll("[data-showcase]").forEach(function (sc) {
+    var list = sc.querySelector(".show-list");
+    var tabs = Array.prototype.slice.call(sc.querySelectorAll(".show-tab"));
+    var items = tabs.map(function (t) { return document.getElementById(t.getAttribute("href").slice(1)); });
+    if (!list || !tabs.length || items.indexOf(null) !== -1) return;
+    var hoverTimer = null;
+    list.setAttribute("role", "tablist");
+    list.setAttribute("aria-label", "Builds");
+    function select(i) {
+      tabs.forEach(function (t, j) {
+        t.setAttribute("aria-selected", j === i ? "true" : "false");
+        t.tabIndex = j === i ? 0 : -1;
+        items[j].classList.toggle("is-active", j === i);
+      });
+      // Phone chip row: bring the chosen chip into view.
+      if (list.scrollWidth > list.clientWidth) list.scrollTo({ left: tabs[i].offsetLeft - 16, behavior: reduceMotion ? "auto" : "smooth" });
+    }
+    tabs.forEach(function (t, i) {
+      t.parentNode.setAttribute("role", "presentation");
+      t.setAttribute("role", "tab");
+      t.id = "tab-" + items[i].id;
+      t.setAttribute("aria-controls", items[i].id);
+      items[i].setAttribute("role", "tabpanel");
+      items[i].setAttribute("aria-labelledby", t.id);
+      t.addEventListener("click", function (e) { e.preventDefault(); select(i); });
+      t.addEventListener("keydown", function (e) {
+        var d = (e.key === "ArrowDown" || e.key === "ArrowRight") ? 1 : (e.key === "ArrowUp" || e.key === "ArrowLeft") ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var j = (i + d + tabs.length) % tabs.length;
+        select(j);
+        tabs[j].focus();
+      });
+      if (finePointer) {
+        t.addEventListener("pointerenter", function () { clearTimeout(hoverTimer); hoverTimer = setTimeout(function () { select(i); }, 150); });
+        t.addEventListener("pointerleave", function () { clearTimeout(hoverTimer); });
+      }
+    });
+    sc.classList.add("is-tabbed");
+    select(0);
+  });
+
+  /* ---------- Desktop panels ----------
+     At ≥ 900×620 the home page becomes one full-screen panel at a
+     time (html.is-panels). Nav links, ⌘K, the dot rail, keys, wheel
+     and swipes switch panels; each panel scrolls on its own first if
+     it overflows. Smaller screens (and no JS) keep a normal scrolling
+     page. */
+  var panels = Array.prototype.slice.call(document.querySelectorAll(".panel"));
+  var panelMQ = window.matchMedia ? window.matchMedia("(min-width: 900px) and (min-height: 620px)") : null;
+  var panelsOn = false, currentPanel = null, rail = null, nextBtn = null, leaveTimer = null;
+  var lastSwitch = 0, lastWheel = 0, wheelUsed = false, touchY = null;
+
+  function panelFor(hash) {
+    if (!hash || hash.charAt(0) !== "#" || hash.length < 2) return null;
+    if (hash === "#top") return panels[0] || null;
+    var el = document.getElementById(hash.slice(1));
+    return el && el.closest(".panel");
+  }
+  function panelLabel(p) {
+    var link = document.querySelector('.nav-links a[href="#' + p.id + '"]');
+    return link ? link.textContent.trim() : "Home";
+  }
+  // Replays the panel's entrance effects (fade-ins, chip stagger, career line).
+  function replayReveals(panel) {
+    var items = panel.querySelectorAll(".reveal");
+    items.forEach(function (el) { el.classList.remove("is-visible"); });
+    void panel.offsetWidth;
+    items.forEach(function (el) { el.classList.add("is-visible"); });
+  }
+  function syncPanelUI() {
+    var i = panels.indexOf(currentPanel), last = i === panels.length - 1;
+    Array.prototype.forEach.call(rail.children, function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
+    nextBtn.textContent = last ? "Back to top" : panelLabel(panels[i + 1]);
+    nextBtn.classList.toggle("is-last", last);
+    document.querySelectorAll(".nav-links a").forEach(function (l) { l.classList.toggle("is-active", l.getAttribute("href") === "#" + currentPanel.id); });
+    if (bar) bar.style.transform = "scaleX(" + (panels.length > 1 ? i / (panels.length - 1) : 0) + ")";
+  }
+  function showPanel(next, opts) {
+    opts = opts || {};
+    if (!next || next === currentPanel) return;
+    var from = currentPanel, animate = from && !reduceMotion && !opts.instant;
+    root.style.setProperty("--dir", from && panels.indexOf(from) > panels.indexOf(next) ? -1 : 1);
+    clearTimeout(leaveTimer);
+    panels.forEach(function (p) { p.classList.remove("is-leaving", "is-moving"); });
+    if (from) {
+      from.classList.remove("is-current");
+      if (animate) from.classList.add("is-leaving");
+    }
+    next.classList.add("is-current");
+    next.scrollTop = 0;
+    if (animate) {
+      next.classList.add("is-entering", "is-moving");
+      void next.offsetWidth;   // commit the start state, then transition to rest
+      next.classList.remove("is-entering");
+      replayReveals(next);
+      leaveTimer = setTimeout(function () {
+        from.classList.remove("is-leaving");
+        next.classList.remove("is-moving");
+      }, 600);
+    }
+    currentPanel = next;
+    lastSwitch = performance.now();
+    if (opts.push && history.pushState) history.pushState(null, "", next === panels[0] ? location.pathname + location.search : "#" + next.id);
+    syncPanelUI();
+    if (opts.focus) {
+      next.setAttribute("tabindex", "-1");
+      next.focus({ preventScroll: true });
+    }
+  }
+  function stepPanel(d) {
+    var i = panels.indexOf(currentPanel) + d;
+    if (i >= 0 && i < panels.length) showPanel(panels[i], { push: true });
+  }
+  function buildPanelUI() {
+    rail = document.createElement("nav");
+    rail.className = "panel-rail";
+    rail.setAttribute("aria-label", "Sections");
+    panels.forEach(function (p) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "rail-dot";
+      b.setAttribute("aria-label", panelLabel(p));
+      b.setAttribute("data-label", panelLabel(p));
+      b.addEventListener("click", function () { showPanel(p, { push: true, focus: true }); });
+      rail.appendChild(b);
+    });
+    nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.className = "panel-next";
+    nextBtn.addEventListener("click", function () {
+      var i = panels.indexOf(currentPanel);
+      showPanel(i === panels.length - 1 ? panels[0] : panels[i + 1], { push: true });
+    });
+    body.appendChild(rail);
+    body.appendChild(nextBtn);
+  }
+  function setPanels(on) {
+    if (!panels.length || on === panelsOn) return;
+    var keep = currentPanel;
+    if (on) {
+      // Start on the linked panel, or the one at the top of the screen.
+      var start = panelFor(location.hash);
+      for (var k = 0; !start && k < panels.length; k++) {
+        if (window.pageYOffset > 50 && panels[k].getBoundingClientRect().bottom > 80) start = panels[k];
+      }
+      panelsOn = true;
+      root.classList.add("is-panels");
+      if (!rail) buildPanelUI();
+      showPanel(start || panels[0], { instant: true });
+    } else {
+      panelsOn = false;
+      root.classList.remove("is-panels");
+      panels.forEach(function (p) { p.classList.remove("is-current", "is-leaving", "is-entering", "is-moving"); });
+      currentPanel = null;
+      if (keep && keep !== panels[0]) keep.scrollIntoView();
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("is-visible"); });
+      updateScrollUI();
+    }
+  }
+  function panelInputBlocked() {
+    return !panelsOn || root.classList.contains("intro-on") || (cmdk && cmdk.open);
+  }
+  // Inside an overflowing panel, scroll it first; switch only at its edge.
+  function canScrollInside(d) {
+    var p = currentPanel;
+    return d > 0 ? p.scrollTop + p.clientHeight < p.scrollHeight - 2 : p.scrollTop > 2;
+  }
+  if (panels.length && panelMQ) {
+    setPanels(panelMQ.matches);
+    var onPanelMQ = function (e) { setPanels(e.matches); };
+    if (panelMQ.addEventListener) panelMQ.addEventListener("change", onPanelMQ);
+    else if (panelMQ.addListener) panelMQ.addListener(onPanelMQ);
+
+    // One switch per wheel/trackpad gesture: momentum events keep arriving
+    // less than 120 ms apart, so they count as the same gesture.
+    window.addEventListener("wheel", function (e) {
+      if (panelInputBlocked() || e.ctrlKey || Math.abs(e.deltaY) < 4) return;
+      var now = performance.now(), d = e.deltaY > 0 ? 1 : -1;
+      if (now - lastWheel > 120) wheelUsed = false;
+      lastWheel = now;
+      if (wheelUsed || canScrollInside(d) || now - lastSwitch < 650) return;
+      wheelUsed = true;
+      stepPanel(d);
+    }, { passive: true });
+
+    window.addEventListener("touchstart", function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener("touchend", function (e) {
+      if (touchY === null || panelInputBlocked()) return;
+      var dy = touchY - e.changedTouches[0].clientY, d = dy > 0 ? 1 : -1;
+      touchY = null;
+      if (Math.abs(dy) > 50 && !canScrollInside(d) && performance.now() - lastSwitch > 650) stepPanel(d);
+    }, { passive: true });
+
+    document.addEventListener("keydown", function (e) {
+      if (panelInputBlocked() || e.altKey || e.ctrlKey || e.metaKey) return;
+      var t = e.target, k = e.key, d = 0;
+      if (t.closest && t.closest("input, textarea, select, [role=tab]")) return;
+      if (k === " " && t.closest && t.closest("a, button")) return;
+      if (k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey)) d = 1;
+      else if (k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey)) d = -1;
+      else if (k === "Home" || k === "End") {
+        e.preventDefault();
+        showPanel(panels[k === "Home" ? 0 : panels.length - 1], { push: true });
+        return;
+      }
+      if (!d) return;
+      e.preventDefault();
+      if (canScrollInside(d)) { currentPanel.scrollBy({ top: d * currentPanel.clientHeight * 0.8, behavior: reduceMotion ? "auto" : "smooth" }); return; }
+      if (performance.now() - lastSwitch > 350) stepPanel(d);
+    });
+
+    window.addEventListener("popstate", function () {
+      if (panelsOn) showPanel(panelFor(location.hash) || panels[0]);
+    });
+  }
+
   /* ---------- Toast + copy ---------- */
   var toast = document.createElement("div");
   toast.className = "toast";
@@ -362,7 +588,10 @@
     if (t.closest("[data-nav-toggle]")) { e.preventDefault(); setNav(!body.classList.contains("nav-open")); return; }
     if (t.closest("[data-cmdk]")) { e.preventDefault(); openPalette(); return; }
     var jump = t.closest('a[href^="#"]');
-    if (jump && !e.defaultPrevented && warpTo(jump.getAttribute("href"))) { e.preventDefault(); setNav(false); return; }
+    if (jump && !e.defaultPrevented && panelsOn) {
+      var target = panelFor(jump.getAttribute("href"));
+      if (target) { e.preventDefault(); setNav(false); showPanel(target, { push: true, focus: true }); return; }
+    }
     if (t.closest(".nav-links a")) setNav(false);
     // Touch has no hover, so a tap flips the card (desktop flips on hover/focus in CSS).
     var flip = t.closest(".flip");
@@ -375,43 +604,6 @@
     if (e.key === "Escape") setNav(false);
   });
 
-  /* ---------- Warp: immersive jump to a section ----------
-     Same-page links to a <section>/<main> play a scan-line sweep with
-     the destination name, glide there, then sweep the section as it
-     arrives. Other hash links (e.g. build-page panels) are left alone.
-     Reduced motion: an instant jump. */
-  var warp = null, warpTimer = null;
-  function focusSection(el) {
-    if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
-    el.focus({ preventScroll: true });
-  }
-  function warpTo(hash) {
-    var target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
-    if (!target || !target.matches("section, main") || root.classList.contains("intro-on")) return false;
-    if (history.pushState) history.pushState(null, "", hash);
-    if (reduceMotion) { target.scrollIntoView(); focusSection(target); return true; }
-    if (!warp) {
-      warp = document.createElement("div");
-      warp.className = "warp";
-      warp.setAttribute("aria-hidden", "true");
-      warp.innerHTML = '<span class="warp-label"></span>';
-      body.appendChild(warp);
-    }
-    warp.firstChild.textContent = "// " + target.id;
-    warp.classList.remove("is-on");
-    void warp.offsetWidth;   // restart the animation
-    warp.classList.add("is-on");
-    target.scrollIntoView({ behavior: "smooth" });
-    focusSection(target);
-    clearTimeout(warpTimer);
-    warpTimer = setTimeout(function () {
-      target.classList.remove("is-arriving");
-      void target.offsetWidth;
-      target.classList.add("is-arriving");
-      setTimeout(function () { target.classList.remove("is-arriving"); }, 1100);
-    }, 500);
-    return true;
-  }
 
   /* ---------- Command palette (⌘K / Ctrl+K) ----------
      Commands come from the page (nav links, résumé link, footer
@@ -501,7 +693,8 @@
     if (!c) return;
     cmdk.close();
     if (c.run) { c.run(); return; }
-    if (c.href.charAt(0) === "#" && warpTo(c.href)) return;
+    var target = panelsOn && panelFor(c.href);
+    if (target) { showPanel(target, { push: true, focus: true }); return; }
     if (c.download || c.newTab) {
       var a = document.createElement("a");
       a.href = c.href;

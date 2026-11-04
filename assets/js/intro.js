@@ -23,7 +23,7 @@
   var started = false, done = false;
 
   // Keep keyboard/screen-reader focus inside the intro while it's showing.
-  var behind = document.querySelectorAll(".site-header, main > section:not(#intro), .site-footer");
+  var behind = document.querySelectorAll(".site-header, main > section:not(#intro), .site-footer, .panel-rail, .panel-next");
   function setInert(on) {
     behind.forEach(function (el) { if (on) el.setAttribute("inert", ""); else el.removeAttribute("inert"); });
   }

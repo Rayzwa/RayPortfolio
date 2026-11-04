@@ -129,3 +129,6 @@ For each feature: build → check the motion rule → check reduced motion → r
 | 2026-11-04 | Headline "stakeholder needs"; flip stat cards (50 stakeholders · team of 10 · 2 lending teams) | Owner-provided facts |
 | 2026-11-04 | Principles 05–06 (lifecycle), linger on hover; nav "warp" transitions; 4 quotes with Read more; animated mini-prototypes + Loop strip | Owner: eye-catching, reads as a PM at a glance |
 | 2026-11-04 | Live domain: rayportf.vercel.app (absolute og:image/og:url) | Owner confirmed |
+| 2026-11-04 | Desktop (≥ 900×620) becomes full-screen **panels**; phones keep scrolling; warp overlay removed | Owner: transitions felt stiff, sections bled into view |
+| 2026-11-04 | Builds → **showcase stage** (selector + one build at a time); added Loan Portfolio RAG agent (internal, résumé-level) | Owner: builds looked unpolished |
+| 2026-11-04 | Performance pass: compositor-only cursor glow, no SVG filters on animated nodes, loop pulse on transform, hidden panels don't render | Owner: avoid lag |

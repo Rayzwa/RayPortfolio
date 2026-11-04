@@ -17,8 +17,8 @@ The boot sequence shows **once per browser tab**. To see it again, open the page
 ## Files
 
 ```
-home.html                 Main page: boot sequence → hero + flip stats → highlights ticker → builds →
-                          loop → how I work → stack → path → quotes → contact
+home.html                 Main page: boot sequence, then six panels — Home (hero, flip stats, ticker) ·
+                          Builds (showcase) · About (loop + principles) · Stack · Path (career + quotes) · Contact
 index.html                Redirect stub → home.html (also carries link-preview tags for the bare URL)
 404.html                  "Signal lost" page. Uses root-absolute links (/…) because Vercel serves it at any depth
 builds/momentum.html      Momentum (JPMC hackathon, 2026)
@@ -26,7 +26,7 @@ builds/growinged.html     GrowingED (OwlHack winner, 2023)
 Raymond_Wang_Resume.pdf   Résumé linked from every page
 assets/css/styles.css     All styling (tokens, components, motion, responsive, print)
 assets/js/main.js         Shared behaviour on every page
-assets/js/intro.js        The "Unfold" intro (home page only)
+assets/js/intro.js        The boot-sequence intro (home page only)
 assets/img/               Images (see assets/img/README.md)
 vercel.json               Redirects: / → home.html, old /case-studies/* links → #builds
 docs/                     Planning docs, kept off the website by .vercelignore
@@ -39,18 +39,16 @@ Use **Cmd+F** on the comment name in `home.html`. There are no line numbers to g
 | What | Search for |
 |---|---|
 | Boot sequence (log lines, name, one-liner; graph labels are in the `<svg class="graph">`) | `INTRO` |
-| Headline + 3 flip cards (number/label on the front, detail on the back) | `HERO` |
-| Ticker phrases (edit **both** lists, which must match) | `HIGHLIGHTS` |
-| Build tiles and their mini-prototypes (illustrations, mock data) | `BUILDS` |
-| Lifecycle steps | `LOOP` |
-| The 6 principles | `HOW I WORK` |
-| Skills (`g-product` / `g-ai` / `g-data` / `g-domain` sets the colour) | `STACK` |
-| Career line (put `is-now` on the current role) | `PATH` |
-| Quotes: `q-short` shows first, optional `q-more` behind "Read more" (give it an `id` and point the button's `aria-controls` at it). Add an `<li>` and a dot appears automatically | `QUOTE` |
+| Headline, 3 flip cards (number/label on the front, detail on the back) and the ticker phrases (edit **both** ticker lists, which must match) | `HOME panel` |
+| Builds: one selector `<li>` + one `<article class="show-item">` per build (tone class `g-product` / `g-data` / `g-ai` / `g-domain` sets its colour; mini-prototypes are illustrations with mock data) | `BUILDS panel` |
+| Lifecycle steps and the 6 principles | `ABOUT panel` |
+| Skills (`g-product` / `g-ai` / `g-data` / `g-domain` sets the colour) | `STACK panel` |
+| Career line (put `is-now` on the current role) and quotes: `q-short` shows first, optional `q-more` behind "Read more" (give it an `id` and point the button's `aria-controls` at it). Add an `<li>` and a dot appears automatically | `PATH panel` |
+| Contact line | `CONTACT panel` |
 | Email / LinkedIn | `mailto:` / `linkedin` on every page |
 | Unfinished spots | `EDIT ME` (build pages) |
 
-Keep it short. The home page is meant to be a one-minute scroll, and the detail lives on the build pages.
+Keep it short. Each panel should fit one laptop screen; the detail lives on the build pages.
 
 ### Résumé, headshot, preview image
 - **Résumé:** replace `Raymond_Wang_Resume.pdf`, keeping the same file name.
@@ -61,7 +59,8 @@ Keep it short. The home page is meant to be a one-minute scroll, and the detail 
 
 1. Copy `builds/momentum.html` to `builds/<name>.html`.
 2. Update the title, tag, fact chips, the mini-prototype, the 3 decision-map nodes and the sections. Each panel `id` must be `<name>-<section>`, and each decision-map link points at one of those ids.
-3. Add a tile to the `BUILDS` section of `home.html`, and fix the prev/next buttons at the bottom of each build page.
+3. In the `BUILDS panel` of `home.html`, add a selector `<li>` (its `href` points at the new article's `id`) and a `show-item` article with a "View build →" link. Fix the prev/next buttons at the bottom of each build page.
+   Internal work without a page (like the CRE AI tools and Loan Portfolio RAG agent) just gets the article, with an "Ask me about it →" mailto link instead.
 4. Add the page to the ⌘K menu: the two `"Build"` lines near "Command palette" in `assets/js/main.js`.
 5. Only include facts you can share publicly (see `docs/02-POSITIONING.md` §7).
 
@@ -78,23 +77,25 @@ grep -c 'data-nav-toggle' *.html builds/*.html
 | Effect | How to use |
 |---|---|
 | Boot sequence | Automatic on `home.html`: log lines type in, the graph links up, the name decodes, then Enter/scroll flies the photo into the hero. Skip button + skip link; everything shows at once with reduced motion; slide-up on phones |
+| Desktop panels | Automatic at ≥ 900×620: one full-screen panel at a time, switched by nav links, ⌘K, the dot rail, the "next" button, arrow/Page keys, one wheel/trackpad gesture or a swipe. Back/Forward and links like `home.html#builds` work. Smaller screens scroll normally |
+| Builds showcase | `data-showcase`: selectors become tabs (click, hover on desktop, arrow keys); a chip row on phones |
 | Decode text | `data-decode` on any short text: scrambles into the real text when it scrolls into view |
 | Counters | `data-count="10"` on a number, with the real value as its text |
 | Reveal / stagger | `data-reveal` fades an element in; add `data-stagger` to animate its children one by one |
-| Card glow + tilt | Class `card-hover` (mouse/trackpad only) |
+| Card glow + tilt | Class `card-hover` (mouse/trackpad only); the background glow follows the pointer |
 | Flip cards | `.flip` > `.flip-inner` > `.flip-front` + `.flip-back`: flips on hover/keyboard focus, tap on touch |
 | Linger | Principle and loop details stay ~1.5 s after the pointer leaves (`--linger` in styles.css) |
 | Mini-prototypes | `data-live` on a `.proto`: animates only while on screen |
-| Warp | Nav links, ⌘K sections and "See builds": scan-line sweep with the section name, then the section lights up as it arrives |
 | Quote rotator | `data-rotator`: arrows, dots, "Read more"; pauses while hovered, focused or expanded |
-| Ticker, career line, motifs | Pure CSS (`.ticker`, `.path`, `.art`) |
+| Ticker, career line, loop pulse | Pure CSS (`.ticker`, `.path`, `.loop`) |
 | Accordions | `.cs-section` on build pages; `aria-expanded="true"` opens one by default. Links to a panel id open that section |
 | Copy email | `data-copy="you@example.com"` on a mailto link: copies it and still opens the mail app |
 | Jump menu | ⌘K (Ctrl K on Windows) or the ⌕ button |
 | Light/dark | Light by default (the boot screen is always dark); the ◐ button switches and remembers the choice |
 
 **When something fails:**
-- Reduced-motion users get final states with no movement.
+- Reduced-motion users get final states with no movement (panels swap instantly).
+- Animations use only transform/opacity, and anything off screen (hidden panels, inactive builds) doesn't run.
 - Without JavaScript, all content shows: the boot screen is a static first section, and every quote is listed in full.
 - A missing headshot becomes an "RW" tile.
 - If GSAP or the fonts fail to load, the site falls back to CSS animation and system fonts.

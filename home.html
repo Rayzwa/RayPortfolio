@@ -123,148 +123,195 @@
     </section>
     <span class="visually-hidden" role="status" aria-live="polite" data-intro-status></span>
 
-    <!-- ============ HERO (stat cards flip to show details) ============ -->
-    <section class="hero wrap">
-      <div class="hero-grid">
-        <div data-reveal>
-          <span class="hero-status"><span class="dot"></span>Product Analyst · JPMorgan Chase</span>
-          <h2 class="h1" tabindex="-1">I turn <span class="grad">stakeholder needs</span> into AI tools people use.</h2>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="#builds">See builds</a>
-            <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
+    <!-- ============ HOME panel: hero + flip stats + highlights ticker ============ -->
+    <section class="panel" id="home" aria-label="Home">
+      <div class="hero wrap">
+        <div class="hero-grid">
+          <div data-reveal>
+            <span class="hero-status"><span class="dot"></span>Product Analyst · JPMorgan Chase</span>
+            <h2 class="h1" tabindex="-1">I turn <span class="grad">stakeholder needs</span> into AI tools people use.</h2>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="#builds">See builds</a>
+              <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
+            </div>
+          </div>
+          <div class="hero-portrait" data-reveal>
+            <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
           </div>
         </div>
-        <div class="hero-portrait" data-reveal>
-          <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
+        <ul class="stats" data-reveal>
+          <li class="flip" tabindex="0">
+            <div class="flip-inner">
+              <div class="flip-face flip-front"><span class="num" data-count="50">50</span><span class="stat-label">banking stakeholders met</span><span class="flip-hint" aria-hidden="true">↻</span></div>
+              <div class="flip-face flip-back"><p>Met 50 banking stakeholders to understand their needs and shape what we build.</p></div>
+            </div>
+          </li>
+          <li class="flip" tabindex="0">
+            <div class="flip-inner">
+              <div class="flip-face flip-front"><span class="num" data-count="10">10</span><span class="stat-label">cross-functional team · product owner</span><span class="flip-hint" aria-hidden="true">↻</span></div>
+              <div class="flip-face flip-back"><p>Product owner for Momentum, leading a cross-functional team of 10 from problem framing to demo.</p></div>
+            </div>
+          </li>
+          <li class="flip" tabindex="0">
+            <div class="flip-inner">
+              <div class="flip-face flip-front"><span class="num" data-count="2">2</span><span class="stat-label">lending teams</span><span class="flip-hint" aria-hidden="true">↻</span></div>
+              <div class="flip-face flip-back"><p>C&amp;SI Lending (Aug–Dec 2025) → CRE Lending (Dec 2025 → now), Innovation Development Program.</p></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <h2 class="visually-hidden">Highlights</h2>
+      <!-- Ticker: the second list is a visual copy for the loop -->
+      <div class="ticker">
+        <div class="ticker-track">
+          <ul class="ticker-list">
+            <li>AI tools for CRE bankers</li>
+            <li>50 banking stakeholders</li>
+            <li>Product in daily use · C&amp;SI Lending</li>
+            <li>New Syndicated Lending workstream</li>
+            <li>Product owner · team of 10</li>
+            <li>OwlHack winner · Best Use of Auth0</li>
+          </ul>
+          <ul class="ticker-list" aria-hidden="true">
+            <li>AI tools for CRE bankers</li>
+            <li>50 banking stakeholders</li>
+            <li>Product in daily use · C&amp;SI Lending</li>
+            <li>New Syndicated Lending workstream</li>
+            <li>Product owner · team of 10</li>
+            <li>OwlHack winner · Best Use of Auth0</li>
+          </ul>
         </div>
       </div>
-      <ul class="stats" data-reveal>
-        <li class="flip" tabindex="0">
-          <div class="flip-inner">
-            <div class="flip-face flip-front"><span class="num" data-count="50">50</span><span class="stat-label">banking stakeholders met</span><span class="flip-hint" aria-hidden="true">↻</span></div>
-            <div class="flip-face flip-back"><p>Met 50 banking stakeholders to understand their needs and shape what we build.</p></div>
-          </div>
-        </li>
-        <li class="flip" tabindex="0">
-          <div class="flip-inner">
-            <div class="flip-face flip-front"><span class="num" data-count="10">10</span><span class="stat-label">cross-functional team · product owner</span><span class="flip-hint" aria-hidden="true">↻</span></div>
-            <div class="flip-face flip-back"><p>Product owner for Momentum, leading a cross-functional team of 10 from problem framing to demo.</p></div>
-          </div>
-        </li>
-        <li class="flip" tabindex="0">
-          <div class="flip-inner">
-            <div class="flip-face flip-front"><span class="num" data-count="2">2</span><span class="stat-label">lending teams</span><span class="flip-hint" aria-hidden="true">↻</span></div>
-            <div class="flip-face flip-back"><p>C&amp;SI Lending (Aug–Dec 2025) → CRE Lending (Dec 2025 → now), Innovation Development Program.</p></div>
-          </div>
-        </li>
-      </ul>
     </section>
 
-    <!-- ============ HIGHLIGHTS (ticker; the second list is a visual copy for the loop) ============ -->
-    <section class="ticker" aria-labelledby="highlights-title">
-      <h2 class="visually-hidden" id="highlights-title">Highlights</h2>
-      <div class="ticker-track">
-        <ul class="ticker-list">
-          <li>AI tools for CRE bankers</li>
-          <li>50 banking stakeholders</li>
-          <li>Product in daily use · C&amp;SI Lending</li>
-          <li>New Syndicated Lending workstream</li>
-          <li>Product owner · team of 10</li>
-          <li>OwlHack winner · Best Use of Auth0</li>
-        </ul>
-        <ul class="ticker-list" aria-hidden="true">
-          <li>AI tools for CRE bankers</li>
-          <li>50 banking stakeholders</li>
-          <li>Product in daily use · C&amp;SI Lending</li>
-          <li>New Syndicated Lending workstream</li>
-          <li>Product owner · team of 10</li>
-          <li>OwlHack winner · Best Use of Auth0</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ============ BUILDS (animated mini-prototypes are illustrations with mock data) ============ -->
-    <section id="builds">
+    <!-- ============ BUILDS panel: showcase stage (tabs with JS; every build listed without).
+         Mini-prototypes are illustrations with mock data. ============ -->
+    <section class="panel" id="builds">
       <div class="wrap">
         <h2 class="visually-hidden">Builds</h2>
-        <div class="builds">
-          <a class="build card-hover" href="builds/momentum.html" data-reveal>
-            <div class="build-art" aria-hidden="true">
-              <div class="proto" data-live>
-                <div class="proto-win">
-                  <div class="proto-bar"><i></i><i></i><i></i><span>momentum · mock data</span></div>
-                  <div class="proto-body">
-                    <p class="pm-note">“…I’ll <mark>send the follow-up notes by Friday</mark>, and we’ll <mark>share the draft with Strategy</mark> next week…”</p>
-                    <ul class="pm-list">
-                      <li>Send follow-up notes<span>Fri</span></li>
-                      <li>Share draft with Strategy<span>Next wk</span></li>
-                      <li>Book the review<span>Tue</span></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="build-body">
-              <p class="tag">Hackathon · 2026 · Product owner</p>
-              <h3>Momentum</h3>
-              <p>An AI prototype that keeps work commitments from getting lost.</p>
-            </div>
-            <span class="go" aria-hidden="true">↗</span>
-          </a>
-          <a class="build card-hover" href="builds/growinged.html" data-reveal>
-            <div class="build-art" aria-hidden="true">
-              <div class="proto" data-live>
-                <div class="proto-win">
-                  <div class="proto-bar"><i></i><i></i><i></i><span>growinged · matching · mock data</span></div>
-                  <div class="proto-body">
-                    <div class="ge">
-                      <ul class="ge-col"><li>Mentee · UX</li><li>Mentee · Python</li><li>Mentee · Finance</li></ul>
-                      <svg class="ge-links" viewBox="0 0 56 90" preserveAspectRatio="none">
-                        <path pathLength="1" d="M0 15 C28 15 28 45 56 45" />
-                        <path pathLength="1" d="M0 45 C28 45 28 15 56 15" />
-                        <path pathLength="1" d="M0 75 L56 75" />
-                      </svg>
-                      <ul class="ge-col"><li>Mentor · Python</li><li>Mentor · UX</li><li>Mentor · Finance</li></ul>
+        <div class="showcase" data-showcase>
+          <ol class="show-list">
+            <li><a class="show-tab" href="#show-momentum"><span class="show-idx">01</span><span class="show-name">Momentum</span><span class="show-meta">Hackathon · 2026</span></a></li>
+            <li><a class="show-tab" href="#show-growinged"><span class="show-idx">02</span><span class="show-name">GrowingED</span><span class="show-meta">OwlHack · Winner</span></a></li>
+            <li><a class="show-tab" href="#show-cre-ai"><span class="show-idx">03</span><span class="show-name">CRE AI tools</span><span class="show-meta">Now · Internal</span></a></li>
+            <li><a class="show-tab" href="#show-loan-rag"><span class="show-idx">04</span><span class="show-name">Loan Portfolio RAG</span><span class="show-meta">Internal</span></a></li>
+          </ol>
+          <div class="show-stage">
+            <article class="show-item g-product" id="show-momentum">
+              <div class="show-media" aria-hidden="true">
+                <div class="proto" data-live>
+                  <div class="proto-win">
+                    <div class="proto-bar"><i></i><i></i><i></i><span>momentum · mock data</span></div>
+                    <div class="proto-body">
+                      <p class="pm-note">“…I’ll <mark>send the follow-up notes by Friday</mark>, and we’ll <mark>share the draft with Strategy</mark> next week…”</p>
+                      <ul class="pm-list">
+                        <li>Send follow-up notes<span>Fri</span></li>
+                        <li>Share draft with Strategy<span>Next wk</span></li>
+                        <li>Book the review<span>Tue</span></li>
+                      </ul>
                     </div>
-                    <p class="ge-match">✓ 3 / 3 matched</p>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="build-body">
-              <p class="tag">OwlHack · 2023 · Winner</p>
-              <h3>GrowingED</h3>
-              <p>A mentor-matching platform — won Best Use of Auth0.</p>
-            </div>
-            <span class="go" aria-hidden="true">↗</span>
-          </a>
-          <div class="build build-wide" data-reveal>
-            <div class="build-art" aria-hidden="true">
-              <div class="proto" data-live>
-                <div class="proto-win">
-                  <div class="proto-bar"><i></i><i></i><i></i><span>copilot · illustration</span></div>
-                  <div class="proto-body">
-                    <p class="ai-msg ai-user">What changed since the last review?</p>
-                    <div class="ai-typing"><i></i><i></i><i></i></div>
-                    <div class="ai-msg ai-bot"><span class="sk"></span><span class="sk"></span><span class="sk sk-short"></span><span class="ai-review">✓ banker reviewed</span></div>
+              <div class="show-info">
+                <div class="show-head">
+                  <p class="tag">JPMorgan Chase internal hackathon · Jun 2026</p>
+                  <h3>Momentum</h3>
+                  <p class="show-sum">An AI prototype that keeps work commitments from getting lost.</p>
+                </div>
+                <dl class="show-facts"><div><dt>Role</dt><dd>Product owner · team of 10</dd></div><div><dt>Problem</dt><dd>Commitments lost amid meetings</dd></div><div><dt>Outcome</dt><dd>Prototype demoed end to end</dd></div></dl>
+                <a class="btn btn-primary" href="builds/momentum.html">View build →</a>
+              </div>
+            </article>
+            <article class="show-item g-data" id="show-growinged">
+              <div class="show-media" aria-hidden="true">
+                <div class="proto" data-live>
+                  <div class="proto-win">
+                    <div class="proto-bar"><i></i><i></i><i></i><span>growinged · matching · mock data</span></div>
+                    <div class="proto-body">
+                      <div class="ge">
+                        <ul class="ge-col"><li>Mentee · UX</li><li>Mentee · Python</li><li>Mentee · Finance</li></ul>
+                        <svg class="ge-links" viewBox="0 0 56 90" preserveAspectRatio="none">
+                          <path pathLength="1" d="M0 15 C28 15 28 45 56 45" />
+                          <path pathLength="1" d="M0 45 C28 45 28 15 56 15" />
+                          <path pathLength="1" d="M0 75 L56 75" />
+                        </svg>
+                        <ul class="ge-col"><li>Mentor · Python</li><li>Mentor · UX</li><li>Mentor · Finance</li></ul>
+                      </div>
+                      <p class="ge-match">✓ 3 / 3 matched</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="build-body">
-              <p class="tag">Now · JPMorgan Chase · Internal</p>
-              <h3>AI tools for CRE bankers</h3>
-              <p>Discovery and rapid prototyping with Copilot and LLM agents, iterated through stakeholder demos. Details on request.</p>
-            </div>
+              <div class="show-info">
+                <div class="show-head">
+                  <p class="tag">OwlHack · Temple University · Sep 2023</p>
+                  <h3>GrowingED</h3>
+                  <p class="show-sum">A mentor-matching platform for an inclusive learning environment.</p>
+                </div>
+                <dl class="show-facts"><div><dt>Role</dt><dd>Product vision &amp; MVP scope</dd></div><div><dt>Problem</dt><dd>Mentees need mentors</dd></div><div><dt>Outcome</dt><dd>Won Best Use of Auth0</dd></div></dl>
+                <a class="btn btn-primary" href="builds/growinged.html">View build →</a>
+              </div>
+            </article>
+            <article class="show-item g-ai" id="show-cre-ai">
+              <div class="show-media" aria-hidden="true">
+                <div class="proto" data-live>
+                  <div class="proto-win">
+                    <div class="proto-bar"><i></i><i></i><i></i><span>copilot · illustration</span></div>
+                    <div class="proto-body">
+                      <p class="ai-msg ai-user">What changed since the last review?</p>
+                      <div class="ai-typing"><i></i><i></i><i></i></div>
+                      <div class="ai-msg ai-bot"><span class="sk"></span><span class="sk"></span><span class="sk sk-short"></span><span class="ai-review">✓ banker reviewed</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="show-info">
+                <div class="show-head">
+                  <p class="tag">Now · JPMorgan Chase · Internal</p>
+                  <h3>AI tools for CRE bankers</h3>
+                  <p class="show-sum">Discovery and rapid prototyping of AI tools with Microsoft Copilot and LLM agents.</p>
+                </div>
+                <dl class="show-facts"><div><dt>Role</dt><dd>Discovery &amp; prototyping</dd></div><div><dt>Tools</dt><dd>Copilot · LLM agents</dd></div><div><dt>Loop</dt><dd>Iterated through stakeholder demos</dd></div></dl>
+                <a class="btn btn-ghost" href="mailto:raymondw0120@gmail.com?subject=AI%20tools%20for%20CRE%20bankers">Ask me about it →</a>
+              </div>
+            </article>
+            <article class="show-item g-domain" id="show-loan-rag">
+              <div class="show-media" aria-hidden="true">
+                <div class="proto" data-live>
+                  <div class="proto-win">
+                    <div class="proto-bar"><i></i><i></i><i></i><span>support insights · RAG · mock data</span></div>
+                    <div class="proto-body">
+                      <ul class="rag-docs">
+                        <li class="is-hit">Export fails on large files<span>0.92</span></li>
+                        <li>Access request pending<span>0.31</span></li>
+                        <li class="is-hit">Export timeout after filter<span>0.88</span></li>
+                      </ul>
+                      <p class="rag-step">retrieve → rank → summarize</p>
+                      <div class="ai-msg ai-bot"><span><strong>Top theme</strong> · export errors (2 of 3)</span><span class="ai-review">✓ sources cited</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="show-info">
+                <div class="show-head">
+                  <p class="tag">JPMorgan Chase · Internal</p>
+                  <h3>Loan Portfolio RAG agent</h3>
+                  <p class="show-sum">Supported a RAG agent that pulls support insights for our Loan Portfolio product platform.</p>
+                </div>
+                <dl class="show-facts"><div><dt>Role</dt><dd>Supported the build</dd></div><div><dt>Type</dt><dd>RAG agent</dd></div><div><dt>Focus</dt><dd>Support insights</dd></div></dl>
+                <a class="btn btn-ghost" href="mailto:raymondw0120@gmail.com?subject=Loan%20Portfolio%20RAG%20agent">Ask me about it →</a>
+              </div>
+            </article>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ LOOP (how I build; detail shows on hover/focus on desktop) ============ -->
-    <section id="loop" aria-labelledby="loop-title">
+    <!-- ============ ABOUT panel: how I build (loop) + how I work (details show on hover/focus on desktop and linger) ============ -->
+    <section class="panel" id="about">
       <div class="wrap">
-        <h2 class="visually-hidden" id="loop-title">How I build</h2>
+        <h2 class="visually-hidden">How I work</h2>
         <ol class="loop" data-reveal>
           <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">01</span><span class="loop-name">Discover</span><span class="loop-tip">Discovery &amp; requirements with stakeholders</span></li>
           <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">02</span><span class="loop-name">Define</span><span class="loop-tip">User stories &amp; prioritization</span></li>
@@ -272,14 +319,6 @@
           <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">04</span><span class="loop-name">Deliver</span><span class="loop-tip">With Design &amp; Technology</span></li>
           <li class="loop-step" tabindex="0"><span class="loop-dot" aria-hidden="true">05</span><span class="loop-name">Support</span><span class="loop-tip">Production support &amp; iteration</span></li>
         </ol>
-        <p class="loop-note">↺ and again, every iteration</p>
-      </div>
-    </section>
-
-    <!-- ============ HOW I WORK (sentence shows on hover/focus on desktop and lingers) ============ -->
-    <section id="about">
-      <div class="wrap">
-        <h2 class="visually-hidden">How I work</h2>
         <ul class="principles">
           <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">01</span><h3>Team first</h3><p>I listen for everyone's input and bring it together.</p></li>
           <li class="principle card-hover" tabindex="0" data-reveal><span class="idx">02</span><h3>Trust over title</h3><p>I earn trust by showing up and following through.</p></li>
@@ -291,8 +330,8 @@
       </div>
     </section>
 
-    <!-- ============ STACK (colour = group; see the legend) ============ -->
-    <section id="stack">
+    <!-- ============ STACK panel (colour = group; see the legend) ============ -->
+    <section class="panel" id="stack">
       <div class="wrap">
         <h2 class="visually-hidden">Stack</h2>
         <ul class="legend" aria-hidden="true">
@@ -321,8 +360,9 @@
       </div>
     </section>
 
-    <!-- ============ PATH (career line) ============ -->
-    <section id="path">
+    <!-- ============ PATH panel: career line + quotes (rotate with JS; all listed in full without).
+         q-short shows first, q-more on "Read more" ============ -->
+    <section class="panel" id="path">
       <div class="wrap">
         <h2 class="visually-hidden">Path</h2>
         <ol class="path" data-reveal>
@@ -332,13 +372,7 @@
           <li class="path-node is-now"><span class="when">Dec 2025 → now</span><span class="what">Product Analyst · CRE Lending</span><span class="where">Innovation Development Program</span></li>
         </ol>
         <p class="path-more"><a href="Raymond_Wang_Resume.pdf" download>Full résumé ↓</a></p>
-      </div>
-    </section>
-
-    <!-- ============ QUOTE (rotates with JS; all listed in full without). q-short shows first, q-more on "Read more" ============ -->
-    <section aria-labelledby="quotes-title">
-      <div class="wrap">
-        <h2 class="visually-hidden" id="quotes-title">What colleagues say</h2>
+        <h3 class="visually-hidden">What colleagues say</h3>
         <figure class="rotator" data-rotator>
           <ul class="rotator-list">
             <li><blockquote><span class="q-short">One quality that stands out is his curiosity and willingness to learn.</span><span class="q-more" id="quote-1-more"> He owned key areas of CRE Discovery.</span></blockquote><button class="q-toggle" type="button" aria-expanded="false" aria-controls="quote-1-more" hidden>Read more</button></li>
@@ -351,8 +385,8 @@
       </div>
     </section>
 
-    <!-- ============ CONTACT ============ -->
-    <section id="contact">
+    <!-- ============ CONTACT panel ============ -->
+    <section class="panel" id="contact">
       <div class="wrap contact">
         <h2 class="visually-hidden">Contact</h2>
         <p class="contact-kicker">&gt; open a channel_</p>
