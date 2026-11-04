@@ -60,7 +60,7 @@
   }
 
   /* ---------- Auto-open countdown ---------- */
-  var AUTO_MS = reduceMotion ? 4000 : 2600;
+  var AUTO_MS = reduceMotion ? 4000 : 2000;
   var autoTimer = null, counting = false, hovering = false, focusInside = false;
   intro.style.setProperty("--auto-ms", AUTO_MS + "ms");
   function startCountdown() {
