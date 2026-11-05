@@ -1,6 +1,6 @@
 # Raymond Wang — Portfolio
 
-A fast, light-by-default portfolio with a "console" boot sequence, built with plain HTML, CSS and vanilla JavaScript. No build step. No JavaScript libraries; the only external files are two Google Fonts, and the site still works if they fail to load.
+A fast, light-by-default portfolio with an editorial look (Fraunces headlines, Source Sans 3 text, warm paper and terracotta), built with plain HTML, CSS and vanilla JavaScript. No build step. No JavaScript libraries; the only external files are two Google Fonts, and the site still works if they fail to load.
 
 Planning docs (PRD, positioning, design, tech, project plan) live in [`docs/`](docs/).
 
@@ -12,12 +12,12 @@ python3 -m http.server 8000
 # open http://localhost:8000/home.html
 ```
 
-The boot sequence shows **once per browser tab**. To see it again, open the page in a new tab or a private window. Links that go straight to a section (e.g. `home.html#builds`) skip it.
+The intro shows **once per browser tab**. To see it again, open the page in a new tab or a private window. Links that go straight to a section (e.g. `home.html#builds`) skip it.
 
 ## Files
 
 ```
-home.html                 Main page: boot sequence, then six panels — Home (hero, flip stats, ticker) ·
+home.html                 Main page: intro, then six panels — Home (hero, flip stats, ticker) ·
                           Builds (showcase) · About (loop + principles) · Stack · Path (career + quotes) · Contact
 index.html                Redirect stub → home.html (also carries link-preview tags for the bare URL)
 404.html                  "Signal lost" page. Uses root-absolute links (/…) because Vercel serves it at any depth
@@ -26,7 +26,7 @@ builds/growinged.html     GrowingED (OwlHack winner, 2023)
 Raymond_Wang_Resume.pdf   Résumé linked from every page
 assets/css/styles.css     All styling (tokens, components, motion, responsive, print)
 assets/js/main.js         Shared behaviour on every page
-assets/js/intro.js        The boot-sequence intro (home page only)
+assets/js/intro.js        The intro (home page only)
 assets/img/               Images (see assets/img/README.md)
 vercel.json               Redirects: / → home.html, old /case-studies/* links → #builds
 docs/                     Planning docs, kept off the website by .vercelignore
@@ -38,7 +38,7 @@ Use **Cmd+F** on the comment name in `home.html`. There are no line numbers to g
 
 | What | Search for |
 |---|---|
-| Boot sequence (log lines, name, one-liner; graph labels are in the `<svg class="graph">`) | `INTRO` |
+| Intro (name, one-liner, the short facts line) | `INTRO` |
 | Headline, 3 flip cards (number/label on the front, detail on the back) and the ticker phrases (edit **both** ticker lists, which must match) | `HOME panel` |
 | Builds: one selector `<li>` + one `<article class="show-item">` per build (tone class `g-product` / `g-data` / `g-ai` / `g-domain` sets its colour; mini-prototypes are illustrations with mock data) | `BUILDS panel` |
 | Lifecycle steps and the 6 principles | `ABOUT panel` |
@@ -76,13 +76,12 @@ grep -c 'data-nav-toggle' *.html builds/*.html
 
 | Effect | How to use |
 |---|---|
-| Boot sequence | Automatic on `home.html`: log lines type in, the graph links up, the name decodes, then it opens the site by itself after a short countdown (shown as a line on Enter), flying the photo into the hero. Enter/scroll/Skip go straight in; hovering or tabbing to the intro buttons pauses the countdown. Uses the same theme as the site. Everything shows at once (and the countdown runs longer) with reduced motion; slide-up on phones |
+| Intro | Automatic on `home.html`: the photo fades in, then the name and facts, then it opens the site by itself after a short countdown (shown as a line on Enter), flying the photo into the hero. Enter/scroll/Skip go straight in; hovering or tabbing to the intro buttons pauses the countdown. Uses the same theme as the site. Everything shows at once (and the countdown runs longer) with reduced motion; slide-up on phones |
 | Desktop panels | Automatic at ≥ 900×620: one full-screen panel at a time, switched by nav links, ⌘K, the dot rail, the "next" button, arrow/Page keys, one wheel/trackpad gesture or a swipe. Back/Forward and links like `home.html#builds` work. Smaller screens scroll normally |
 | Builds showcase | `data-showcase`: selectors become tabs (click, hover on desktop, arrow keys); a chip row on phones |
-| Decode text | `data-decode` on any short text: scrambles into the real text when it scrolls into view |
 | Counters | `data-count="10"` on a number, with the real value as its text |
 | Reveal / stagger | `data-reveal` fades an element in; add `data-stagger` to animate its children one by one |
-| Card glow + tilt | Class `card-hover` (mouse/trackpad only); the background glow follows the pointer |
+| Card lift | Class `card-hover`: a small lift and accent border on hover |
 | Flip cards | `.flip` > `.flip-inner` > `.flip-front` + `.flip-back`: flips on hover/keyboard focus, tap on touch |
 | Linger | Principle and loop details stay ~1.5 s after the pointer leaves (`--linger` in styles.css) |
 | Mini-prototypes | `data-live` on a `.proto`: animates only while on screen |
@@ -91,12 +90,12 @@ grep -c 'data-nav-toggle' *.html builds/*.html
 | Accordions | `.cs-section` on build pages; `aria-expanded="true"` opens one by default. Links to a panel id open that section |
 | Copy email | `data-copy="you@example.com"` on a mailto link: copies it and still opens the mail app |
 | Jump menu | ⌘K (Ctrl K on Windows) or the ⌕ button |
-| Light/dark | Light by default; the ◐ button switches and remembers the choice (the boot screen follows it) |
+| Light/dark | Light by default; the ◐ button switches and remembers the choice (the intro follows it) |
 
 **When something fails:**
 - Reduced-motion users get final states with no movement (panels swap instantly).
 - Animations use only transform/opacity (the intro exit runs on the compositor via the Web Animations API), and anything off screen (hidden panels, inactive builds) doesn't run. Mock-ups and the chip/career-line effects wait until a panel has finished sliding in.
-- Without JavaScript, all content shows: the boot screen is a static first section, and every quote is listed in full.
+- Without JavaScript, all content shows: the intro is a static first section, and every quote is listed in full.
 - A missing headshot becomes an "RW" tile.
 - If the fonts fail to load, system fonts are used. Browsers without the Web Animations API get a simple CSS fade out of the intro.
 

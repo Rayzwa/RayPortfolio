@@ -9,6 +9,8 @@
 
 > **Update 2026-11-04 (boot sequence):** the intro card became a dark product boot sequence (log lines → node graph → name decode → Enter), the site is light by default, stats are flip cards, principles go to 06 and linger after hover, nav links "warp" to sections, builds show animated mini-prototypes, and a Loop strip shows the product lifecycle.
 
+> **Update 2026-11-04 (editorial restyle):** at the owner's request the site moved away from the "AI/terminal" look. Type is **Fraunces** (headlines, name, numbers, quotes) with **Source Sans 3** (everything else); the code font stays only inside the build mock-ups. Colours are warm paper and ink with one terracotta accent (`#a8461f` light / `#e3895e` dark); the cyan/violet gradients, neon glows, dot grid, cursor glow, card tilt, text scramble and 404 glitch were removed. The intro is now a calm photo → name → facts reveal instead of a console log and node graph.
+
 ---
 
 ## 1. Screens (wireframes)

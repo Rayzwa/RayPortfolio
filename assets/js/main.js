@@ -135,47 +135,7 @@
   window.addEventListener("resize", queueScrollUI);
   updateScrollUI();
 
-  /* ---------- Pointer glow + card spotlight/tilt (fine pointers only) ----------
-     The glow is one element moved with transform, so it never repaints the page. */
-  if (finePointer && !reduceMotion) {
-    var glow = document.createElement("div");
-    glow.className = "cursor-glow";
-    glow.setAttribute("aria-hidden", "true");
-    body.appendChild(glow);
-    var glowX = 0, glowY = 0, glowQueued = false;
-    window.addEventListener("pointermove", function (e) {
-      glowX = e.clientX; glowY = e.clientY;
-      if (glowQueued) return;
-      glowQueued = true;
-      requestAnimationFrame(function () {
-        glowQueued = false;
-        glow.style.transform = "translate3d(" + glowX + "px," + glowY + "px,0)";
-      });
-    }, { passive: true });
-
-    document.querySelectorAll(".card-hover").forEach(function (card) {
-      var px = 0, py = 0, queued = false;
-      card.addEventListener("pointermove", function (e) {
-        px = e.clientX; py = e.clientY;
-        if (queued) return;
-        queued = true;
-        requestAnimationFrame(function () {   // at most one style update per frame
-          queued = false;
-          var r = card.getBoundingClientRect();
-          var x = px - r.left, y = py - r.top;
-          card.style.setProperty("--mx", x + "px");
-          card.style.setProperty("--my", y + "px");
-          card.style.setProperty("--ry", ((x / r.width - 0.5) * 6).toFixed(2) + "deg");
-          card.style.setProperty("--rx", ((0.5 - y / r.height) * 6).toFixed(2) + "deg");
-        });
-      });
-      card.addEventListener("pointerleave", function () {
-        ["--mx", "--my", "--rx", "--ry"].forEach(function (p) { card.style.removeProperty(p); });
-      });
-    });
-  }
-
-  // In desktop panel mode, content changes (counters, decode) wait until
+  // In desktop panel mode, content changes (counters) wait until
   // their panel has finished sliding in, so the slide never has to redraw.
   function whenSettled(fn) {
     return function (el) {
@@ -210,42 +170,6 @@
     };
   }
   onVisible(document.querySelectorAll("[data-count]"), afterIntro(whenSettled(runCounter)), { threshold: 0.4 });
-
-  /* ---------- Decode: scramble text into its real value ----------
-     The real text is always in the HTML (no-JS, screen readers);
-     during the effect it's exposed via aria-label. */
-  var GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+<>/";
-  function decode(el) {
-    if (el._final === undefined) el._final = el.textContent;
-    var text = el._final;
-    if (reduceMotion) return;
-    var run = el._run = (el._run || 0) + 1;
-    var duration = Math.min(900, 300 + text.length * 20), start = null, finished = false;
-    el.setAttribute("aria-label", text);
-    function done() {
-      if (finished || el._run !== run) return;
-      finished = true;
-      el.textContent = text;
-      el.removeAttribute("aria-label");
-    }
-    function frame(ts) {
-      if (finished || el._run !== run) return;
-      if (start === null) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
-      var n = Math.floor(p * text.length), out = text.slice(0, n);
-      for (var i = n; i < text.length; i++) {
-        out += /\s/.test(text[i]) ? text[i] : GLYPHS[(Math.random() * GLYPHS.length) | 0];
-      }
-      el.textContent = out;
-      if (p < 1) requestAnimationFrame(frame); else done();
-    }
-    requestAnimationFrame(frame);
-    setTimeout(done, duration + 400);
-  }
-  onVisible(document.querySelectorAll("[data-decode]"), whenSettled(decode), { threshold: 0.5 });
-
-  // Other scripts can ask for a decode (intro.js does, for the name).
-  document.addEventListener("rw:decode", function (e) { decode(e.target); });
 
   /* ---------- Mini prototypes animate only while on screen ---------- */
   var live = document.querySelectorAll("[data-live]");
@@ -306,8 +230,8 @@
         if (j !== current) setExpanded(li, false);
       });
       dots.forEach(function (b, j) { b.setAttribute("aria-current", j === current ? "true" : "false"); });
-      var q = animate && items[current].querySelector(".q-short");
-      if (q) decode(q);
+      var q = animate && !reduceMotion && Element.prototype.animate && items[current].querySelector("blockquote");
+      if (q) q.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 450, easing: "ease-out" });
     }
     function play() {
       if (timer || reduceMotion || hovered || focused || rot.querySelector(".is-expanded")) return;

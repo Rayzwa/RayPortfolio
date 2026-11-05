@@ -1,12 +1,12 @@
 /* ============================================================
-   Raymond Wang portfolio — boot-sequence intro (home page only)
-   State machine: boot → ready → unfolding → site.
+   Raymond Wang portfolio — intro (home page only)
+   State machine: reveal → ready → unfolding → site.
    The <head> script sets html.intro-on (show the intro) or
    html.intro-done (returning visit / deep link). Without JS
    neither is set and the intro is a static first section.
-   The <head> script sets html.intro-boot before first paint (boot
-   content hidden); boot steps are then CSS classes on #intro
-   (.graph-on, .name-on, .is-ready); then it opens the site by itself after a
+   The <head> script sets html.intro-boot before first paint (intro
+   content hidden); reveal steps are then CSS classes on #intro
+   (.photo-on, .name-on, .is-ready); then it opens the site by itself after a
    short countdown (paused while the visitor hovers or focuses the
    intro's buttons). The exit animates only transform/opacity with
    the Web Animations API (runs on the compositor, so it stays
@@ -33,32 +33,18 @@
   }
   setInert(true);
 
-  /* ---------- Boot sequence (~3 s; skipped under reduced motion) ---------- */
-  var lines = intro.querySelectorAll(".boot-log li");
-  var bar = intro.querySelector(".boot-bar span");
-  var name = intro.querySelector(".boot-name");
+  /* ---------- Reveal (~1.3 s; skipped under reduced motion) ---------- */
   var timers = [];
   function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
   function endBoot() {
     timers.forEach(clearTimeout);
     root.classList.remove("intro-boot");
-    if (bar) bar.style.removeProperty("transform");
   }
   if (root.classList.contains("intro-boot")) {
-    root.classList.add("intro-running");   // tells the <head> failsafe the boot is in hand
-    var step = 260, t = 250 + lines.length * step;
-    lines.forEach(function (li, i) {
-      at(250 + i * step, function () {
-        li.classList.add("is-on");
-        if (bar) bar.style.transform = "scaleX(" + (i + 1) / lines.length + ")";
-      });
-    });
-    at(t, function () { intro.classList.add("graph-on"); });
-    at(t + 600, function () {
-      intro.classList.add("name-on");
-      if (name) name.dispatchEvent(new CustomEvent("rw:decode", { bubbles: true }));   // main.js decodes it
-    });
-    at(t + 1200, function () { intro.classList.add("is-ready"); endBoot(); startCountdown(); });
+    root.classList.add("intro-running");   // tells the <head> failsafe the reveal is in hand
+    at(250, function () { intro.classList.add("photo-on"); });
+    at(700, function () { intro.classList.add("name-on"); });
+    at(1300, function () { intro.classList.add("is-ready"); endBoot(); startCountdown(); });
   }
 
   /* ---------- Auto-open countdown ---------- */
@@ -89,7 +75,7 @@
   }
   intro.addEventListener("focusin", function () { focusInside = true; holdCountdown(); });
   intro.addEventListener("focusout", function () { focusInside = false; resumeCountdown(); });
-  // No boot to watch (reduced motion, or the <head> failsafe already revealed everything):
+  // No reveal to watch (reduced motion, or the <head> failsafe already showed everything):
   // start the countdown right away.
   if (!root.classList.contains("intro-running")) startCountdown();
 
@@ -130,7 +116,7 @@
     setTimeout(finish, 2000);
     intro.classList.add("is-primed");
 
-    intro.querySelectorAll("[data-intro-body], .graph, .boot-pulse, .intro-hint, .boot-skip").forEach(function (el) {
+    intro.querySelectorAll("[data-intro-body], .intro-hint, .boot-skip").forEach(function (el) {
       el.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-8px)" }],
         { duration: 250, easing: "ease-out", fill: "forwards" });
     });
@@ -168,7 +154,7 @@
     animateLeave();
   }
 
-  /* ---------- Triggers (each fires once; any of them also skips the boot) ---------- */
+  /* ---------- Triggers (each fires once; any of them also skips the reveal) ---------- */
   var explore = intro.querySelector("[data-intro-explore]");
   var skips = document.querySelectorAll("[data-intro-skip]");
   var touchY = null;

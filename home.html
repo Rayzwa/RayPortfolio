@@ -6,7 +6,7 @@
   <title>Raymond Wang — Product Analyst</title>
   <meta name="description" content="Raymond Wang is a Product Analyst at JPMorgan Chase who turns stakeholder needs into AI tools — from discovery and prototyping to delivery and production support." />
   <meta name="author" content="Raymond Wang" />
-  <meta name="theme-color" content="#f7f8fb" />
+  <meta name="theme-color" content="#f6f2ec" />
   <!-- Open Graph / social preview (absolute URLs: LinkedIn ignores relative ones) -->
   <meta property="og:title" content="Raymond Wang — Product Analyst" />
   <meta property="og:description" content="I turn stakeholder needs into AI tools people use — Product Analyst at JPMorgan Chase." />
@@ -14,13 +14,13 @@
   <meta property="og:url" content="https://rayportf.vercel.app/" />
   <meta property="og:image" content="https://rayportf.vercel.app/assets/img/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307090f'/><text x='50' y='64' font-size='42' font-family='monospace' font-weight='bold' fill='%2322d3ee' text-anchor='middle'>RW</text></svg>" />
-  <!-- Theme + intro state, set before first paint (no flash). intro-boot hides the boot
-       content until intro.js types it in; if intro.js never runs, it is removed after 4 s. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23a8461f'/><text x='50' y='66' font-size='46' font-family='Georgia,serif' fill='%23fffdf9' text-anchor='middle'>RW</text></svg>" />
+  <!-- Theme + intro state, set before first paint (no flash). intro-boot hides the intro
+       content until intro.js reveals it; if intro.js never runs, it is removed after 4 s. -->
   <script>(function(){var d=document.documentElement,c=d.classList,t,s;try{t=localStorage.getItem("pm-theme")}catch(e){}d.setAttribute("data-theme",t==="dark"?"dark":"light");try{s=sessionStorage.getItem("pm-intro-seen")}catch(e){}if(s||location.hash){c.add("intro-done");return}c.add("intro-on");if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;c.add("intro-boot");setTimeout(function(){if(!c.contains("intro-running"))c.remove("intro-boot")},4000)})();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Source+Sans+3:wght@400..700&amp;display=swap" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -47,70 +47,21 @@
   </header>
 
   <main id="top">
-    <!-- ============ INTRO (boot sequence) — see assets/js/intro.js ============ -->
+    <!-- ============ INTRO (photo + name reveal) — see assets/js/intro.js ============ -->
     <section class="intro" id="intro" aria-label="Introduction">
       <div class="boot">
-        <div class="boot-graph">
-          <svg class="graph" viewBox="0 0 400 400" aria-hidden="true">
-            <g data-stagger>
-              <path class="link" pathLength="1" d="M200 200 L370 200" />
-              <path class="link" pathLength="1" d="M200 200 L330 125" />
-              <path class="link" pathLength="1" d="M200 200 L285 53" />
-              <path class="link" pathLength="1" d="M200 200 L200 50" />
-              <path class="link" pathLength="1" d="M200 200 L115 53" />
-              <path class="link" pathLength="1" d="M200 200 L70 125" />
-              <path class="link" pathLength="1" d="M200 200 L30 200" />
-              <path class="link" pathLength="1" d="M200 200 L70 275" />
-              <path class="link" pathLength="1" d="M200 200 L115 347" />
-              <path class="link" pathLength="1" d="M200 200 L200 350" />
-              <path class="link" pathLength="1" d="M200 200 L285 347" />
-              <path class="link" pathLength="1" d="M200 200 L330 275" />
-              <path class="link" pathLength="1" d="M370 200 L330 125" />
-              <path class="link" pathLength="1" d="M330 125 L285 53" />
-              <path class="link" pathLength="1" d="M285 53 L200 50" />
-              <path class="link" pathLength="1" d="M200 50 L115 53" />
-              <path class="link" pathLength="1" d="M115 53 L70 125" />
-              <path class="link" pathLength="1" d="M70 125 L30 200" />
-              <path class="link" pathLength="1" d="M30 200 L70 275" />
-              <path class="link" pathLength="1" d="M70 275 L115 347" />
-              <path class="link" pathLength="1" d="M115 347 L200 350" />
-              <path class="link" pathLength="1" d="M200 350 L285 347" />
-              <path class="link" pathLength="1" d="M285 347 L330 275" />
-              <path class="link" pathLength="1" d="M330 275 L370 200" />
-            </g>
-            <g data-stagger>
-              <g class="node"><circle cx="370" cy="200" r="3.5" /></g>
-              <g class="node"><circle cx="330" cy="125" r="5" /><text x="330" y="111">LLM agents</text></g>
-              <g class="node"><circle cx="285" cy="53" r="3.5" /></g>
-              <g class="node"><circle cx="200" cy="50" r="5" /><text x="200" y="36">CRE Lending</text></g>
-              <g class="node"><circle cx="115" cy="53" r="3.5" /></g>
-              <g class="node"><circle cx="70" cy="125" r="5" /><text x="70" y="111">Rutgers '24</text></g>
-              <g class="node"><circle cx="30" cy="200" r="3.5" /></g>
-              <g class="node"><circle cx="70" cy="275" r="5" /><text x="70" y="299">team of 10</text></g>
-              <g class="node"><circle cx="115" cy="347" r="3.5" /></g>
-              <g class="node"><circle cx="200" cy="350" r="5" /><text x="200" y="374">50 stakeholders</text></g>
-              <g class="node"><circle cx="285" cy="347" r="3.5" /></g>
-              <g class="node"><circle cx="330" cy="275" r="5" /><text x="330" y="299">Copilot</text></g>
-            </g>
-          </svg>
-          <span class="boot-pulse" aria-hidden="true"></span>
-          <div class="boot-photo" data-intro-photo>
-            <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
-          </div>
+        <div class="boot-photo" data-intro-photo>
+          <img src="assets/img/headshot.jpg" alt="Portrait of Raymond Wang" width="600" height="600" data-fallback="monogram" />
         </div>
         <div class="boot-panel" data-intro-body>
-          <p class="boot-cmd" aria-hidden="true">&gt; init raymond.wang</p>
-          <ul class="boot-log">
-            <li><span class="k">role</span><span class="v">Product Analyst</span></li>
-            <li><span class="k">org</span><span class="v">JPMorgan Chase · CRE Lending</span></li>
-            <li><span class="k">stakeholders</span><span class="v">50 met</span></li>
-            <li><span class="k">led</span><span class="v">cross-functional team of 10</span></li>
-            <li><span class="k">edu</span><span class="v">Rutgers B.S. '24</span></li>
-            <li><span class="k">status</span><span class="v">● shipping AI tools</span></li>
-          </ul>
-          <div class="boot-bar" aria-hidden="true"><span></span></div>
           <h1 class="boot-name">Raymond Wang</h1>
           <p class="boot-line">Product Analyst turning stakeholder needs into AI tools.</p>
+          <ul class="boot-facts">
+            <li>JPMorgan Chase · CRE Lending</li>
+            <li>50 stakeholders met</li>
+            <li>Led a team of 10</li>
+            <li>Rutgers '24</li>
+          </ul>
           <div class="btn-row boot-actions">
             <a class="btn btn-primary" href="#builds" data-intro-explore>Enter →</a>
             <a class="btn btn-ghost" href="Raymond_Wang_Resume.pdf" download>Résumé</a>
@@ -119,8 +70,8 @@
           </div>
         </div>
       </div>
-      <button class="boot-skip" type="button" data-intro-skip>Skip ⏭</button>
-      <p class="intro-hint" aria-hidden="true">opening… press Enter or scroll to go now</p>
+      <button class="boot-skip" type="button" data-intro-skip>Skip</button>
+      <p class="intro-hint" aria-hidden="true">Opening in a moment. Press Enter or scroll to go in now.</p>
     </section>
     <span class="visually-hidden" role="status" aria-live="polite" data-intro-status></span>
 
@@ -392,7 +343,7 @@
       <div class="wrap contact">
         <h2 class="visually-hidden">Contact</h2>
         <p class="contact-kicker">&gt; open a channel_</p>
-        <a class="contact-email" href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com" data-decode>raymondw0120@gmail.com</a>
+        <a class="contact-email" href="mailto:raymondw0120@gmail.com" data-copy="raymondw0120@gmail.com">raymondw0120@gmail.com</a>
         <p class="muted">Happy to talk products, AI, or lending tech. Click to copy.</p>
         <div class="btn-row btn-row-center">
           <a class="btn btn-ghost" href="https://www.linkedin.com/in/rayw17" target="_blank" rel="noopener">LinkedIn</a>
